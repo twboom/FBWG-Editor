@@ -1,5 +1,5 @@
 const CONFIG = {
-    BLOCK_SIZE: 16,
+    BLOCK_SIZE: 32,
 }
 
 const LEVEL = {
@@ -12,10 +12,10 @@ function renderTileLayer(tileLayer) {
         const COLOR_LOOKUP = [
             'black', // Air
             'white', // Ground
-            'white', // Top slope right
-            'white', // Top slope left
-            'white', // Bottom slope left
-            'white', // Bottom slope right
+            'gray', // Top slope right
+            'gray', // Top slope left
+            'gray', // Bottom slope left
+            'gray', // Bottom slope right
             'blue', // Water
             'red', // Lava
             'green', // Toxin
