@@ -21,3 +21,14 @@ Fireboy &amp; Watergirl Level Editor
 6 = light blue
 7 = purple
 8 = white
+
+## Special id's
+
+spawn fb, gid = 16
+spawn wg, gid = 17
+Door fb, gid = 18
+Door wg, gid = 19
+Diamond fb, gid = 20
+Diamond wg, gid = 21
+Diamond silver, gid = 22
+Diamond fbwg, gid = 23
