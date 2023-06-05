@@ -7,7 +7,7 @@ Fireboy &amp; Watergirl Level Editor
 2 = Top slope facing right
 3 = Top slope facing left
 4 = Bottom slope facing left
-5 = Bottom slop facing right
+5 = Bottom slope facing right
 6 = Water
 7 = Lava
 8 = Green stuff
