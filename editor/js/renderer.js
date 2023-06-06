@@ -5,11 +5,15 @@ const LEVEL = {
 }
 
 function renderTileLayer(tileLayer) {
-    function drawTile([x, y], blockId) {
+    function drawTile([x, y], blockId, index) {
         if (blockId >= 2 && blockId <= 5) {
-            drawtriangle(blockId, [x, y]);
+            drawTriangle(blockId, [x, y]);
 
-        } else {
+        } else if (blockId >= 6 && blockId <= 8) {
+            prevId = tileLayer.data[index - 1]
+            nextId = tileLayer.data[index + 1]
+            drawFluid(blockId, prevId, nextId ,[x, y]);
+        } else{
             const COLOR_LOOKUP = [
                 'black', // Air
                 'white', // Ground
@@ -22,7 +26,7 @@ function renderTileLayer(tileLayer) {
                 'green', // Toxin
             ];
     
-            console.log(x, y, 'type', blockId)
+            //console.log(x, y, 'type', blockId)
             ctx.beginPath();
             ctx.rect(x*LEVEL.BLOCK_SIZE, y*LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
             ctx.fillStyle = COLOR_LOOKUP[blockId];
@@ -37,7 +41,7 @@ function renderTileLayer(tileLayer) {
     const tiles = tileLayer.data;
     for (let i = 0; i < tiles.length; i++) {
         const tileCoordinates = [i%LEVEL.WIDTH, Math.floor(i/LEVEL.WIDTH)];
-        drawTile(tileCoordinates, tiles[i])
+        drawTile(tileCoordinates, tiles[i], i)
     }
 };
 
@@ -79,7 +83,7 @@ function render(levelJSON) {
     });
 };
 
-function drawtriangle(id, [x, y], isBackground=false) {
+function drawTriangle(id, [x, y], isBackground=false) {
     x *= LEVEL.BLOCK_SIZE
     y *= LEVEL.BLOCK_SIZE
     ctx.beginPath();
@@ -106,12 +110,55 @@ function drawtriangle(id, [x, y], isBackground=false) {
             break    
     }
     if (isBackground) {
-        ctx.fillStyle = 'black'
+        ctx.fillStyle = 'black';
     } else {
-        ctx.fillStyle = 'white'
+        ctx.fillStyle = 'white';
     }
     ctx.fill();
     if (!isBackground) {
-        drawtriangle(7-id, [x/LEVEL.BLOCK_SIZE, y/LEVEL.BLOCK_SIZE], true)
+        drawTriangle(7-id, [x/LEVEL.BLOCK_SIZE, y/LEVEL.BLOCK_SIZE], true);
+    }
+}
+
+function drawFluid(id, prevId, nextId, [x, y]) {
+    x *= LEVEL.BLOCK_SIZE
+    y *= LEVEL.BLOCK_SIZE
+    const slopeSteepnes = 0.6
+    if (prevId != id) {
+        ctx.beginPath();
+        ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+        const COLOR_LOOKUP = ['blue', 'red', 'green']
+        ctx.fillStyle = COLOR_LOOKUP[id - 6];
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
+        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + slopeSteepnes * LEVEL.BLOCK_SIZE);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    } else if (nextId != id) {
+        ctx.beginPath();
+        ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+        const COLOR_LOOKUP = ['blue', 'red', 'green']
+        ctx.fillStyle = COLOR_LOOKUP[id - 6];
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(x + LEVEL.BLOCK_SIZE, y);
+        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+        ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
+        ctx.lineTo(x, y + slopeSteepnes * LEVEL.BLOCK_SIZE);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    } else {
+        ctx.beginPath();
+        ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+        const COLOR_LOOKUP = ['blue', 'red', 'green']
+        ctx.fillStyle = COLOR_LOOKUP[id - 6];
+        ctx.fill();
+        ctx.beginPath();
+        ctx.rect(x, y + slopeSteepnes * LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, (1 - slopeSteepnes) * LEVEL.BLOCK_SIZE);
+        ctx.fillStyle = 'white';
+        ctx.fill();
     }
 }
