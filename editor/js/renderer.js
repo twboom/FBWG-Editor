@@ -68,46 +68,46 @@ function renderCharsLayer(layer) {
     const chars = layer.objects;
     chars.forEach(obj => {
         console.log(obj);
-        objCtx.beginPath();
+        charCtx.beginPath();
         switch (obj.gid){
             case 16:
-                objCtx.fillStyle = 'red';
+                charCtx.fillStyle = 'red';
                 break;
             case 17:
-                objCtx.fillStyle = 'blue';
+                charCtx.fillStyle = 'blue';
                 break;
             case 18:
-                objCtx.fillStyle = 'red';
+                charCtx.fillStyle = 'red';
                 break;
             case 19:
-                objCtx.fillStyle = 'blue';
+                charCtx.fillStyle = 'blue';
                 break;
             case 20:
-                objCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
-                objCtx.fillStyle = 'red';
+                charCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
+                charCtx.fillStyle = 'red';
                 break;
             case 21:
-                objCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
-                objCtx.fillStyle = 'blue';
+                charCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
+                charCtx.fillStyle = 'blue';
                 break;
             case 22:
-                objCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
-                objCtx.fillStyle = 'white';
+                charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
+                charCtx.fillStyle = 'white';
                 break;
             case 23:
-                objCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
-                objCtx.fillStyle = 'red';
-                objCtx.fill();
-                objCtx.beginPath();
-                objCtx.rect(obj.x + 0.5 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
-                objCtx.fillStyle = 'blue';
-                objCtx.fill();
+                charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
+                charCtx.fillStyle = 'red';
+                charCtx.fill();
+                charCtx.beginPath();
+                charCtx.rect(obj.x + 0.5 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
+                charCtx.fillStyle = 'blue';
+                charCtx.fill();
                 return;
         };
         if (obj.gid >= 16 && obj.gid <= 19) {
-            objCtx.rect(obj.x, obj.y, obj.width, -obj.height);
+            charCtx.rect(obj.x, obj.y, obj.width, -obj.height);
         };
-        objCtx.fill();
+        charCtx.fill();
     });
 };
 
@@ -119,6 +119,8 @@ function render(levelJSON) {
     canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     objectsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    charsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
     // Render tiles
     const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );

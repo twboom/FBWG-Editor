@@ -1,9 +1,12 @@
 // Declare constants
-const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('tiles');
 const ctx = canvas.getContext('2d');
 
 const objectsCanvas = document.getElementById('objects');
 const objCtx = objectsCanvas.getContext('2d');
+
+const charsCanvas = document.getElementById('chars');
+const charCtx = charsCanvas.getContext('2d');
 
 
 // Resize canvas
