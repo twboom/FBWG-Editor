@@ -121,6 +121,8 @@ function render(levelJSON) {
     objectsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     charsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
     // Render tiles
     const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );

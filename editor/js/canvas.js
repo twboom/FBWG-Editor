@@ -8,6 +8,9 @@ const objCtx = objectsCanvas.getContext('2d');
 const charsCanvas = document.getElementById('chars');
 const charCtx = charsCanvas.getContext('2d');
 
+const highlightCanvas = document.getElementById('highlight');
+const hlCtx = highlightCanvas.getContext('2d');
+
 
 // Resize canvas
 function resizeCanvas() {
