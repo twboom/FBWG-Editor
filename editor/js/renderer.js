@@ -180,27 +180,41 @@ function drawTriangle(id, [x, y], isBackground=false) {
 }
 
 function drawFluid(id, prevId, nextId, [x, y]) {
+    if (x == 0) {
+        prevId = null;
+        console.log('left edge')
+    } if (x == LEVEL.WIDTH - 1) {
+        nextId = null;
+        console.log('right edge')
+    };
     x *= LEVEL.BLOCK_SIZE;
     y *= LEVEL.BLOCK_SIZE;
+    console.log(x, LEVEL.WIDTH - 1)
     ctx.beginPath();
     ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
     const COLOR_LOOKUP = ['blue', 'red', 'green']
     ctx.fillStyle = COLOR_LOOKUP[id - 6];
     ctx.fill();
-    ctx.beginPath();
     if (prevId != id) {
+        ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
         ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
         ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
-    } else if (nextId != id) {
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    } if (nextId != id) {
+        ctx.beginPath();
         ctx.moveTo(x + LEVEL.BLOCK_SIZE, y);
         ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
         ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
         ctx.lineTo(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
-    } else {
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    } if (prevId == id && nextId == id) {
+        ctx.beginPath();
         ctx.rect(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, (1 - CONFIG.SLOPE_STEEPNESS) * LEVEL.BLOCK_SIZE);
+        ctx.fillStyle = 'white';
+        ctx.fill();
     }
-    ctx.fillStyle = 'white';
-    ctx.fill();
 }
