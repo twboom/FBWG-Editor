@@ -69,8 +69,44 @@ function renderCharsLayer(layer) {
     chars.forEach(obj => {
         console.log(obj);
         objCtx.beginPath();
-        objCtx.rect(obj.x, obj.y, obj.width, -obj.height)
-        objCtx.fillStyle = 'cyan';
+        switch (obj.gid){
+            case 16:
+                objCtx.fillStyle = 'red';
+                break;
+            case 17:
+                objCtx.fillStyle = 'blue';
+                break;
+            case 18:
+                objCtx.fillStyle = 'red';
+                break;
+            case 19:
+                objCtx.fillStyle = 'blue';
+                break;
+            case 20:
+                objCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
+                objCtx.fillStyle = 'red';
+                break;
+            case 21:
+                objCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
+                objCtx.fillStyle = 'blue';
+                break;
+            case 22:
+                objCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
+                objCtx.fillStyle = 'white';
+                break;
+            case 23:
+                objCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
+                objCtx.fillStyle = 'red';
+                objCtx.fill();
+                objCtx.beginPath();
+                objCtx.rect(obj.x + 0.5 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
+                objCtx.fillStyle = 'blue';
+                objCtx.fill();
+                return;
+        };
+        if (obj.gid >= 16 && obj.gid <= 19) {
+            objCtx.rect(obj.x, obj.y, obj.width, -obj.height);
+        };
         objCtx.fill();
     });
 };
@@ -144,8 +180,8 @@ function drawTriangle(id, [x, y], isBackground=false) {
 }
 
 function drawFluid(id, prevId, nextId, [x, y]) {
-    x *= LEVEL.BLOCK_SIZE
-    y *= LEVEL.BLOCK_SIZE
+    x *= LEVEL.BLOCK_SIZE;
+    y *= LEVEL.BLOCK_SIZE;
     ctx.beginPath();
     ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
     const COLOR_LOOKUP = ['blue', 'red', 'green']
@@ -167,5 +203,4 @@ function drawFluid(id, prevId, nextId, [x, y]) {
     }
     ctx.fillStyle = 'white';
     ctx.fill();
-
 }
