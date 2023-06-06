@@ -41,18 +41,41 @@ function renderTileLayer(tileLayer) {
     }
 };
 
+function renderObjectLayer(layer) {
+    const objects = layer.objects;
+    objects.forEach(obj => {
+        console.log(obj);
+        objCtx.beginPath();
+        if (obj.type === 'platform') {
+            obj.y += obj.height;
+        };
+        objCtx.rect(obj.x, obj.y, obj.width, -obj.height)
+        objCtx.fillStyle = 'purple';
+        objCtx.fill();
+    });
+};
+
 function render(levelJSON) {
     // Set correct width and height
     LEVEL.WIDTH = levelJSON.width;
     LEVEL.HEIGHT = levelJSON.height;
     canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    objectsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
     // Render tiles
     const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
     console.log(tileLayers)
     tileLayers.forEach(layer => {
         renderTileLayer(layer);
+    });
+
+    // Render objects
+    const objectLayers = levelJSON.layers.filter( ({ name }) => name === 'Objects');
+    console.log(objectLayers);
+    objectLayers.forEach(layer => {
+        renderObjectLayer(layer);
     });
 };
 

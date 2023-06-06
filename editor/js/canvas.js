@@ -2,6 +2,10 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+const objectsCanvas = document.getElementById('objects');
+const objCtx = objectsCanvas.getContext('2d');
+
+
 // Resize canvas
 function resizeCanvas() {
     canvas.width = window.innerWidth;

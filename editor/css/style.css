@@ -5,4 +5,7 @@ body {
 
 canvas {
     border: solid gray 16px;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
