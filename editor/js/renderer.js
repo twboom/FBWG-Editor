@@ -1,3 +1,8 @@
+const CONFIG = {
+    SLOPE_STEEPNESS: 0.6
+}
+
+
 const LEVEL = {
     BLOCK_SIZE: 32,
     WIDTH: 0,
@@ -141,42 +146,26 @@ function drawTriangle(id, [x, y], isBackground=false) {
 function drawFluid(id, prevId, nextId, [x, y]) {
     x *= LEVEL.BLOCK_SIZE
     y *= LEVEL.BLOCK_SIZE
-    const slopeSteepnes = 0.6
+    ctx.beginPath();
+    ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+    const COLOR_LOOKUP = ['blue', 'red', 'green']
+    ctx.fillStyle = COLOR_LOOKUP[id - 6];
+    ctx.fill();
+    ctx.beginPath();
     if (prevId != id) {
-        ctx.beginPath();
-        ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
-        const COLOR_LOOKUP = ['blue', 'red', 'green']
-        ctx.fillStyle = COLOR_LOOKUP[id - 6];
-        ctx.fill();
-        ctx.beginPath();
         ctx.moveTo(x, y);
         ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
         ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
-        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + slopeSteepnes * LEVEL.BLOCK_SIZE);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
     } else if (nextId != id) {
-        ctx.beginPath();
-        ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
-        const COLOR_LOOKUP = ['blue', 'red', 'green']
-        ctx.fillStyle = COLOR_LOOKUP[id - 6];
-        ctx.fill();
-        ctx.beginPath();
         ctx.moveTo(x + LEVEL.BLOCK_SIZE, y);
         ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
         ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
-        ctx.lineTo(x, y + slopeSteepnes * LEVEL.BLOCK_SIZE);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        ctx.lineTo(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
     } else {
-        ctx.beginPath();
-        ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
-        const COLOR_LOOKUP = ['blue', 'red', 'green']
-        ctx.fillStyle = COLOR_LOOKUP[id - 6];
-        ctx.fill();
-        ctx.beginPath();
-        ctx.rect(x, y + slopeSteepnes * LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, (1 - slopeSteepnes) * LEVEL.BLOCK_SIZE);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        ctx.rect(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, (1 - CONFIG.SLOPE_STEEPNESS) * LEVEL.BLOCK_SIZE);
     }
+    ctx.fillStyle = 'white';
+    ctx.fill();
+
 }
