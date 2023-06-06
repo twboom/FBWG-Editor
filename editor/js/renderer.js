@@ -59,6 +59,17 @@ function renderObjectLayer(layer) {
     });
 };
 
+function renderCharsLayer(layer) {
+    const chars = layer.objects;
+    chars.forEach(obj => {
+        console.log(obj);
+        objCtx.beginPath();
+        objCtx.rect(obj.x, obj.y, obj.width, -obj.height)
+        objCtx.fillStyle = 'cyan';
+        objCtx.fill();
+    });
+};
+
 function render(levelJSON) {
     // Set correct width and height
     LEVEL.WIDTH = levelJSON.width;
@@ -80,6 +91,13 @@ function render(levelJSON) {
     console.log(objectLayers);
     objectLayers.forEach(layer => {
         renderObjectLayer(layer);
+    });
+
+    // Render objects
+    const charsLayers = levelJSON.layers.filter( ({ name }) => name === 'Chars');
+    console.log(charsLayers);
+    charsLayers.forEach(layer => {
+        renderCharsLayer(layer);
     });
 };
 
