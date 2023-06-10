@@ -9,13 +9,33 @@
     <script defer src="js/renderer.js"></script>
     <script defer src="js/canvas.js"></script>
 
-</head>
+    <style>
+        .button1 {background-color: #646464;}
+    </style>
+</head> 
 <body>
     <div id="canvas-container">
         <canvas id="tiles"></canvas>
         <canvas id="objects"></canvas>
         <canvas id="chars"></canvas>
         <canvas id="highlight"></canvas>
+        
+        <button class="button" style="position: absolute; left: 1280px; top: 2px ; width: 64px; height: 64px; background-color:#ffffff;">Block</button>
+        <button class="button" style="position: absolute; left: 1280px; top: 70px ; width: 64px; height: 64px; color:#ffffff; background-color: #000000;">Air</button>
+
+        <button class="button1" style="position: absolute; left: 1372px; top: 2px ; width: 64px; height: 64px;">Slope 1</button>
+        <button class="button1" style="position: absolute; left: 1372px; top: 70px ; width: 64px; height: 64px;">Slope 2</button>
+        <button class="button1" style="position: absolute; left: 1444px; top: 2px ; width: 64px; height: 64px;">Slope 3</button>
+        <button class="button1" style="position: absolute; left: 1444px; top: 70px ; width: 64px; height: 64px;">Slope 4</button>
+
+        <button class="button" style="position: absolute; left: 1540px; top: 2px; width: 64px; height: 64px; background-color: #0000ff;">Water</button>
+        <button class="button" style="position: absolute; left: 1540px; top: 70px; width: 64px; height: 64px; background-color: #Ff0000;">Lava</button>
+        <button class="button" style="position: absolute; left: 1612px; top: 2 px; width: 64px; height: 64px; background-color: #00ff00;">Acid</button>
+
+        <label for="slider" style="position: absolute; left: 1280px; top: 198px;">Width:</label>
+        <input type="text" class="slider" style="position: absolute; left: 1344px; top: 198px; width: 128px;"><br><br>
+        <label for="slider1" style="position: absolute; left: 1536px; top: 198px;">Height:</label>
+        <input type="text" class="slider1" style="position: absolute; left: 1600px; top: 198px; width: 128px;"><br><br>
     </div>
 </body>
 </html>
