@@ -1,6 +1,6 @@
 // Declare constants
-const canvas = document.getElementById('tiles');
-const ctx = canvas.getContext('2d');
+const tileCanvas = document.getElementById('tiles');
+const tileCtx = tileCanvas.getContext('2d');
 
 const objectsCanvas = document.getElementById('objects');
 const objCtx = objectsCanvas.getContext('2d');

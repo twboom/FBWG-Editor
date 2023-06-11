@@ -34,15 +34,15 @@ function renderTileLayer() {
                 'black', // Air
                 'white', // Ground
             ];
-            ctx.beginPath();
-            ctx.rect(x*LEVEL.BLOCK_SIZE, y*LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
-            ctx.fillStyle = COLOR_LOOKUP[blockId];
-            ctx.fill();
+            tileCtx.beginPath();
+            tileCtx.rect(x*LEVEL.BLOCK_SIZE, y*LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+            tileCtx.fillStyle = COLOR_LOOKUP[blockId];
+            tileCtx.fill();
         }
-        ctx.beginPath();
-        ctx.rect(x*LEVEL.BLOCK_SIZE, y*LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
-        ctx.strokeStyle = '#333333';
-        ctx.stroke();
+        tileCtx.beginPath();
+        tileCtx.rect(x*LEVEL.BLOCK_SIZE, y*LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+        tileCtx.strokeStyle = '#333333';
+        tileCtx.stroke();
     };
     for (let i = 0; i < LEVEL.TILELAYER.length; i++) {
         const tileCoordinates = [i%LEVEL.WIDTH, Math.floor(i/LEVEL.WIDTH)];
@@ -135,8 +135,8 @@ function resizeCanvas() {
     const height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
     
-    canvas.width = width;
-    canvas.height = height;
+    tileCanvas.width = width;
+    tileCanvas.height = height;
 
 
     objectsCanvas.width = width;
@@ -151,7 +151,7 @@ function resizeCanvas() {
 
 function render() {
     // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    tileCtx.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
     objCtx.clearRect(0, 0, objectsCanvas.width, objectsCanvas.height);
     charCtx.clearRect(0, 0, charsCanvas.width, charsCanvas.height);
 
@@ -164,35 +164,35 @@ function render() {
 function drawTriangle(id, [x, y], isBackground=false) {
     x *= LEVEL.BLOCK_SIZE
     y *= LEVEL.BLOCK_SIZE
-    ctx.beginPath();
+    tileCtx.beginPath();
     switch (id) {
         case 2:
-            ctx.moveTo(x, y + LEVEL.BLOCK_SIZE);
-            ctx.lineTo(x + LEVEL.BLOCK_SIZE, y  + LEVEL.BLOCK_SIZE);
-            ctx.lineTo(x + LEVEL.BLOCK_SIZE, y);
+            tileCtx.moveTo(x, y + LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y  + LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y);
             break
         case 3:
-            ctx.moveTo(x, y);
-            ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
-            ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+            tileCtx.moveTo(x, y);
+            tileCtx.lineTo(x, y + LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
             break
         case 4:
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + LEVEL.BLOCK_SIZE, y);
-            ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+            tileCtx.moveTo(x, y);
+            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y);
+            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
             break
         case 5:
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + LEVEL.BLOCK_SIZE, y);
-            ctx.lineTo(x , y + LEVEL.BLOCK_SIZE);
+            tileCtx.moveTo(x, y);
+            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y);
+            tileCtx.lineTo(x , y + LEVEL.BLOCK_SIZE);
             break    
     }
     if (isBackground) {
-        ctx.fillStyle = 'black';
+        tileCtx.fillStyle = 'black';
     } else {
-        ctx.fillStyle = 'white';
+        tileCtx.fillStyle = 'white';
     }
-    ctx.fill();
+    tileCtx.fill();
     if (!isBackground) {
         drawTriangle(7-id, [x/LEVEL.BLOCK_SIZE, y/LEVEL.BLOCK_SIZE], true);
     }
@@ -206,32 +206,32 @@ function drawFluid(id, prevId, nextId, [x, y]) {
    };
     x *= LEVEL.BLOCK_SIZE;
     y *= LEVEL.BLOCK_SIZE;
-    ctx.beginPath();
-    ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
+    tileCtx.beginPath();
+    tileCtx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
     const COLOR_LOOKUP = ['blue', 'red', 'green']
-    ctx.fillStyle = COLOR_LOOKUP[id - 6];
-    ctx.fill();
+    tileCtx.fillStyle = COLOR_LOOKUP[id - 6];
+    tileCtx.fill();
     if (prevId != id) {
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
-        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
-        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        tileCtx.beginPath();
+        tileCtx.moveTo(x, y);
+        tileCtx.lineTo(x, y + LEVEL.BLOCK_SIZE);
+        tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+        tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
+        tileCtx.fillStyle = 'white';
+        tileCtx.fill();
     } if (nextId != id) {
-        ctx.beginPath();
-        ctx.moveTo(x + LEVEL.BLOCK_SIZE, y);
-        ctx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
-        ctx.lineTo(x, y + LEVEL.BLOCK_SIZE);
-        ctx.lineTo(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        tileCtx.beginPath();
+        tileCtx.moveTo(x + LEVEL.BLOCK_SIZE, y);
+        tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+        tileCtx.lineTo(x, y + LEVEL.BLOCK_SIZE);
+        tileCtx.lineTo(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE);
+        tileCtx.fillStyle = 'white';
+        tileCtx.fill();
     } if (prevId == id && nextId == id) {
-        ctx.beginPath();
-        ctx.rect(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, (1 - CONFIG.SLOPE_STEEPNESS) * LEVEL.BLOCK_SIZE);
-        ctx.fillStyle = 'white';
-        ctx.fill();
+        tileCtx.beginPath();
+        tileCtx.rect(x, y + CONFIG.SLOPE_STEEPNESS * LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, (1 - CONFIG.SLOPE_STEEPNESS) * LEVEL.BLOCK_SIZE);
+        tileCtx.fillStyle = 'white';
+        tileCtx.fill();
     }
 };
 
