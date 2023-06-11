@@ -315,6 +315,7 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
         for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
             if (LEVEL.OBJECTLAYER[i].id == id) {
                 LEVEL.CHARSLAYER.splice(i, 1);
+                render();
                 return;
             };
         };
@@ -347,9 +348,10 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
 
 function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
-        for (let i = 0; LEVEL.CHARSLAYER.length; i++){
-            if (LEVEL.CHARSLAYER[i].id == id) {
-                LEVEL.CHARSLAYER.splice(i, 1);
+        for (let i = 0; LEVEL.CHARSLAYER.objects.length; i++){
+            if (LEVEL.CHARSLAYER.objects[i].id == id) {
+                LEVEL.CHARSLAYER.objects.splice(i, 1);
+                render();
                 return;
             };
         };
@@ -370,19 +372,26 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
     render();
 };
 
-function addCharObj(type, [x, y]) {
+function addCharObj(type, [x, y], autoDeleteOthers=true) {
     const options = {
         "gid": type,
         "height": 64,
-        "id": 1,
+        "id": Date.now(),
         "name": "",
         "rotation": 0,
         "type": "",
         "visible": true,
         "width": 64,
-    }
-    setChar(options, x, y)
-}
+    };
+    if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 19 && autoDeleteOthers) {
+        const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
+        others.forEach(el => {
+            console.log(el)
+            setChar({id: el.id}, null, null, true);
+        });
+    };
+    setChar(options, x, y);
+};
 
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
