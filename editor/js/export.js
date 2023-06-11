@@ -1,5 +1,4 @@
 function exportLevel() {
-    console.log('we are here');
     function createJSON(LevelTemplate) {
         LevelTemplate.height = LEVEL.HEIGHT;
         LevelTemplate.width = LEVEL.WIDTH;
@@ -27,4 +26,10 @@ function downloadObjectAsJson(exportObj, exportName){
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
-  }
+}
+
+function initExport() {
+    document.getElementById('export').addEventListener('click', exportLevel);
+}
+
+initExport();
