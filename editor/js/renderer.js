@@ -303,6 +303,64 @@ function setBlock ([x, y], id) {
     render();
 };
 
+function setObject (gid, height, id, name, dx, dy, group, rotation, type, visible, width, x, y, deleting = false) {
+    if (deleting) {
+        for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
+            if (LEVEL.OBJECTLAYER[i].id == id) {
+                LEVEL.CHARSLAYER.Array.splice(i, 1);
+                return;
+            };
+        };
+    };
+    let objectTemplate = {
+           "gid":gid,
+           "height":height,
+           "id":id,
+           "name":name,
+           "properties":{
+             "dx":dx,
+             "dy":dy,
+             "group":group
+           },
+           "propertytypes":{
+             "dx":"int",
+             "dy":"int",
+             "group":"int"
+           },
+           "rotation":rotation,
+           "type":type,
+           "visible":visible,
+           "width":width,
+           "x":x,
+           "y":y
+        };
+    LEVEL.CHARSLAYER.Array.push(objectTemplatel);
+};
+
+function setChar (gid, height, id, name, rotation, type, visible, width, x, y, deleting = false) {
+    if (deleting) {
+        for (let i = 0; LEVEL.CHARSLAYER.length; i++){
+            if (LEVEL.CHARSLAYER[i].id == id) {
+                LEVEL.CHARSLAYER.Array.splice(i, 1);
+                return;
+            };
+        };
+    };
+    let charTemplate = {
+           "gid":gid,
+           "height":height,
+           "id":id,
+           "name":name,
+           "rotation":rotation,
+           "type":type,
+           "visible":visible,
+           "width":width,
+           "x":x,
+           "y":y
+        };
+    LEVEL.CHARSLAYER.Array.push(charTemplate);
+};
+
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
         const blockSize = LEVEL.BLOCK_SIZE;
