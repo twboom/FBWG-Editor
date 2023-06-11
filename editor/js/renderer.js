@@ -107,6 +107,11 @@ function renderCharsLayer(layer) {
 };
 
 function init(levelJSON) {
+    
+    LEVEL.BLOCK_SIZE = levelJSON.tileheight;
+    LEVEL.WIDTH = levelJSON.width;
+    LEVEL.HEIGHT = levelJSON.height;
+
     canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
@@ -115,10 +120,7 @@ function init(levelJSON) {
     charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-
-    LEVEL.BLOCK_SIZE = levelJSON.tileheight;
-    LEVEL.WIDTH = levelJSON.width;
-    LEVEL.HEIGHT = levelJSON.height;
+    
     console.log(typeof levelJSON.layers instanceof Array);
     console.log(levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data);
     LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
