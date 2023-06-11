@@ -84,13 +84,11 @@ function renderCharsLayer(layer) {
                 charCtx.fillStyle = 'blue';
                 break;
             case 20:
-                console.log('red diamond');
                 const img1 = new Image(2048,2048);
                 img1.src = "assets/atlasses/CharAssets.png";
                 img1.onload = charCtx.drawImage(img1, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
                 return;
             case 21:
-                console.log('blue diamond');
                 const img2 = new Image(2048,2048);
                 img2.src = "assets/atlasses/CharAssets.png";
                 img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
@@ -151,16 +149,24 @@ function resizeCanvas() {
     highlightCanvas.height = height;
 };
 
-function render() {
-    // Clear canvas
-    tileCtx.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
-    objCtx.clearRect(0, 0, objectsCanvas.width, objectsCanvas.height);
-    charCtx.clearRect(0, 0, charsCanvas.width, charsCanvas.height);
-
-    // Render layers
-    renderTileLayer(LEVEL.TILELAYER);
-    renderObjectLayer(LEVEL.OBJECTLAYER);
-    renderCharsLayer(LEVEL.CHARSLAYER);
+function render(renderTiles=true, renderObjs=true, renderChars=true) {
+    if (renderTiles) {
+        tileCtx.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
+        renderTileLayer(LEVEL.TILELAYER);
+        console.log('Rendered Tile Layer')
+    };
+    
+    if (renderObjs) {
+        objCtx.clearRect(0, 0, objectsCanvas.width, objectsCanvas.height);
+        renderObjectLayer(LEVEL.OBJECTLAYER);
+        console.log('Rendered Object Layer')
+    };
+    
+    if (renderChars) {
+        charCtx.clearRect(0, 0, charsCanvas.width, charsCanvas.height);
+        renderCharsLayer(LEVEL.CHARSLAYER);
+        console.log('Rendered Char Layer')
+    };
 };
 
 function drawTriangle(id, [x, y], isBackground=false) {
@@ -307,7 +313,7 @@ function setBlock([x, y], id) {
     const pos = x + (y * LEVEL.WIDTH);
 
     LEVEL.TILELAYER[pos] = id;
-    render();
+    render(true, false, false);
 };
 
 function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible, width, x, y, deleting = false) {
@@ -315,7 +321,7 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
         for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
             if (LEVEL.OBJECTLAYER[i].id == id) {
                 LEVEL.CHARSLAYER.splice(i, 1);
-                render();
+                render(false, true, false);
                 return;
             };
         };
@@ -343,7 +349,7 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
        "y":y
     };
     LEVEL.OBJECTLAYER.objects.push(objectTemplate);
-    render();
+    render(false, true, false);
 };
 
 function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
@@ -351,7 +357,7 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
         for (let i = 0; LEVEL.CHARSLAYER.objects.length; i++){
             if (LEVEL.CHARSLAYER.objects[i].id == id) {
                 LEVEL.CHARSLAYER.objects.splice(i, 1);
-                render();
+                render(false, false, true);
                 return;
             };
         };
@@ -369,7 +375,7 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
        "y":y
     };
     LEVEL.CHARSLAYER.objects.push(charTemplate);
-    render();
+    render(false, false, true);
 };
 
 function addCharObj(type, [x, y], autoDeleteOthers=true) {
@@ -386,7 +392,6 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
     if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 19 && autoDeleteOthers) {
         const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
         others.forEach(el => {
-            console.log(el)
             setChar({id: el.id}, null, null, true);
         });
     };
@@ -413,7 +418,7 @@ function initEditor() {
         hlCtx.fillStyle = 'cyan'
         if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { hlCtx.fill() };
 
-        if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE) {
+        if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
             setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
         }
     });
