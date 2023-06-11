@@ -400,6 +400,24 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
     setChar(options, x, y);
 };
 
+function deleteObj(x, y) {
+    function collidesWithCursor(obj) {
+        if (
+            x >= obj.x &&
+            x <= obj.x + obj.width &&
+            y <= obj.y &&
+            y >= obj.y - obj.height
+        ) { console.log(obj); return true }
+        else { return false };
+    };
+
+    collidesWithCursor(LEVEL.CHARSLAYER.objects[3])
+    const int = LEVEL.CHARSLAYER.objects.find(collidesWithCursor);
+    if (int) {
+        setChar({id: int.id}, null, null, true);
+    };
+};
+
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
         const blockSize = LEVEL.BLOCK_SIZE;
@@ -432,9 +450,16 @@ function initEditor() {
                 break;
 
             case 'OBJE':
-                if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 24) {
+                if (SESSION.SELECTED_OBJE_TYPE === 'd') { // Delete
+                    deleteObj(SESSION.MOUSEX, SESSION.MOUSEY)
+                    return;
+                };
+                if (SESSION.SELECTED_OBJE_TYPE === 's') { // Select
+                    return;
+                };
+                if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 24) { // Spawns and doors
                     addCharObj(SESSION.SELECTED_OBJE_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
-                }
+                };
                 break;
         };
     });
@@ -462,6 +487,9 @@ function initEditor() {
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
             SESSION.SELECTED_OBJE_TYPE = parseInt(el.dataset.gid);
+            if (isNaN(SESSION.SELECTED_OBJE_TYPE)) {
+                SESSION.SELECTED_OBJE_TYPE = el.dataset.gid;
+            }
             SESSION.SELECTED_TOOL_TYPE = 'OBJE'
         });
     });
