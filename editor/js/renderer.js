@@ -81,6 +81,12 @@ function renderCharsLayer(layer) {
                 charCtx.fillStyle = 'blue';
                 break;
             case 20:
+                // console.log('red diamond');
+                // const img = new Image(2048,2048);
+                // img.src = "assets/atlasses/CharAssets.png";
+                // img.onload = charCtx.drawImage(img, 1111, 1368, 64, 64, obj.x, obj.y, obj.width, obj.height);
+                // return;
+
                 charCtx.rect(obj.x + 0.25 * obj.width, obj.y - 0.25 * obj.height, 0.5 * obj.width, -0.5 * obj.height);
                 charCtx.fillStyle = 'red';
                 break;
