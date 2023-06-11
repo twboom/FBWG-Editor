@@ -231,6 +231,33 @@ function setBlock ([x, y], id) {
     render();
 };
 
+function setObject (id) {
+};
+
+function setChar (gid, height, id, name, rotation, type, visible, width, x, y, deleting = false) {
+    if (deleting) {
+        for (i, LEVEL.CHARSLAYER.length, i++) {
+            if (LEVEL.CHARSLAYER[i].id == id) {
+                LEVEL.CHARSLAYER.Array.splice(i, 1);
+                return;
+            }
+        }
+    }
+    let charTemplate = {
+           "gid":gid,
+           "height":height,
+           "id":id,
+           "name":name,
+           "rotation":rotation,
+           "type":type,
+           "visible":visible,
+           "width":width,
+           "x":x,
+           "y":y
+        }
+    LEVEL.CHARSLAYER.Array.push(charTemplate);
+}
+
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
         const blockSize = LEVEL.BLOCK_SIZE;
