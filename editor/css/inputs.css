@@ -3,17 +3,17 @@ div#input-container {
     left: 1300px;
 }
 
-button.tile-option {
+button.tool {
     width: 64px;
     height: 64px;
 }
 
-div#tile-tools {
+div.tool-container {
     display: flex;
     gap: 32px;
 }
 
-div.tile-category {
+div.tool-category {
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(2, 64px);
