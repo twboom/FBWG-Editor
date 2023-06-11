@@ -107,7 +107,15 @@ function renderCharsLayer(layer) {
 };
 
 function init(levelJSON) {
-    // console.log(levelJSON);
+    canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    objectsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    charsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+
     LEVEL.BLOCK_SIZE = levelJSON.tileheight;
     LEVEL.WIDTH = levelJSON.width;
     LEVEL.HEIGHT = levelJSON.height;
@@ -119,21 +127,10 @@ function init(levelJSON) {
     render(LEVEL);
 };
 
-function render(levelJSON, changeSize = false, changeTile = false, width, height) {
-    // Set correct width and height
-    canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    objectsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    charsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-
+function render() {
     renderTileLayer(LEVEL.TILELAYER);
     renderObjectLayer(LEVEL.OBJECTLAYER);
     renderCharsLayer(LEVEL.CHARSLAYER);
-
 };
 
 function drawTriangle(id, [x, y], isBackground=false) {
@@ -214,10 +211,12 @@ function drawFluid(id, prevId, nextId, [x, y]) {
 };
 
 function setSize(width, height) {
-    render(fetch('blank_level.json'), true, false, width, height)
+    LEVEL.WIDTH = width;
+    LEVEL.HEIGHT = height;
+    render();
 };
 
 function setBlock (pos, id) {
-    LEVEL.LAYERS.TILELAYER.DATA[pos] = id;
-    render(null, false, true)
+    LEVEL.TILELAYER[pos] = id;
+    render();
 };
