@@ -12,6 +12,13 @@ const LEVEL = {
     CHARSLAYER: {}
 }
 
+const SESSION = {
+    MOUSEX: 0,
+    MOUSEY: 0,
+    TILEX: 0,
+    TILEY: 0,
+}
+
 function renderTileLayer() {
     function drawTile([x, y], blockId, index) {
         if (blockId >= 2 && blockId <= 5) { // Slopes
@@ -127,6 +134,8 @@ function init(levelJSON) {
     LEVEL.OBJECTLAYER = levelJSON.layers.find( ({ name }) => name === 'Objects');
     LEVEL.CHARSLAYER = levelJSON.layers.find( ({ name }) => name === 'Chars');
     render(LEVEL);
+
+    initEditor();
 };
 
 function render() {
@@ -221,4 +230,32 @@ function setSize(width, height) {
 function setBlock (pos, id) {
     LEVEL.TILELAYER[pos] = id;
     render();
+};
+
+function initEditor() {
+    highlightCanvas.addEventListener('mousemove', evt => {
+        const blockSize = LEVEL.BLOCK_SIZE;
+
+        const mouseX = evt.offsetX > 0 ? evt.offsetX : 0;
+        const mouseY = evt.offsetY > 0 ? evt.offsetY : 0;
+        SESSION.MOUSEX = mouseX;
+        SESSION.MOUSEY = mouseY;
+        
+        const tileX = Math.floor(mouseX / blockSize);
+        const tileY = Math.floor(mouseY / blockSize);
+        SESSION.TILEX = tileX;
+        SESSION.TILEY = tileY;
+
+        console.log(tileX, tileY)
+
+        hlCtx.clearRect(0, 0, LEVEL.WIDTH * blockSize, LEVEL.HEIGHT * blockSize);
+        hlCtx.beginPath()
+        hlCtx.rect(tileX * blockSize, tileY * blockSize, blockSize, blockSize);
+        hlCtx.fillStyle = 'cyan'
+        hlCtx.fill()
+    });
+
+    highlightCanvas.addEventListener('click', _ => {
+        setBlock([SESSION.TILEX, SESSION.TILEY], 1)
+    })
 };
