@@ -121,14 +121,7 @@ function init(levelJSON) {
     LEVEL.WIDTH = levelJSON.width;
     LEVEL.HEIGHT = levelJSON.height;
 
-    canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    objectsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    charsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-    highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+    resizeCanvas();
 
     LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
     LEVEL.OBJECTLAYER = levelJSON.layers.find( ({ name }) => name === 'Objects');
@@ -136,6 +129,25 @@ function init(levelJSON) {
     render(LEVEL);
 
     initEditor();
+};
+
+function resizeCanvas() {
+    const width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+    const height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+
+    
+    canvas.width = width;
+    canvas.height = height;
+
+
+    objectsCanvas.width = width;
+    objectsCanvas.height = height;
+
+    charsCanvas.width = width;
+    charsCanvas.height = height;
+
+    highlightCanvas.width = width;
+    highlightCanvas.height = height;
 };
 
 function render() {
@@ -192,7 +204,7 @@ function drawFluid(id, prevId, nextId, [x, y]) {
         prevId = null;
     } if (x == LEVEL.WIDTH - 1) {
         nextId = null;
-    };
+   };
     x *= LEVEL.BLOCK_SIZE;
     y *= LEVEL.BLOCK_SIZE;
     ctx.beginPath();
@@ -224,11 +236,71 @@ function drawFluid(id, prevId, nextId, [x, y]) {
     }
 };
 
-function setSize(width, height) {
-    LEVEL.WIDTH = width;
-    LEVEL.HEIGHT = height;
+function resizeLevel() {
+    if (!confirm('This action may result in a loss of content.\nAnything outside the new level border will be removed. This action is irreversible.')) {
+        alert('Resizing is cancelled!')
+        return
+    };
+
+    const newWidth = parseInt(document.getElementById('level-width').value);
+    const newHeight = parseInt(document.getElementById('level-height').value);
+
+    
+    // Unfuckup tiles
+    const newTiles = new Array(newWidth * newHeight).fill(0);
+    // Remove tiles out of bounds
+    for (let i = 0; i < LEVEL.TILELAYER.length; i++) {
+        const coordX = i%LEVEL.WIDTH;
+        const coordY = Math.floor(i/LEVEL.WIDTH);
+
+        if (coordX >= newWidth || coordY >= newHeight) { // Then remove tile
+            continue
+        } else {
+            newTiles[coordX + (coordY * newWidth)] = LEVEL.TILELAYER[i]
+        };
+    };
+
+    // Unfuckup objects and chars
+    function isOutside(x, y) {
+        const canvasWidth = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
+        const canvasHeight = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+
+        if (
+            x < 0 ||
+            x > canvasWidth ||
+            y < 0 ||
+            y > canvasHeight
+        ) {
+            return true
+        } else {
+            return false
+        };
+    };
+    
+    const newObjects = [];
+    LEVEL.OBJECTLAYER.objects.forEach(obj => {
+        const objIsOutside = !isOutside(obj.x, obj.y, obj.width, obj.height);
+        if (!isOutside(obj.x, obj.y, obj.width, obj.height)) {
+            newObjects.push(obj)
+        }
+    })
+    
+    const newChars = [];
+    LEVEL.CHARSLAYER.objects.forEach(obj => {
+        if (!isOutside(obj.x, obj.y, obj.width, obj.height)) {
+            newChars.push(obj)
+        }
+    })
+        
+    LEVEL.TILELAYER = newTiles;
+    LEVEL.OBJECTLAYER.objects = newObjects;
+    LEVEL.CHARSLAYER.objects = newChars;
+    LEVEL.WIDTH = newWidth;
+    LEVEL.HEIGHT = newHeight;
+
+    resizeCanvas();
     render();
-};
+}
 
 function setBlock ([x, y], id) {
     const pos = x + (y * LEVEL.WIDTH);
@@ -325,4 +397,9 @@ function initEditor() {
             SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tileid);
         });
     });
+
+    document.getElementById('resize').addEventListener('click', resizeLevel);
+
+    document.getElementById('level-width').value = LEVEL.WIDTH;
+    document.getElementById('level-height').value = LEVEL.HEIGHT;
 };
