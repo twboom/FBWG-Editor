@@ -236,7 +236,7 @@ function setObject (id) {
 
 function setChar (gid, height, id, name, rotation, type, visible, width, x, y, deleting = false) {
     if (deleting) {
-        for (i, LEVEL.CHARSLAYER.length, i++) {
+        for (let i = 0; LEVEL.CHARSLAYER.length; i++){
             if (LEVEL.CHARSLAYER[i].id == id) {
                 LEVEL.CHARSLAYER.Array.splice(i, 1);
                 return;
