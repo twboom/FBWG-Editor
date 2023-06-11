@@ -6,15 +6,17 @@ const CONFIG = {
 const LEVEL = {
     BLOCK_SIZE: 32,
     WIDTH: 0,
-    HEIGHT: 0
+    HEIGHT: 0,
+    TILELAYER: [],
+    OBJECTLAYER: {},
+    CHARSLAYER: {}
 }
 
-function renderTileLayer(tileLayer) {
+function renderTileLayer() {
     function drawTile([x, y], blockId, index) {
-        if (blockId >= 2 && blockId <= 5) {
+        if (blockId >= 2 && blockId <= 5) { // Slopes
             drawTriangle(blockId, [x, y]);
-
-        } else if (blockId >= 6 && blockId <= 8) {
+        } else if (blockId >= 6 && blockId <= 8) { // Fluids
             prevId = tileLayer.data[index - 1]
             nextId = tileLayer.data[index + 1]
             drawFluid(blockId, prevId, nextId ,[x, y]);
@@ -22,13 +24,6 @@ function renderTileLayer(tileLayer) {
             const COLOR_LOOKUP = [
                 'black', // Air
                 'white', // Ground
-                'gray', // Top slope right
-                'gray', // Top slope left
-                'gray', // Bottom slope left
-                'gray', // Bottom slope right
-                'blue', // Water
-                'red', // Lava
-                'green', // Toxin
             ];
     
             //console.log(x, y, 'type', blockId)
@@ -42,10 +37,11 @@ function renderTileLayer(tileLayer) {
         ctx.strokeStyle = '#333333';
         ctx.stroke();
     };
-    const tiles = tileLayer.data;
-    for (let i = 0; i < tiles.length; i++) {
+    console.log(LEVEL.TILELAYER);
+    for (let i = 0; i < LEVEL.TILELAYER.length; i++) {
+        console.log('wroks', i)
         const tileCoordinates = [i%LEVEL.WIDTH, Math.floor(i/LEVEL.WIDTH)];
-        drawTile(tileCoordinates, tiles[i], i)
+        drawTile(tileCoordinates, LEVEL.TILELAYER[i], i)
     }
 };
 
@@ -110,11 +106,26 @@ function renderCharsLayer(layer) {
     });
 };
 
-function render(levelJSON, setSize = false, width, height) {
+function init(levelJSON) {
+    // console.log(levelJSON);
+    LEVEL.BLOCK_SIZE = levelJSON.tileheight;
+    LEVEL.WIDTH = levelJSON.width;
+    LEVEL.HEIGHT = levelJSON.height;
+    console.log(typeof levelJSON.layers instanceof Array);
+    console.log(levelJSON.layers.filter( ({ type }) => type === 'tilelayer' ).data);
+    LEVEL.TILELAYER = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
+    LEVEL.OBJECTLAYER = levelJSON.layers.filter( ({ name }) => name === 'Objects');
+    LEVEL.CHARSLAYER = levelJSON.layers.filter( ({ name }) => name === 'Chars');
+    render(LEVEL);
+};
+
+function render(levelJSON, changeSize = false, changeTile = false, width, height) {
     // Set correct width and height
-    if (setSize) {
+    if (changeSize) {
         LEVEL.WIDTH = width;
         LEVEL.HEIGHT = height;
+        LEVEL.LAYERS.TILELAYER.DATA = new Array(width*height).fill(0)
+    } else if (changeTile) {
     } else {
         LEVEL.WIDTH = levelJSON.width;
         LEVEL.HEIGHT = levelJSON.height;
@@ -130,16 +141,18 @@ function render(levelJSON, setSize = false, width, height) {
 
 
     // Render tiles
-    if (setSize) {
-        renderTileLayer({data: new Array(width*height).fill(0)})
-        return;
-    } else {
-        const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
-        console.log(tileLayers)
-        tileLayers.forEach(layer => {
-            renderTileLayer(layer);
-        });
-    }
+
+    renderTileLayer(LEVEL.TILELAYER);
+    // if (changeSize || changeTile) {
+    //     renderTileLayer({data: LEVEL.LAYERS.TILELAYER.DATA})
+    //     return;
+    // } else {
+    //     const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
+    //     console.log(tileLayers)
+    //     tileLayers.forEach(layer => {
+    //         renderTileLayer(layer);
+    //     });
+    // }
 
     // Render objects
     const objectLayers = levelJSON.layers.filter( ({ name }) => name === 'Objects');
@@ -191,7 +204,7 @@ function drawTriangle(id, [x, y], isBackground=false) {
     if (!isBackground) {
         drawTriangle(7-id, [x/LEVEL.BLOCK_SIZE, y/LEVEL.BLOCK_SIZE], true);
     }
-}
+};
 
 function drawFluid(id, prevId, nextId, [x, y]) {
     if (x == 0) {
@@ -231,8 +244,13 @@ function drawFluid(id, prevId, nextId, [x, y]) {
         ctx.fillStyle = 'white';
         ctx.fill();
     }
-}
+};
 
 function setSize(width, height) {
-    render(fetch('blank_level.json'), true, width, height)
-}
+    render(fetch('blank_level.json'), true, false, width, height)
+};
+
+function setBlock (pos, id) {
+    LEVEL.LAYERS.TILELAYER.DATA[pos] = id;
+    render(null, false, true)
+};

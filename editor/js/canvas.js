@@ -18,20 +18,15 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 
-// Init function
-function init() {
-    window.addEventListener('resize', resizeCanvas, false);
-    resizeCanvas();
-};
 
 // Start function
 function start() {
-    fetch('blank_level.json')
-        .then(r => r.json())
-        .then(levelJSON => render(levelJSON))
-    // fetch('example_level.json')
+    // fetch('blank_level.json')
     //     .then(r => r.json())
     //     .then(levelJSON => render(levelJSON))
+    fetch('example_level.json')
+        .then(r => r.json())
+        .then(levelJSON => init(levelJSON))
 };
 
 // init();
