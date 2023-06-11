@@ -1,0 +1,15 @@
+button.tile-option {
+    width: 64px;
+    height: 64px;
+}
+
+div#tile-tools {
+    display: flex;
+    gap: 32px;
+}
+
+div.tile-category {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, 64px);
+}
