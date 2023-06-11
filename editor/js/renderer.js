@@ -312,6 +312,8 @@ function resizeLevel() {
 function setBlock([x, y], id) {
     const pos = x + (y * LEVEL.WIDTH);
 
+    if (LEVEL.TILELAYER[pos] == id) { return };
+
     LEVEL.TILELAYER[pos] = id;
     render(true, false, false);
 };
