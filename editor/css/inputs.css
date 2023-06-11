@@ -1,3 +1,8 @@
+div#input-container {
+    position: absolute;
+    left: 1300px;
+}
+
 button.tile-option {
     width: 64px;
     height: 64px;
