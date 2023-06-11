@@ -55,8 +55,9 @@ function renderObjectLayer(layer) {
     objects.forEach(obj => {
         console.log(obj);
         objCtx.beginPath();
+        let objY = obj.y;
         if (obj.type === 'platform') {
-            obj.y += obj.height;
+            objY += obj.height;
         };
         objCtx.rect(obj.x, obj.y, obj.width, -obj.height)
         objCtx.fillStyle = 'purple';
@@ -137,6 +138,12 @@ function init(levelJSON) {
 };
 
 function render() {
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    objCtx.clearRect(0, 0, objectsCanvas.width, objectsCanvas.height);
+    charCtx.clearRect(0, 0, charsCanvas.width, charsCanvas.height);
+
+    // Render layers
     renderTileLayer(LEVEL.TILELAYER);
     renderObjectLayer(LEVEL.OBJECTLAYER);
     renderCharsLayer(LEVEL.CHARSLAYER);
@@ -225,7 +232,9 @@ function setSize(width, height) {
     render();
 };
 
-function setBlock (pos, id) {
+function setBlock ([x, y], id) {
+    const pos = x + (y * LEVEL.WIDTH);
+
     LEVEL.TILELAYER[pos] = id;
     render();
 };
