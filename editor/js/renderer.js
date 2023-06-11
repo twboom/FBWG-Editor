@@ -405,6 +405,7 @@ function initEditor() {
 
     highlightCanvas.addEventListener('mouseleave', _ => {
         SESSION.MOUSEDOWN = false;
+        hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
     })
 
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
