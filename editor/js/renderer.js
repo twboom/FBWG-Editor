@@ -392,5 +392,8 @@ function initEditor() {
         });
     });
 
-    document.getElementById('resize').addEventListener('click', resizeLevel)
+    document.getElementById('resize').addEventListener('click', resizeLevel);
+
+    document.getElementById('level-width').value = LEVEL.WIDTH;
+    document.getElementById('level-height').value = LEVEL.HEIGHT;
 };
