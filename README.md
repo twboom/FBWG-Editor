@@ -48,14 +48,14 @@ Fireboy &amp; Watergirl Level Editor
 
 ## Black objects object
 * {
-*    "gid":24,
-*    "height":64,
-*    "id":20,
+*    "gid":0,
+*    "height":0,
+*    "id":0,
 *    "name":"",
 *    "properties":{
 *      "dx":0,
 *      "dy":0,
-*      "group":5
+*      "group":0
 *    },
 *    "propertytypes":{
 *      "dx":"int",
@@ -65,7 +65,7 @@ Fireboy &amp; Watergirl Level Editor
 *    "rotation":0,
 *    "type":"",
 *    "visible":true,
-*    "width":64,
-*    "x":960,
-*    "y":384
+*    "width":o,
+*    "x":0,
+*    "y":0
 * }
