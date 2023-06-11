@@ -17,8 +17,8 @@ function renderTileLayer() {
         if (blockId >= 2 && blockId <= 5) { // Slopes
             drawTriangle(blockId, [x, y]);
         } else if (blockId >= 6 && blockId <= 8) { // Fluids
-            prevId = tileLayer.data[index - 1]
-            nextId = tileLayer.data[index + 1]
+            prevId = LEVEL.TILELAYER[index - 1]
+            nextId = LEVEL.TILELAYER[index + 1]
             drawFluid(blockId, prevId, nextId ,[x, y]);
         } else{
             const COLOR_LOOKUP = [
@@ -39,7 +39,7 @@ function renderTileLayer() {
     };
     console.log(LEVEL.TILELAYER);
     for (let i = 0; i < LEVEL.TILELAYER.length; i++) {
-        console.log('wroks', i)
+        console.log('works', i)
         const tileCoordinates = [i%LEVEL.WIDTH, Math.floor(i/LEVEL.WIDTH)];
         drawTile(tileCoordinates, LEVEL.TILELAYER[i], i)
     }
@@ -112,24 +112,15 @@ function init(levelJSON) {
     LEVEL.WIDTH = levelJSON.width;
     LEVEL.HEIGHT = levelJSON.height;
     console.log(typeof levelJSON.layers instanceof Array);
-    console.log(levelJSON.layers.filter( ({ type }) => type === 'tilelayer' ).data);
-    LEVEL.TILELAYER = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
-    LEVEL.OBJECTLAYER = levelJSON.layers.filter( ({ name }) => name === 'Objects');
-    LEVEL.CHARSLAYER = levelJSON.layers.filter( ({ name }) => name === 'Chars');
+    console.log(levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data);
+    LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
+    LEVEL.OBJECTLAYER = levelJSON.layers.find( ({ name }) => name === 'Objects');
+    LEVEL.CHARSLAYER = levelJSON.layers.find( ({ name }) => name === 'Chars');
     render(LEVEL);
 };
 
 function render(levelJSON, changeSize = false, changeTile = false, width, height) {
     // Set correct width and height
-    if (changeSize) {
-        LEVEL.WIDTH = width;
-        LEVEL.HEIGHT = height;
-        LEVEL.LAYERS.TILELAYER.DATA = new Array(width*height).fill(0)
-    } else if (changeTile) {
-    } else {
-        LEVEL.WIDTH = levelJSON.width;
-        LEVEL.HEIGHT = levelJSON.height;
-    }
     canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
@@ -139,34 +130,10 @@ function render(levelJSON, changeSize = false, changeTile = false, width, height
     highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
-
-    // Render tiles
-
     renderTileLayer(LEVEL.TILELAYER);
-    // if (changeSize || changeTile) {
-    //     renderTileLayer({data: LEVEL.LAYERS.TILELAYER.DATA})
-    //     return;
-    // } else {
-    //     const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
-    //     console.log(tileLayers)
-    //     tileLayers.forEach(layer => {
-    //         renderTileLayer(layer);
-    //     });
-    // }
+    renderObjectLayer(LEVEL.OBJECTLAYER);
+    renderCharsLayer(LEVEL.CHARSLAYER);
 
-    // Render objects
-    const objectLayers = levelJSON.layers.filter( ({ name }) => name === 'Objects');
-    console.log(objectLayers);
-    objectLayers.forEach(layer => {
-        renderObjectLayer(layer);
-    });
-
-    // Render chars (diamons, spawn, exit)
-    const charsLayers = levelJSON.layers.filter( ({ name }) => name === 'Chars');
-    console.log(charsLayers);
-    charsLayers.forEach(layer => {
-        renderCharsLayer(layer);
-    });
 };
 
 function drawTriangle(id, [x, y], isBackground=false) {
