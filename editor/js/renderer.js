@@ -85,13 +85,13 @@ function renderCharsLayer(layer) {
                 console.log('red diamond');
                 const img1 = new Image(2048,2048);
                 img1.src = "assets/atlasses/CharAssets.png";
-                img1.onload = charCtx.drawImage(img1, 1086, 1339, 113, 114, obj.x, (obj.y - obj.width), obj.width, obj.height);
+                img1.onload = charCtx.drawImage(img1, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
                 return;
             case 21:
                 console.log('blue diamond');
                 const img2 = new Image(2048,2048);
                 img2.src = "assets/atlasses/CharAssets.png";
-                img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x, (obj.y - obj.width), obj.width, obj.height);
+                img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
                 return;
             case 22:
                 charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
