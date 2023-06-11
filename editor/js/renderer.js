@@ -301,18 +301,18 @@ function resizeLevel() {
     render();
 }
 
-function setBlock ([x, y], id) {
+function setBlock([x, y], id) {
     const pos = x + (y * LEVEL.WIDTH);
 
     LEVEL.TILELAYER[pos] = id;
     render();
 };
 
-function setObject (gid, height, id, name, dx, dy, group, rotation, type, visible, width, x, y, deleting = false) {
+function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible, width, x, y, deleting = false) {
     if (deleting) {
         for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
             if (LEVEL.OBJECTLAYER[i].id == id) {
-                LEVEL.CHARSLAYER.Array.splice(i, 1);
+                LEVEL.CHARSLAYER.splice(i, 1);
                 return;
             };
         };
@@ -339,14 +339,14 @@ function setObject (gid, height, id, name, dx, dy, group, rotation, type, visibl
            "x":x,
            "y":y
         };
-    LEVEL.CHARSLAYER.Array.push(objectTemplatel);
+    LEVEL.CHARSLAYER.push(objectTemplate);
 };
 
-function setChar (gid, height, id, name, rotation, type, visible, width, x, y, deleting = false) {
+function setChar(gid, height, id, name, rotation, type, visible, width, x, y, deleting = false) {
     if (deleting) {
         for (let i = 0; LEVEL.CHARSLAYER.length; i++){
             if (LEVEL.CHARSLAYER[i].id == id) {
-                LEVEL.CHARSLAYER.Array.splice(i, 1);
+                LEVEL.CHARSLAYER.splice(i, 1);
                 return;
             };
         };
@@ -363,7 +363,7 @@ function setChar (gid, height, id, name, rotation, type, visible, width, x, y, d
            "x":x,
            "y":y
         };
-    LEVEL.CHARSLAYER.Array.push(charTemplate);
+    LEVEL.CHARSLAYER.push(charTemplate);
 };
 
 function initEditor() {
