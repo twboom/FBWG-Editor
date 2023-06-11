@@ -18,7 +18,9 @@ const SESSION = {
     MOUSEY: 0,
     TILEX: 0,
     TILEY: 0,
+    SELECTED_TOOL_TYPE: 'TILE',
     SELECTED_TILE_TYPE: 0,
+    SELECTED_OBJE_TYPE: 20,
 }
 
 function renderTileLayer() {
@@ -339,10 +341,11 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
            "x":x,
            "y":y
         };
-    LEVEL.CHARSLAYER.push(objectTemplate);
+    LEVEL.OBJECTLAYER.objects.push(objectTemplate);
+    render();
 };
 
-function setChar(gid, height, id, name, rotation, type, visible, width, x, y, deleting = false) {
+function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
         for (let i = 0; LEVEL.CHARSLAYER.length; i++){
             if (LEVEL.CHARSLAYER[i].id == id) {
@@ -363,8 +366,23 @@ function setChar(gid, height, id, name, rotation, type, visible, width, x, y, de
            "x":x,
            "y":y
         };
-    LEVEL.CHARSLAYER.push(charTemplate);
+    LEVEL.CHARSLAYER.objects.push(charTemplate);
+    render();
 };
+
+function addCharObj(type, [x, y]) {
+    const options = {
+        "gid": type,
+        "height": 64,
+        "id": 1,
+        "name": "",
+        "rotation": 0,
+        "type": "",
+        "visible": true,
+        "width": 64,
+    }
+    setChar(options, x, y)
+}
 
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
@@ -384,36 +402,53 @@ function initEditor() {
         hlCtx.beginPath()
         hlCtx.rect(tileX * blockSize, tileY * blockSize, blockSize, blockSize);
         hlCtx.fillStyle = 'cyan'
-        hlCtx.fill()
+        if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { hlCtx.fill() };
 
-        if (SESSION.MOUSEDOWN) {
+        if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE) {
             setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
         }
     });
 
     highlightCanvas.addEventListener('click', _ => {
-        setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
-    })
+        switch(SESSION.SELECTED_TOOL_TYPE) {
+            case 'TILE':
+                setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE);
+                break;
+
+            case 'OBJE':
+                if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 24) {
+                    addCharObj(SESSION.SELECTED_OBJE_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
+                }
+                break;
+        };
+    });
 
     highlightCanvas.addEventListener('mousedown', _ => {
         SESSION.MOUSEDOWN = true;
-    })
+    });
 
     document.addEventListener('mouseup', _ => {
         SESSION.MOUSEDOWN = false;
-    })
+    });
 
     highlightCanvas.addEventListener('mouseleave', _ => {
         SESSION.MOUSEDOWN = false;
         hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
-    })
+    });
 
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tileid);
+            SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
+            SESSION.SELECTED_TOOL_TYPE = 'TILE'
         });
     });
 
+    Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            SESSION.SELECTED_OBJE_TYPE = parseInt(el.dataset.gid);
+            SESSION.SELECTED_TOOL_TYPE = 'OBJE'
+        });
+    });
     document.getElementById('resize').addEventListener('click', resizeLevel);
 
     document.getElementById('level-width').value = LEVEL.WIDTH;
