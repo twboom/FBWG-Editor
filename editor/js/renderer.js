@@ -18,7 +18,7 @@ const SESSION = {
     MOUSEY: 0,
     TILEX: 0,
     TILEY: 0,
-    SELECTED_TOOL_TYPE: 'TILE',
+    SELECTED_TOOL_TYPE: undefined,
     SELECTED_TILE_TYPE: 0,
     SELECTED_OBJE_TYPE: 20,
 }
@@ -476,10 +476,18 @@ function initEditor() {
         hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
     });
 
+    function setSelectedClass(el) {
+        Array.from(document.getElementsByClassName('tool')).forEach(btn => {
+            btn.classList.remove('selected');
+        });
+        el.classList.add('selected');
+    };
+
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
             SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
-            SESSION.SELECTED_TOOL_TYPE = 'TILE'
+            SESSION.SELECTED_TOOL_TYPE = 'TILE';
+            setSelectedClass(el);
         });
     });
 
@@ -489,7 +497,8 @@ function initEditor() {
             if (isNaN(SESSION.SELECTED_OBJE_TYPE)) {
                 SESSION.SELECTED_OBJE_TYPE = el.dataset.gid;
             }
-            SESSION.SELECTED_TOOL_TYPE = 'OBJE'
+            SESSION.SELECTED_TOOL_TYPE = 'OBJE';
+            setSelectedClass(el);
         });
     });
     document.getElementById('resize').addEventListener('click', resizeLevel);

@@ -8,6 +8,10 @@ button.tool {
     height: 64px;
 }
 
+button.tool.selected {
+    background-color: cyan;
+}
+
 div.tool-container {
     display: flex;
     gap: 32px;
