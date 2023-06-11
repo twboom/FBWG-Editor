@@ -31,3 +31,41 @@ Fireboy &amp; Watergirl Level Editor
 * Diamond wg, gid = 21
 * Diamond silver, gid = 22
 * Diamond fbwg, gid = 23
+
+## Black chars object
+* {
+*    "gid":0,
+*    "height":0,
+*    "id":0,
+*    "name":"",
+*    "rotation":0,
+*    "type":"",
+*    "visible":true,
+*    "width":0,
+*    "x":0,
+*    "y":0
+* }
+
+## Black objects object
+* {
+*    "gid":24,
+*    "height":64,
+*    "id":20,
+*    "name":"",
+*    "properties":{
+*      "dx":0,
+*      "dy":0,
+*      "group":5
+*    },
+*    "propertytypes":{
+*      "dx":"int",
+*      "dy":"int",
+*      "group":"int"
+*    },
+*    "rotation":0,
+*    "type":"",
+*    "visible":true,
+*    "width":64,
+*    "x":960,
+*    "y":384
+* }

@@ -26,9 +26,12 @@ function init() {
 
 // Start function
 function start() {
-    fetch('example_level.json')
+    fetch('blank_level.json')
         .then(r => r.json())
         .then(levelJSON => render(levelJSON))
+    // fetch('example_level.json')
+    //     .then(r => r.json())
+    //     .then(levelJSON => render(levelJSON))
 };
 
 // init();

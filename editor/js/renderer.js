@@ -138,7 +138,7 @@ function render(levelJSON) {
         renderObjectLayer(layer);
     });
 
-    // Render objects
+    // Render chars (diamons, spawn, exit)
     const charsLayers = levelJSON.layers.filter( ({ name }) => name === 'Chars');
     console.log(charsLayers);
     charsLayers.forEach(layer => {
