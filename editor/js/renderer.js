@@ -17,6 +17,7 @@ const SESSION = {
     MOUSEY: 0,
     TILEX: 0,
     TILEY: 0,
+    SELECTED_TILE_TYPE: 0,
 }
 
 function renderTileLayer() {
@@ -263,6 +264,13 @@ function initEditor() {
     });
 
     highlightCanvas.addEventListener('click', _ => {
-        setBlock([SESSION.TILEX, SESSION.TILEY], 1)
+        setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
     })
+
+    Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tileid);
+            console.log('set tile id to', SESSION.SELECTED_TILE_TYPE)
+        });
+    });
 };
