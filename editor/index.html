@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FBWG Editor</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/inputs.css">
     <script defer src="js/renderer.js"></script>
     <script defer src="js/canvas.js"></script>
 
@@ -40,6 +41,35 @@
         <input type="text" class="textbox1d" style="position: absolute; left: 1584px; top: 198px; width: 128px;" id="levelHeigth">
         
         <input type="submit" value="submit" style="position: absolute; left: 1760px; top: 198px;" onclick="setSize(levelWidth.value, levelHeigth.value)">
+    </div>
+    <div id="input-container">
+        <div id="level-settings">
+            <div class="options">
+                <label for="width-selector">Width:</label>
+                <input type="number" name="level-width" id="level-width" min="1">
+            </div>
+            <div class="options">
+                <label for="height-selector">Height:</label>
+                <input type="number" name="level-height" id="level-height" min="1">
+            </div>
+        </div>
+        <div id="tile-tools">
+            <div class="tile-category">
+                <button class="tile-option" data-type="block">Block</button>
+                <button class="tile-option" data-type="air">Air</button>
+            </div>
+            <div class="tile-category">
+                <button class="tile-option" data-type="slope-1">Slope 1</button>
+                <button class="tile-option" data-type="slope-2">Slope 2</button>
+                <button class="tile-option" data-type="slope-3">Slope 3</button>
+                <button class="tile-option" data-type="slope-4">Slope 4</button>
+            </div>
+            <div class="tile-category">
+                <button class="tile-option" data-type="water">Water</button>
+                <button class="tile-option" data-type="lava">Lava</button>
+                <button class="tile-option" data-type="acid">Acid</button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
