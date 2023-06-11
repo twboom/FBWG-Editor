@@ -400,7 +400,7 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
     setChar(options, x, y);
 };
 
-function deleteObj(x, y) {
+function deleteChar(x, y) {
     function collidesWithCursor(obj) {
         if (
             x >= obj.x &&
@@ -411,7 +411,6 @@ function deleteObj(x, y) {
         else { return false };
     };
 
-    collidesWithCursor(LEVEL.CHARSLAYER.objects[3])
     const int = LEVEL.CHARSLAYER.objects.find(collidesWithCursor);
     if (int) {
         setChar({id: int.id}, null, null, true);
@@ -451,7 +450,7 @@ function initEditor() {
 
             case 'OBJE':
                 if (SESSION.SELECTED_OBJE_TYPE === 'd') { // Delete
-                    deleteObj(SESSION.MOUSEX, SESSION.MOUSEY)
+                    deleteChar(SESSION.MOUSEX, SESSION.MOUSEY)
                     return;
                 };
                 if (SESSION.SELECTED_OBJE_TYPE === 's') { // Select
