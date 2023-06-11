@@ -12,6 +12,7 @@
     <style>
         .button1 {background-color: #646464;}
     </style>
+
 </head> 
 <body>
     <div id="canvas-container">
@@ -19,25 +20,26 @@
         <canvas id="objects"></canvas>
         <canvas id="chars"></canvas>
         <canvas id="highlight"></canvas>
-        
     </div>
     <div id="buttons">
-        <button class="button" style="position: absolute; left: 1296px; top: 2px ; width: 64px; height: 64px; background-color:#ffffff;">Block</button>
-        <button class="button" style="position: absolute; left: 1296px; top: 70px ; width: 64px; height: 64px; color:#ffffff; background-color: #000000;">Air</button>
-    
-        <button class="button1" style="position: absolute; left: 1388px; top: 2px ; width: 64px; height: 64px;">Slope 1</button>
-        <button class="button1" style="position: absolute; left: 1388px; top: 70px ; width: 64px; height: 64px;">Slope 2</button>
-        <button class="button1" style="position: absolute; left: 1460px; top: 2px ; width: 64px; height: 64px;">Slope 3</button>
-        <button class="button1" style="position: absolute; left: 1460px; top: 70px ; width: 64px; height: 64px;">Slope 4</button>
-    
-        <button class="button" style="position: absolute; left: 1556px; top: 2px; width: 64px; height: 64px; background-color: #0000ff;">Water</button>
-        <button class="button" style="position: absolute; left: 1556px; top: 70px; width: 64px; height: 64px; background-color: #Ff0000;">Lava</button>
-        <button class="button" style="position: absolute; left: 1628px; top: 2 px; width: 64px; height: 64px; background-color: #00ff00;">Acid</button>
-    
-        <label for="slider" style="position: absolute; left: 1296px; top: 198px;">Width:</label>
-        <input type="text" class="slider" style="position: absolute; left: 1360px; top: 198px; width: 128px;"><br><br>
-        <label for="slider1" style="position: absolute; left: 1552px; top: 198px;">Height:</label>
-        <input type="text" class="slider1" style="position: absolute; left: 1616px; top: 198px; width: 128px;"><br><br>
+        <button class="button" style="position: absolute; left: 1296px; top: 2px ; width: 64px; height: 64px; background-color:#ffffff;" onclick="console.log('block')">Block</button>
+        <button class="button" style="position: absolute; left: 1296px; top: 70px ; width: 64px; height: 64px; color:#ffffff; background-color: #000000;" onclick="console.log('air')">Air</button>
+        
+        <button class="button1" style="position: absolute; left: 1388px; top: 2px ; width: 64px; height: 64px;"  onclick="console.log('slope 1')">Slope 1</button>
+        <button class="button1" style="position: absolute; left: 1388px; top: 70px ; width: 64px; height: 64px;" onclick="console.log('slope 2')">Slope 2</button>
+        <button class="button1" style="position: absolute; left: 1460px; top: 2px ; width: 64px; height: 64px;" onclick="console.log('slope 3')">Slope 3</button>
+        <button class="button1" style="position: absolute; left: 1460px; top: 70px ; width: 64px; height: 64px;" onclick="console.log('slope 4')">Slope 4</button>
+        
+        <button class="button" style="position: absolute; left: 1556px; top: 2px; width: 64px; height: 64px; background-color: #0000ff;" onclick="console.log('water')">Water</button>
+        <button class="button" style="position: absolute; left: 1556px; top: 70px; width: 64px; height: 64px; background-color: #Ff0000;" onclick="console.log('lava')">Lava</button>
+        <button class="button" style="position: absolute; left: 1628px; top: 2 px; width: 64px; height: 64px; background-color: #00ff00;" onclick="console.log('acid')">Acid</button>
+        
+        <label for="textbox" style="position: absolute; left: 1296px; top: 198px;">Width:</label>
+        <input type="text" class="textbox" style="position: absolute; left: 1360px; top: 198px; width: 128px;" id="levelWidth">
+        <label for="textbox1" style="position: absolute; left: 1520px; top: 198px;">Height:</label>
+        <input type="text" class="textbox1d" style="position: absolute; left: 1584px; top: 198px; width: 128px;" id="levelHeigth">
+        
+        <input type="submit" value="submit" style="position: absolute; left: 1760px; top: 198px;" onclick="setSize(levelWidth.value, levelHeigth.value)">
     </div>
 </body>
 </html>

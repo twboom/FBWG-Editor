@@ -32,7 +32,7 @@ Fireboy &amp; Watergirl Level Editor
 * Diamond silver, gid = 22
 * Diamond fbwg, gid = 23
 
-## Black chars object
+## Blank chars object
 * {
 *    "gid":0,
 *    "height":0,
@@ -46,7 +46,7 @@ Fireboy &amp; Watergirl Level Editor
 *    "y":0
 * }
 
-## Black objects object
+## Blank objects object
 * {
 *    "gid":0,
 *    "height":0,

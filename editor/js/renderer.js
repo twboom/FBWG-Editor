@@ -42,7 +42,6 @@ function renderTileLayer(tileLayer) {
         ctx.strokeStyle = '#333333';
         ctx.stroke();
     };
-
     const tiles = tileLayer.data;
     for (let i = 0; i < tiles.length; i++) {
         const tileCoordinates = [i%LEVEL.WIDTH, Math.floor(i/LEVEL.WIDTH)];
@@ -111,10 +110,15 @@ function renderCharsLayer(layer) {
     });
 };
 
-function render(levelJSON) {
+function render(levelJSON, setSize = false, width, height) {
     // Set correct width and height
-    LEVEL.WIDTH = levelJSON.width;
-    LEVEL.HEIGHT = levelJSON.height;
+    if (setSize) {
+        LEVEL.WIDTH = width;
+        LEVEL.HEIGHT = height;
+    } else {
+        LEVEL.WIDTH = levelJSON.width;
+        LEVEL.HEIGHT = levelJSON.height;
+    }
     canvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     canvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     objectsCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
@@ -124,12 +128,18 @@ function render(levelJSON) {
     highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
+
     // Render tiles
-    const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
-    console.log(tileLayers)
-    tileLayers.forEach(layer => {
-        renderTileLayer(layer);
-    });
+    if (setSize) {
+        renderTileLayer({data: new Array(width*height).fill(0)})
+        return;
+    } else {
+        const tileLayers = levelJSON.layers.filter( ({ type }) => type === 'tilelayer' );
+        console.log(tileLayers)
+        tileLayers.forEach(layer => {
+            renderTileLayer(layer);
+        });
+    }
 
     // Render objects
     const objectLayers = levelJSON.layers.filter( ({ name }) => name === 'Objects');
@@ -221,4 +231,8 @@ function drawFluid(id, prevId, nextId, [x, y]) {
         ctx.fillStyle = 'white';
         ctx.fill();
     }
+}
+
+function setSize(width, height) {
+    render(fetch('blank_level.json'), true, width, height)
 }
