@@ -32,8 +32,6 @@ function renderTileLayer() {
                 'black', // Air
                 'white', // Ground
             ];
-    
-            //console.log(x, y, 'type', blockId)
             ctx.beginPath();
             ctx.rect(x*LEVEL.BLOCK_SIZE, y*LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
             ctx.fillStyle = COLOR_LOOKUP[blockId];
@@ -127,7 +125,7 @@ function init(levelJSON) {
     charsCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
     highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
-    
+
     console.log(typeof levelJSON.layers instanceof Array);
     console.log(levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data);
     LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
