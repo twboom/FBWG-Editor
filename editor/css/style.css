@@ -17,7 +17,7 @@ canvas {
 }
 
 canvas#highlight {
-    animation: 1s infinite alternate highlight_blink;
+    animation: 0.5s infinite alternate highlight_blink;
 }
 
 @keyframes highlight_blink {
