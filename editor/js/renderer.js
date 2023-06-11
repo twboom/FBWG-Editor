@@ -43,9 +43,7 @@ function renderTileLayer() {
         ctx.strokeStyle = '#333333';
         ctx.stroke();
     };
-    console.log(LEVEL.TILELAYER);
     for (let i = 0; i < LEVEL.TILELAYER.length; i++) {
-        console.log('works', i)
         const tileCoordinates = [i%LEVEL.WIDTH, Math.floor(i/LEVEL.WIDTH)];
         drawTile(tileCoordinates, LEVEL.TILELAYER[i], i)
     }
@@ -54,7 +52,6 @@ function renderTileLayer() {
 function renderObjectLayer(layer) {
     const objects = layer.objects;
     objects.forEach(obj => {
-        console.log(obj);
         objCtx.beginPath();
         let objY = obj.y;
         if (obj.type === 'platform') {
@@ -69,7 +66,6 @@ function renderObjectLayer(layer) {
 function renderCharsLayer(layer) {
     const chars = layer.objects;
     chars.forEach(obj => {
-        console.log(obj);
         charCtx.beginPath();
         switch (obj.gid){
             case 16:
@@ -128,8 +124,6 @@ function init(levelJSON) {
     highlightCanvas.width = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
     highlightCanvas.height = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
 
-    console.log(typeof levelJSON.layers instanceof Array);
-    console.log(levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data);
     LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
     LEVEL.OBJECTLAYER = levelJSON.layers.find( ({ name }) => name === 'Objects');
     LEVEL.CHARSLAYER = levelJSON.layers.find( ({ name }) => name === 'Chars');
@@ -190,14 +184,11 @@ function drawTriangle(id, [x, y], isBackground=false) {
 function drawFluid(id, prevId, nextId, [x, y]) {
     if (x == 0) {
         prevId = null;
-        console.log('left edge')
     } if (x == LEVEL.WIDTH - 1) {
         nextId = null;
-        console.log('right edge')
     };
     x *= LEVEL.BLOCK_SIZE;
     y *= LEVEL.BLOCK_SIZE;
-    console.log(x, LEVEL.WIDTH - 1)
     ctx.beginPath();
     ctx.rect(x, y, LEVEL.BLOCK_SIZE, LEVEL.BLOCK_SIZE);
     const COLOR_LOOKUP = ['blue', 'red', 'green']
@@ -254,8 +245,6 @@ function initEditor() {
         SESSION.TILEX = tileX;
         SESSION.TILEY = tileY;
 
-        console.log(tileX, tileY)
-
         hlCtx.clearRect(0, 0, LEVEL.WIDTH * blockSize, LEVEL.HEIGHT * blockSize);
         hlCtx.beginPath()
         hlCtx.rect(tileX * blockSize, tileY * blockSize, blockSize, blockSize);
@@ -270,7 +259,6 @@ function initEditor() {
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
             SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tileid);
-            console.log('set tile id to', SESSION.SELECTED_TILE_TYPE)
         });
     });
 };
