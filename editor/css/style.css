@@ -15,3 +15,21 @@ canvas {
     grid-column: 1;
     grid-row: 1;
 }
+
+canvas#highlight {
+    animation: 1s infinite alternate highlight_blink;
+}
+
+@keyframes highlight_blink {
+    0% {
+        opacity: 1;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
