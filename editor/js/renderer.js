@@ -13,6 +13,7 @@ const LEVEL = {
 }
 
 const SESSION = {
+    MOUSEDOWN: false,
     MOUSEX: 0,
     MOUSEY: 0,
     TILEX: 0,
@@ -380,10 +381,26 @@ function initEditor() {
         hlCtx.rect(tileX * blockSize, tileY * blockSize, blockSize, blockSize);
         hlCtx.fillStyle = 'cyan'
         hlCtx.fill()
+
+        if (SESSION.MOUSEDOWN) {
+            setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
+        }
     });
 
     highlightCanvas.addEventListener('click', _ => {
         setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
+    })
+
+    highlightCanvas.addEventListener('mousedown', _ => {
+        SESSION.MOUSEDOWN = true;
+    })
+
+    document.addEventListener('mouseup', _ => {
+        SESSION.MOUSEDOWN = false;
+    })
+
+    highlightCanvas.addEventListener('mouseleave', _ => {
+        SESSION.MOUSEDOWN = false;
     })
 
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
