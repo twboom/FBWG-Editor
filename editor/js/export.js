@@ -8,7 +8,6 @@ function exportLevel() {
         LevelTemplate.layers[2] = LEVEL.CHARSLAYER;
         LevelTemplate.layers[1] = LEVEL.OBJECTLAYER;
 
-        console.log(LevelTemplate)
         downloadObjectAsJson(LevelTemplate, 'level');
     };
 
