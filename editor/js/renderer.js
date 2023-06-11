@@ -321,27 +321,27 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
         };
     };
     let objectTemplate = {
-           "gid":gid,
-           "height":height,
-           "id":id,
-           "name":name,
-           "properties":{
-             "dx":dx,
-             "dy":dy,
-             "group":group
-           },
-           "propertytypes":{
-             "dx":"int",
-             "dy":"int",
-             "group":"int"
-           },
-           "rotation":rotation,
-           "type":type,
-           "visible":visible,
-           "width":width,
-           "x":x,
-           "y":y
-        };
+       "gid":gid,
+       "height":height,
+       "id":id,
+       "name":name,
+       "properties":{
+         "dx":dx,
+         "dy":dy,
+         "group":group
+       },
+       "propertytypes":{
+         "dx":"int",
+         "dy":"int",
+         "group":"int"
+       },
+       "rotation":rotation,
+       "type":type,
+       "visible":visible,
+       "width":width,
+       "x":x,
+       "y":y
+    };
     LEVEL.OBJECTLAYER.objects.push(objectTemplate);
     render();
 };
@@ -357,17 +357,17 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
         };
     };
     let charTemplate = {
-           "gid":gid,
-           "height":height,
-           "id":id,
-           "name":name,
-           "rotation":rotation,
-           "type":type,
-           "visible":visible,
-           "width":width,
-           "x":x,
-           "y":y
-        };
+       "gid":gid,
+       "height":height,
+       "id":id,
+       "name":name,
+       "rotation":rotation,
+       "type":type,
+       "visible":visible,
+       "width":width,
+       "x":x,
+       "y":y
+    };
     LEVEL.CHARSLAYER.objects.push(charTemplate);
     render();
 };
