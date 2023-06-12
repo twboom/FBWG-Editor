@@ -86,9 +86,9 @@ function renderCharsLayer(layer) {
                 charCtx.fillStyle = 'blue';
                 break;
             case 20:
-                const img1 = new Image(2048,2048);
-                img1.src = "assets/atlasses/CharAssets.png";
-                img1.onload = charCtx.drawImage(img1, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
+                const img = new Image(2048,2048);
+                img.src = "assets/atlasses/CharAssets.png";
+                img.onload = charCtx.drawImage(img, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
                 return;
             case 21:
                 const img2 = new Image(2048,2048);
@@ -96,9 +96,10 @@ function renderCharsLayer(layer) {
                 img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
                 return;
             case 22:
-                charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
-                charCtx.fillStyle = 'white';
-                break;
+                const img3 = new Image(2048,2048);
+                img3.src = "assets/atlasses/CharAssets.png";
+                img3.onload = charCtx.drawImage(img3, 848, 1339, 117, 117, obj.x - LEVEL.BLOCK_SIZE, (obj.y - obj.width) - LEVEL.BLOCK_SIZE, 2*obj.width, 2*obj.height);
+                return;
             case 23:
                 charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
                 charCtx.fillStyle = 'red';
