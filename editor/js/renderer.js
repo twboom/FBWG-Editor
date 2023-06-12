@@ -424,10 +424,10 @@ function setObject({gid, height, id, name, properties, rotation, type, visible, 
     //         objectTemplate.propertytypes.Array.splice(0,2);
     //     };
     // } 
-    if (objectTemplate.type == "platform") {
-        objectTemplate.Array.splice(0, 1);
-        objectTemplate.Array.type = objType;
-    };
+    // if (objectTemplate.type == "platform") {
+    //     objectTemplate.Array.splice(0, 1);
+    //     objectTemplate.Array.type = objType;
+    // };
     LEVEL.OBJECTLAYER.objects.push(objectTemplate);
     render(false, true, false);
     return objectTemplate
@@ -490,7 +490,7 @@ function addObject(type, [x, y]) {
         'lever': 25,
         'box_normal': 28,
         'box_heavy': 37,
-        'platform': undefined,
+        'platform': '',
     }
     let options = {
         "gid": GID_LOOKUP[type],
@@ -519,6 +519,7 @@ function addObject(type, [x, y]) {
         options.properties.dy = 0;
         options.propertytypes.dx = 'int';
         options.propertytypes.dx = 'int';
+        options.type = 'platform';
     };
 
     const obj = setObject(options, x, y);
