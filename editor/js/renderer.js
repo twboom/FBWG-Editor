@@ -68,6 +68,15 @@ function renderObjectLayer(layer) {
     });
 };
 
+function drawImage(src, sizeX, sizeY, x, y, ctx) {
+    console.log(ctx)
+    const img = new Image(sizeX, sizeY);
+    img.onload = _ => {
+        ctx.drawImage(img, x, y);
+    };
+    img.src = src;
+};
+
 function renderCharsLayer(layer) {
     const chars = layer.objects;
     chars.forEach(obj => {
@@ -85,29 +94,32 @@ function renderCharsLayer(layer) {
             case 19:
                 charCtx.fillStyle = 'blue';
                 break;
-            case 20:
-                const img = new Image(2048,2048);
-                img.src = "assets/atlasses/CharAssets.png";
-                img.onload = charCtx.drawImage(img, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
+            case 20: // Diamond FB
+                // const img1 = new Image(2048,2048);
+                // img1.src = "assets/atlasses/CharAssets.png";
+                // img1.onload = charCtx.drawImage(img1, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
+                drawImage('assets/chars/diamond_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 return;
-            case 21:
-                const img2 = new Image(2048,2048);
-                img2.src = "assets/atlasses/CharAssets.png";
-                img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
+                case 21: // Diamond WG
+                // const img2 = new Image(2048,2048);
+                // img2.src = "assets/atlasses/CharAssets.png";
+                // img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
+                drawImage('assets/chars/diamond_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 return;
-            case 22:
-                const img3 = new Image(2048,2048);
-                img3.src = "assets/atlasses/CharAssets.png";
-                img3.onload = charCtx.drawImage(img3, 848, 1339, 117, 117, obj.x - LEVEL.BLOCK_SIZE, (obj.y - obj.width) - LEVEL.BLOCK_SIZE, 2*obj.width, 2*obj.height);
+                case 22: // Diamond silver
+                // charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
+                // charCtx.fillStyle = 'white';
+                drawImage('assets/chars/diamond_silver.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 return;
-            case 23:
-                charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
-                charCtx.fillStyle = 'red';
-                charCtx.fill();
-                charCtx.beginPath();
-                charCtx.rect(obj.x + 0.5 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
-                charCtx.fillStyle = 'blue';
-                charCtx.fill();
+                case 23: // Diamond FBWG
+                // charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
+                // charCtx.fillStyle = 'red';
+                // charCtx.fill();
+                // charCtx.beginPath();
+                // charCtx.rect(obj.x + 0.5 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
+                // charCtx.fillStyle = 'blue';
+                // charCtx.fill();
+                drawImage('assets/chars/diamond_fbwg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 return;
         };
         if (obj.gid >= 16 && obj.gid <= 19) {
@@ -380,7 +392,7 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
        "y":y
     };
     LEVEL.CHARSLAYER.objects.push(charTemplate);
-    render(false, false, true);
+    render(false, false, true); 
 };
 
 function addCharObj(type, [x, y], autoDeleteOthers=true) {
