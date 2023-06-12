@@ -23,6 +23,7 @@ const SESSION = {
     SELECTED_TILE_TYPE: 0,
     SELECTED_CHAR_TYPE: 20,
     SELECTED_CHAR_ID: undefined,
+    ALLOWMULTIPLESPAWNS: false
 };
 
 const CACHE = {};
@@ -492,7 +493,7 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
         "visible": true,
         "width": 64,
     };
-    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19 && autoDeleteOthers) {
+    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19 && autoDeleteOthers && !SESSION.ALLOWMULTIPLESPAWNS) {
         const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
         others.forEach(el => {
             setChar({id: el.id}, null, null, true);
