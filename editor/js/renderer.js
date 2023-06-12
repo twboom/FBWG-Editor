@@ -89,11 +89,11 @@ function renderCharsLayer(layer) {
                 charCtx.fillStyle = 'blue';
                 break;
             case 18:
-                charCtx.fillStyle = 'red';
-                break;
-            case 19:
-                charCtx.fillStyle = 'blue';
-                break;
+                drawImage('assets/chars/door_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
+                return;
+            case 19: // Door WG
+                drawImage('assets/chars/door_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
+                return;
             case 20: // Diamond FB
                 // const img1 = new Image(2048,2048);
                 // img1.src = "assets/atlasses/CharAssets.png";
