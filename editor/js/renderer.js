@@ -83,36 +83,40 @@ function drawImage(src, sizeX, sizeY, x, y, ctx) {
     };
 };
 
-function renderCharsLayer(layer) {
-    const chars = layer.objects;
+function drawChar(gid, x, y, ctx) {
+    switch (gid){
+        case 16: // Spawn FB
+            drawImage('assets/chars/spawn_fb.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 17: // Spawn FB
+            drawImage('assets/chars/spawn_wg.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 18:
+            drawImage('assets/chars/door_fb.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 19: // Door WG
+            drawImage('assets/chars/door_wg.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 20: // Diamond FB
+            drawImage('assets/chars/diamond_fb.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 21: // Diamond WG
+            drawImage('assets/chars/diamond_wg.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 22: // Diamond silver
+            drawImage('assets/chars/diamond_silver.svg', 64, 64, x, y - 64, ctx);
+            break;
+        case 23: // Diamond FBWG
+            drawImage('assets/chars/diamond_fbwg.svg', 64, 64, x, y - 64, ctx);
+            break;
+    }
+}
+
+function renderCharsLayer() {
+    const chars = LEVEL.CHARSLAYER.objects;
     chars.forEach(obj => {
         if (!obj.visible) { return };
-        switch (obj.gid){
-            case 16: // Spawn FB
-                drawImage('assets/chars/spawn_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 17: // Spawn FB
-                drawImage('assets/chars/spawn_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 18:
-                drawImage('assets/chars/door_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 19: // Door WG
-                drawImage('assets/chars/door_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 20: // Diamond FB
-                drawImage('assets/chars/diamond_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 21: // Diamond WG
-                drawImage('assets/chars/diamond_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 22: // Diamond silver
-                drawImage('assets/chars/diamond_silver.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-            case 23: // Diamond FBWG
-                drawImage('assets/chars/diamond_fbwg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                break;
-        };
+        drawChar(obj.gid, obj.x, obj.y, charCtx);
     });
 };
 
@@ -166,7 +170,7 @@ function render(renderTiles=true, renderObjs=true, renderChars=true) {
     
     if (renderChars) {
         charCtx.clearRect(0, 0, charsCanvas.width, charsCanvas.height);
-        renderCharsLayer(LEVEL.CHARSLAYER);
+        renderCharsLayer();
         console.log('Rendered Char Layer')
     };
 };
@@ -486,14 +490,13 @@ function deleteChar(x, y) {
 };
 
 function moveChar(objId) {
-    console.log()
     const x = SESSION.MOUSEX;
     const y = SESSION.MOUSEY;
     const obj = LEVEL.CHARSLAYER.objects.find(({ id }) => id === objId)
     if (obj) {
         obj.x = (x - SESSION.MOUSEDOWNX) + obj.x;
         obj.y = (y - SESSION.MOUSEDOWNY) + obj.y;
-        render(false, false, true);
+        drawChar(obj.gid, obj.x, obj.y, hlCtx)
         SESSION.MOUSEDOWNX = x;
         SESSION.MOUSEDOWNY = y;
     };
@@ -520,6 +523,24 @@ function highlightTile(x, y) {
     hlCtx.fill();
 };
 
+function selectChar(objId) {
+    obj = LEVEL.CHARSLAYER.objects.find(({ id }) => id === objId);
+    if (!obj) { return; };
+    SESSION.SELECTED_CHAR_ID = obj.id;
+    obj.visible = false;
+    render(false, false, true)
+};
+
+function deselectChar() {
+    if (!SESSION.SELECTED_CHAR_ID) {
+        return
+    };
+    obj = LEVEL.CHARSLAYER.objects.find(({ id }) => id === SESSION.SELECTED_CHAR_ID);
+    obj.visible = true;
+    SESSION.SELECTED_CHAR_ID = undefined;
+    render(false, false, true);
+};
+
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
         const blockSize = LEVEL.BLOCK_SIZE;
@@ -535,9 +556,6 @@ function initEditor() {
         SESSION.TILEY = tileY;
 
         hlCtx.clearRect(0, 0, LEVEL.WIDTH * blockSize, LEVEL.HEIGHT * blockSize);
-        
-        if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { highlightTile(tileX, tileY); };
-        if (SESSION.SELECTED_TOOL_TYPE === 'CHAR') { highlightChar(mouseX, mouseY); };
 
         // Dragging function
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
@@ -547,6 +565,10 @@ function initEditor() {
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'CHAR' && SESSION.SELECTED_CHAR_TYPE === 'm') {
             moveChar(SESSION.SELECTED_CHAR_ID);
         };
+
+        // Highlight
+        if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { highlightTile(tileX, tileY); };
+        if (SESSION.SELECTED_TOOL_TYPE === 'CHAR') { highlightChar(mouseX, mouseY); };
     });
 
     highlightCanvas.addEventListener('click', _ => {
@@ -581,16 +603,16 @@ function initEditor() {
                 return collidesWithCursor(obj, mouseX, mouseY);
             });
             if (obj) {
-                SESSION.SELECTED_CHAR_ID = obj.id;
+                selectChar(obj.id);
             } else {
-                SESSION.SELECTED_CHAR_ID = undefined;
+                deselectChar();
             }
         };
     });
 
     document.addEventListener('mouseup', _ => {
-        SESSION.SELECTED_CHAR_ID = undefined;
         SESSION.MOUSEDOWN = false;
+        deselectChar();
     });
 
     highlightCanvas.addEventListener('mouseleave', _ => {

@@ -20,6 +20,10 @@ canvas#highlight {
     animation: 0.5s infinite alternate highlight_blink;
 }
 
+canvas#highlight:active {
+    animation: none;
+}
+
 @keyframes highlight_blink {
     0% {
         opacity: 1;
