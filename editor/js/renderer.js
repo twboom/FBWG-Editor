@@ -88,10 +88,10 @@ function renderCharsLayer(layer) {
     chars.forEach(obj => {
         switch (obj.gid){
             case 16: // Spawn FB
-                drawImage('assets/chars/spawn_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
+                drawImage('assets/chars/spawn_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 break;
             case 17: // Spawn FB
-                drawImage('assets/chars/spawn_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
+                drawImage('assets/chars/spawn_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 break;
             case 18:
                 drawImage('assets/chars/door_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
