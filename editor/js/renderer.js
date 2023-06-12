@@ -1,7 +1,6 @@
 const CONFIG = {
     SLOPE_STEEPNESS: 0.6
-}
-
+};
 
 const LEVEL = {
     BLOCK_SIZE: 32,
@@ -10,7 +9,7 @@ const LEVEL = {
     TILELAYER: [],
     OBJECTLAYER: {},
     CHARSLAYER: {}
-}
+};
 
 const SESSION = {
     MOUSEDOWN: false,
@@ -23,7 +22,9 @@ const SESSION = {
     SELECTED_TOOL_TYPE: undefined,
     SELECTED_TILE_TYPE: 0,
     SELECTED_CHAR_TYPE: 20,
-}
+};
+
+const CACHE = {};
 
 function renderTileLayer() {
     function drawTile([x, y], blockId, index) {
@@ -69,12 +70,17 @@ function renderObjectLayer(layer) {
 };
 
 function drawImage(src, sizeX, sizeY, x, y, ctx) {
-    console.log(ctx)
-    const img = new Image(sizeX, sizeY);
+    let img = new Image(sizeX, sizeY);
+    if (src in CACHE) {
+        console.log(src)
+        img = CACHE[src].cloneNode(true)
+    } else {
+        img.src = src;
+        CACHE[src] = img;
+    };
     img.onload = _ => {
         ctx.drawImage(img, x, y);
     };
-    img.src = src;
 };
 
 function renderCharsLayer(layer) {
@@ -445,7 +451,6 @@ function moveChar(x, y) {
         return collidesWithCursor(obj, x, y);
     });
     if (obj) {
-        console.log(SESSION.MOUSEDOWNX - obj.x)
         obj.x = (x - SESSION.MOUSEDOWNX) + obj.x;
         obj.y = (y - SESSION.MOUSEDOWNY) + obj.y;
         render(false, false, true);
