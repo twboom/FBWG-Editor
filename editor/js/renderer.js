@@ -1,5 +1,7 @@
 const CONFIG = {
-    SLOPE_STEEPNESS: 0.6
+    SLOPE_STEEPNESS: 0.6,
+    OBJ_NO_GROUP_REQUIRED: ['box_normal', 'box_heavy'],
+    OBJ_NO_POPUP_GID: [28, 37],
 };
 
 const LEVEL = {
@@ -482,7 +484,6 @@ function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [
 };
 
 function addObject(type, [x, y]) {
-    const NO_GROUP_REQUIRED = new Set(['box'])
     const GID_LOOKUP = {
         'button': 24,
         'lever': 25,
@@ -507,7 +508,7 @@ function addObject(type, [x, y]) {
         "width": 64,
     };
 
-    if (NO_GROUP_REQUIRED.has(type)) {
+    if (CONFIG.OBJ_NO_GROUP_REQUIRED.includes(type)) {
         options.properties = undefined;
         options.propertytypes = undefined;
     };
@@ -664,7 +665,7 @@ function createObjPopup(x, y, fields) {
         const label = document.createElement('label');
         label.innerText = field.name;
         const input = document.createElement('input');
-        input.type = fields.type;
+        input.type = field.type;
         field.attributes.forEach(attr => {
             input.setAttribute(attr.type, attr.value);
         });
@@ -688,11 +689,11 @@ function showObjPopup() {
     const obj = LEVEL.OBJECTLAYER.objects.find(obj => {
         return collidesWithCursor(obj, SESSION.MOUSEX, SESSION.MOUSEY, true);
     });
-    console.log(obj)
     if (document.getElementById('popup')) {
         document.getElementById('popup').remove();
     };
     if (!obj) { return; };
+    if (CONFIG.OBJ_NO_POPUP_GID.includes(obj.gid)) { return; };
     const groupField = {
         name: 'group',
         type: 'number',
@@ -704,6 +705,10 @@ function showObjPopup() {
             {
                 type: 'max',
                 value: 8,
+            },
+            {
+                type: 'value',
+                value: obj.properties.group,
             },
         ],
         evtType: 'change',
