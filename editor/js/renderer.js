@@ -57,21 +57,47 @@ function renderTileLayer() {
     }
 };
 
+function drawPlatform(obj, ctx) {
+    const COLOR_LOOKUP = [
+        'red',
+        'green',
+        'blue',
+        'yellow',
+        'magenta',
+        'lightskyblue',
+        'blueviolet',
+        'white',
+    ]
+    console.log(obj.properties.group, COLOR_LOOKUP[obj.properties.group - 1])
+    ctx.beginPath();
+    ctx.rect(obj.x, obj.y + obj.height, obj.width, -obj.height)
+    ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1];
+    ctx.fill();
+    const strokeWidth = 8;
+    const strokeOffset = strokeWidth / 2
+    ctx.beginPath();
+    ctx.rect(obj.x + strokeOffset, obj.y + obj.height - strokeOffset, obj.width - strokeWidth, -obj.height + strokeWidth);
+    ctx.strokeStyle = 'gray';
+    ctx.lineWidth = strokeWidth;
+    ctx.stroke();
+};
+
 function renderObjectLayer(layer) {
     const objects = layer.objects;
     objects.forEach(obj => {
-        console.log(obj)
         let group;
         if (obj.properties) { group = obj.properties.group; };
-        if (obj.gid) {
-            switch (obj.gid){
-                case 24: //button
+        if (obj.type == 'platform') { // Platform
+            drawPlatform(obj, objCtx);
+        } else if (obj.gid) {
+            switch (obj.gid) {
+                case 24: // Button
                     drawImage(`assets/objects/button_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
                     return;
-                case 25: //lever (off is to left)
+                case 25: // Lever (off is to left)
                     drawImage(`assets/objects/lever_left_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
                     return;
-                case 26: //lever (off is to right)
+                case 26: // Lever (off is to right)
                     drawImage(`assets/objects/lever_right_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
                     return;
                 case 28: // Box normal
@@ -96,17 +122,13 @@ function renderObjectLayer(layer) {
                     break;
                 case 39: //wind generator
                     break;
-            }
-        } else if (obj.type == 'platform') { //platform
-        }
-        objCtx.beginPath();
-        let objY = obj.y;
-        if (obj.type === 'platform') {
-            objY += obj.height;
+                default:
+                    objCtx.beginPath();
+                    objCtx.rect(obj.x, obj.y, obj.width, -obj.height)
+                    objCtx.fillStyle = 'purple';
+                    objCtx.fill();
+            };
         };
-        objCtx.rect(obj.x, objY, obj.width, -obj.height)
-        objCtx.fillStyle = 'purple';
-        objCtx.fill();
     });
 };
 
