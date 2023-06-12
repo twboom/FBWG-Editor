@@ -17,7 +17,7 @@ Fireboy &amp; Watergirl Level Editor
 * 2 = green
 * 3 = blue
 * 4 = yellow 
-* 5 = pink
+* 5 = magenta
 * 6 = light blue
 * 7 = purple
 * 8 = white
