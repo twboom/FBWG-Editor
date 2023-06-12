@@ -95,7 +95,7 @@ function renderObjectLayer(layer) {
         if (obj.type === 'platform') {
             objY += obj.height;
         };
-        objCtx.rect(obj.x, obj.y, obj.width, obj.height)
+        objCtx.rect(obj.x, objY, obj.width, -obj.height)
         objCtx.fillStyle = 'purple';
         objCtx.fill();
     });
