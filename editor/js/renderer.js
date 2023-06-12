@@ -541,8 +541,8 @@ function initEditor() {
             setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
         };
 
-        if (SESSION.MOUSEDOWN && SESSION.SELECTED_CHAR_TYPE === 'm') {
-            moveChar(mouseX, mouseY)
+        if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'CHAR' && SESSION.SELECTED_CHAR_TYPE === 'm') {
+            moveChar(mouseX, mouseY);
         };
     });
 
@@ -560,7 +560,7 @@ function initEditor() {
                 if (SESSION.SELECTED_CHAR_TYPE === 's') { // Select
                     return;
                 };
-                if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 24) { // Spawns and doors
+                if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 24) { // Spawns and doors and diamonds
                     addCharObj(SESSION.SELECTED_CHAR_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
                 };
                 break;
