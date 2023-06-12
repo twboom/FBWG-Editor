@@ -439,7 +439,7 @@ function initEditor() {
 
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
             setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
-        }
+        };
     });
 
     highlightCanvas.addEventListener('click', _ => {
@@ -448,7 +448,7 @@ function initEditor() {
                 setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE);
                 break;
 
-            case 'OBJE':
+            case 'CHAR':
                 if (SESSION.SELECTED_OBJE_TYPE === 'd') { // Delete
                     deleteChar(SESSION.MOUSEX, SESSION.MOUSEY)
                     return;
@@ -491,13 +491,13 @@ function initEditor() {
         });
     });
 
-    Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
+    Array.from(document.getElementsByClassName('char-option')).forEach(el => {
         el.addEventListener('click', _ => {
             SESSION.SELECTED_OBJE_TYPE = parseInt(el.dataset.gid);
             if (isNaN(SESSION.SELECTED_OBJE_TYPE)) {
                 SESSION.SELECTED_OBJE_TYPE = el.dataset.gid;
             }
-            SESSION.SELECTED_TOOL_TYPE = 'OBJE';
+            SESSION.SELECTED_TOOL_TYPE = 'CHAR';
             setSelectedClass(el);
         });
     });
