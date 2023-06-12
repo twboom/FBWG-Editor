@@ -14,13 +14,15 @@ const LEVEL = {
 
 const SESSION = {
     MOUSEDOWN: false,
+    MOUSEDOWNX: 0,
+    MOUSEDOWNY: 0,
     MOUSEX: 0,
     MOUSEY: 0,
     TILEX: 0,
     TILEY: 0,
     SELECTED_TOOL_TYPE: undefined,
     SELECTED_TILE_TYPE: 0,
-    SELECTED_OBJE_TYPE: 20,
+    SELECTED_CHAR_TYPE: 20,
 }
 
 function renderTileLayer() {
@@ -391,7 +393,7 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
         "visible": true,
         "width": 64,
     };
-    if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 19 && autoDeleteOthers) {
+    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19 && autoDeleteOthers) {
         const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
         others.forEach(el => {
             setChar({id: el.id}, null, null, true);
@@ -418,6 +420,20 @@ function deleteChar(x, y) {
         setChar({id: int.id}, null, null, true);
     };
 };
+
+function moveChar(x, y) {
+    const obj = LEVEL.CHARSLAYER.objects.find(obj => {
+        return collidesWithCursor(obj, x, y);
+    });
+    if (obj) {
+        console.log(SESSION.MOUSEDOWNX - obj.x)
+        obj.x = (x - SESSION.MOUSEDOWNX) + obj.x;
+        obj.y = (y - SESSION.MOUSEDOWNY) + obj.y;
+        render(false, false, true);
+        SESSION.MOUSEDOWNX = x;
+        SESSION.MOUSEDOWNY = y;
+    };
+}
 
 function highlightChar(x, y) {
     const obj = LEVEL.CHARSLAYER.objects.find(obj => {
@@ -463,6 +479,10 @@ function initEditor() {
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
             setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
         };
+
+        if (SESSION.MOUSEDOWN && SESSION.SELECTED_CHAR_TYPE === 'm') {
+            moveChar(mouseX, mouseY)
+        };
     });
 
     highlightCanvas.addEventListener('click', _ => {
@@ -472,22 +492,26 @@ function initEditor() {
                 break;
 
             case 'CHAR':
-                if (SESSION.SELECTED_OBJE_TYPE === 'd') { // Delete
+                if (SESSION.SELECTED_CHAR_TYPE === 'd') { // Delete
                     deleteChar(SESSION.MOUSEX, SESSION.MOUSEY)
                     return;
                 };
-                if (SESSION.SELECTED_OBJE_TYPE === 's') { // Select
+                if (SESSION.SELECTED_CHAR_TYPE === 's') { // Select
                     return;
                 };
-                if (SESSION.SELECTED_OBJE_TYPE >= 16 && SESSION.SELECTED_OBJE_TYPE <= 24) { // Spawns and doors
-                    addCharObj(SESSION.SELECTED_OBJE_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
+                if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 24) { // Spawns and doors
+                    addCharObj(SESSION.SELECTED_CHAR_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
                 };
                 break;
         };
     });
 
-    highlightCanvas.addEventListener('mousedown', _ => {
+    highlightCanvas.addEventListener('mousedown', evt => {
         SESSION.MOUSEDOWN = true;
+        const mouseX = evt.offsetX > 0 ? evt.offsetX : 0;
+        const mouseY = evt.offsetY > 0 ? evt.offsetY : 0;
+        SESSION.MOUSEDOWNX = mouseX;
+        SESSION.MOUSEDOWNY = mouseY;
     });
 
     document.addEventListener('mouseup', _ => {
@@ -516,9 +540,9 @@ function initEditor() {
 
     Array.from(document.getElementsByClassName('char-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_OBJE_TYPE = parseInt(el.dataset.gid);
-            if (isNaN(SESSION.SELECTED_OBJE_TYPE)) {
-                SESSION.SELECTED_OBJE_TYPE = el.dataset.gid;
+            SESSION.SELECTED_CHAR_TYPE = parseInt(el.dataset.gid);
+            if (isNaN(SESSION.SELECTED_CHAR_TYPE)) {
+                SESSION.SELECTED_CHAR_TYPE = el.dataset.gid;
             }
             SESSION.SELECTED_TOOL_TYPE = 'CHAR';
             setSelectedClass(el);
