@@ -63,9 +63,9 @@ function renderObjectLayer(layer) {
         //     switch (obj.gid){
         //         case 24: //button
         //             break;
-        //         case 25: //lever
+        //         case 25: //lever (off is to left)
         //             break;
-        //         case 26: //lever
+        //         case 26: //lever (off is to right)
         //             break;
         //         case 28: //box
         //             break;
