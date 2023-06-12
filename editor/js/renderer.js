@@ -349,6 +349,32 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
     render(false, true, false);
 };
 
+function addObjectObj(type, [x, y], [width, height], autoDeleteOthers=true, [dx, dy, group] ) {
+    let  options = {
+        "gid":type,
+        "height":height,
+        "id":Date.now(),
+        "name":name,
+        "properties":{
+          "dx":dx,
+          "dy":dy,
+          "group":group
+        },
+        "propertytypes":{
+          "dx":"int",
+          "dy":"int",
+          "group":"int"
+        },
+        "rotation":rotation,
+        "type":type,
+        "visible":visible,
+        "width":width,
+        "x":x,
+        "y":y
+    }
+}
+
+
 function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
         for (let i = 0; LEVEL.CHARSLAYER.objects.length; i++){
