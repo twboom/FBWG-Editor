@@ -400,21 +400,44 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
     setChar(options, x, y);
 };
 
-function deleteChar(x, y) {
-    function collidesWithCursor(obj) {
-        if (
-            x >= obj.x &&
-            x <= obj.x + obj.width &&
-            y <= obj.y &&
-            y >= obj.y - obj.height
-        ) { console.log(obj); return true }
-        else { return false };
-    };
+function collidesWithCursor(obj, x, y) {
+    if (
+        x >= obj.x &&
+        x <= obj.x + obj.width &&
+        y <= obj.y &&
+        y >= obj.y - obj.height
+    ) { return true; }
+    else { return false; };
+};
 
-    const int = LEVEL.CHARSLAYER.objects.find(collidesWithCursor);
+function deleteChar(x, y) {
+    const int = LEVEL.CHARSLAYER.objects.find(obj => {
+        return collidesWithCursor(obj, x, y);
+    });
     if (int) {
         setChar({id: int.id}, null, null, true);
     };
+};
+
+function highlightChar(x, y) {
+    const obj = LEVEL.CHARSLAYER.objects.find(obj => {
+        return collidesWithCursor(obj, x, y);
+    });
+    if (obj) {
+        hlCtx.beginPath();
+        hlCtx.rect(obj.x, obj.y - obj.height, obj.width, obj.height)
+        hlCtx.strokeStyle = 'cyan';
+        hlCtx.lineWidth = 8;
+        hlCtx.stroke();
+    };
+};
+
+function highlightTile(x, y) {
+    const blockSize = LEVEL.BLOCK_SIZE;
+    hlCtx.beginPath();
+    hlCtx.rect(x * blockSize, y * blockSize, blockSize, blockSize);
+    hlCtx.fillStyle = 'cyan';
+    hlCtx.fill();
 };
 
 function initEditor() {
@@ -432,11 +455,11 @@ function initEditor() {
         SESSION.TILEY = tileY;
 
         hlCtx.clearRect(0, 0, LEVEL.WIDTH * blockSize, LEVEL.HEIGHT * blockSize);
-        hlCtx.beginPath()
-        hlCtx.rect(tileX * blockSize, tileY * blockSize, blockSize, blockSize);
-        hlCtx.fillStyle = 'cyan'
-        if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { hlCtx.fill() };
+        
+        if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { highlightTile(tileX, tileY); };
+        if (SESSION.SELECTED_TOOL_TYPE === 'CHAR') { highlightChar(mouseX, mouseY); };
 
+        // Dragging function
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
             setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
         };
