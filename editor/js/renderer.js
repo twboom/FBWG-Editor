@@ -80,52 +80,32 @@ function drawImage(src, sizeX, sizeY, x, y, ctx) {
 function renderCharsLayer(layer) {
     const chars = layer.objects;
     chars.forEach(obj => {
-        charCtx.beginPath();
         switch (obj.gid){
-            case 16:
-                charCtx.fillStyle = 'red';
+            case 16: // Spawn FB
+                drawImage('assets/chars/spawn_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 break;
-            case 17:
-                charCtx.fillStyle = 'blue';
+            case 17: // Spawn FB
+                drawImage('assets/chars/spawn_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
                 break;
             case 18:
                 drawImage('assets/chars/door_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                return;
+                break;
             case 19: // Door WG
                 drawImage('assets/chars/door_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                return;
+                break;
             case 20: // Diamond FB
-                // const img1 = new Image(2048,2048);
-                // img1.src = "assets/atlasses/CharAssets.png";
-                // img1.onload = charCtx.drawImage(img1, 1086, 1339, 113, 114, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
                 drawImage('assets/chars/diamond_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                return;
-                case 21: // Diamond WG
-                // const img2 = new Image(2048,2048);
-                // img2.src = "assets/atlasses/CharAssets.png";
-                // img2.onload = charCtx.drawImage(img2, 969, 1339, 112, 112, obj.x - 0.8*LEVEL.BLOCK_SIZE, (obj.y - obj.width) - 0.8*LEVEL.BLOCK_SIZE, 1.8*obj.width, 1.8*obj.height);
+                break;
+            case 21: // Diamond WG
                 drawImage('assets/chars/diamond_wg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                return;
-                case 22: // Diamond silver
-                // charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.75 * obj.width, -0.75 * obj.height);
-                // charCtx.fillStyle = 'white';
+                break;
+            case 22: // Diamond silver
                 drawImage('assets/chars/diamond_silver.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                return;
-                case 23: // Diamond FBWG
-                // charCtx.rect(obj.x + 0.125 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
-                // charCtx.fillStyle = 'red';
-                // charCtx.fill();
-                // charCtx.beginPath();
-                // charCtx.rect(obj.x + 0.5 * obj.width, obj.y - 0.125 * obj.height, 0.375 * obj.width, -0.75 * obj.height);
-                // charCtx.fillStyle = 'blue';
-                // charCtx.fill();
+                break;
+            case 23: // Diamond FBWG
                 drawImage('assets/chars/diamond_fbwg.svg', 64, 64, obj.x, obj.y - 64, charCtx);
-                return;
+                break;
         };
-        if (obj.gid >= 16 && obj.gid <= 19) {
-            charCtx.rect(obj.x, obj.y, obj.width, -obj.height);
-        };
-        charCtx.fill();
     });
 };
 
