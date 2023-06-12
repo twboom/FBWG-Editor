@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style>
+        .base {
+            fill: orange;
+            stroke: #a25900;
+            stroke-width: 4px;
+        }
+        line {
+            stroke: #a25900;
+            stroke-width: 6px;
+        }
+        .highlight {
+            fill: yellow;
+            stroke: yellowgreen;
+            stroke-width: 2px;
+        }
+    </style>
+    <line x1="32" x2="8" y1="32" y2="8" />
+    <polygon class="base" points="
+        0,32
+        16,48
+        48,48
+        64,32
+    " />
+    <circle class="base" cx="12" cy="12" r="8" />
+    <circle class="highlight" cx="12" cy="12" r="6" />
+    <polygon class="highlight" points="
+        22,36
+        42,36
+        44,44
+        20,44
+    " />
+</svg>
