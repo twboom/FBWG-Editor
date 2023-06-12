@@ -68,7 +68,6 @@ function drawPlatform(obj, ctx) {
         'blueviolet',
         'white',
     ]
-    console.log(obj.properties.group, COLOR_LOOKUP[obj.properties.group - 1])
     ctx.beginPath();
     ctx.rect(obj.x, obj.y + obj.height, obj.width, -obj.height)
     ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1];
