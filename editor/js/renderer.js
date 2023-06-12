@@ -86,6 +86,7 @@ function drawImage(src, sizeX, sizeY, x, y, ctx) {
 function renderCharsLayer(layer) {
     const chars = layer.objects;
     chars.forEach(obj => {
+        if (!obj.visible) { return };
         switch (obj.gid){
             case 16: // Spawn FB
                 drawImage('assets/chars/spawn_fb.svg', 64, 64, obj.x, obj.y - 64, charCtx);
