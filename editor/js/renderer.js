@@ -20,8 +20,9 @@ const SESSION = {
     TILEX: 0,
     TILEY: 0,
     SELECTED_TOOL_TYPE: undefined,
-    SELECTED_TILE_TYPE: 0,
-    SELECTED_CHAR_TYPE: 20,
+    SELECTED_TILE_TYPE: undefined,
+    SELECTED_CHAR_TYPE: undefined,
+    SELECTED_OBJE_TYPE: undefined,
     SELECTED_CHAR_ID: undefined,
     ALLOWMULTIPLESPAWNS: false
 };
@@ -385,7 +386,7 @@ function setBlock([x, y], id) {
     render(true, false, false);
 };
 
-function setObject({gid, height, id, name, dx, dy, group, rotation, type, visible, width}, x, y, deleting = false) {
+function setObject({gid, height, id, name, properties, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
         for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
             if (LEVEL.OBJECTLAYER[i].id == id) {
@@ -400,11 +401,7 @@ function setObject({gid, height, id, name, dx, dy, group, rotation, type, visibl
        "height":height,
        "id":id,
        "name":name,
-       "properties":{
-         "dx":dx,
-         "dy":dy,
-         "group":group
-       },
+       "properties": properties,
        "propertytypes":{
          "dx":"int",
          "dy":"int",
@@ -417,15 +414,15 @@ function setObject({gid, height, id, name, dx, dy, group, rotation, type, visibl
        "x":x,
        "y":y
     };
-    if (!dx && !dy) {
-        if (!group) {
-            objectTemplate.Array.splice(4, 2);
-        } else {
-            objectTemplate.properties.Array.splice(0, 2);
-            objectTemplate.propertytypes.Array.splice(0,2);
-        };
-    } 
-    if (objType == "platform") {
+    // if (!dx && !dy) {
+    //     if (!group) {
+    //         objectTemplate.Array.splice(4, 2);
+    //     } else {
+    //         objectTemplate.properties.Array.splice(0, 2);
+    //         objectTemplate.propertytypes.Array.splice(0,2);
+    //     };
+    // } 
+    if (objectTemplate.type == "platform") {
         objectTemplate.Array.splice(0, 1);
         objectTemplate.Array.type = objType;
     };
@@ -482,8 +479,51 @@ function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [
         }
     }
     setObject(options, x, y);
-}
+};
 
+function addObject(type, [x, y]) {
+    const NO_GROUP_REQUIRED = new Set(['box'])
+    const GID_LOOKUP = {
+        'button': 24,
+        'lever': 25,
+        'box_normal': 28,
+        'box_heavy': 37,
+        'platform': undefined,
+    }
+    let options = {
+        "gid": GID_LOOKUP[type],
+        "height": 64,
+        "id": Date.now(),
+        "name": "",
+        "properties":{
+          "group": 1
+        },
+        "propertytypes":{
+          "group": "int"
+        },
+        "rotation": 0,
+        "type": "",
+        "visible": true,
+        "width": 64,
+    };
+
+    if (NO_GROUP_REQUIRED.has(type)) {
+        options.properties = undefined;
+        options.propertytypes = undefined;
+    };
+
+    if (type === 'platform') {
+        options.properties.dx = 0;
+        options.properties.dy = 0;
+        options.propertytypes.dx = 'int';
+        options.propertytypes.dx = 'int';
+    };
+
+    setObject(options, x, y);
+
+    SESSION.SELECTED_OBJE_TYPE = 'e';
+    setSelectedClass(document.querySelector('button.tool.obje-option[data-aid="e"]'));
+};
 
 function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
@@ -529,16 +569,29 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
         });
     };
     setChar(options, x, y);
+    SESSION.SELECTED_OBJE_TYPE = 'e';
 };
 
-function collidesWithCursor(obj, x, y) {
+function collidesWithCursor(obj, x, y, mayBePlatform=false) {
     if (
         x >= obj.x &&
         x <= obj.x + obj.width &&
         y <= obj.y &&
         y >= obj.y - obj.height
-    ) { return true; }
-    else { return false; };
+    ) {
+        if (mayBePlatform) {
+            if (obj.type === 'platform') { return false; }
+            else { return true; };
+        } else { return true; };
+    }
+    else if (mayBePlatform) {
+        if (
+            x >= obj.x &&
+            x <= obj.x + obj.width &&
+            y <= obj.y + obj.height &&
+            y >= obj.y - obj.height
+        ) { return true };
+    } else { return false; };
 };
 
 function deleteChar(x, y) {
@@ -563,8 +616,8 @@ function moveChar(objId) {
     };
 }
 
-function highlightChar(x, y) {
-    const obj = LEVEL.CHARSLAYER.objects.find(obj => {
+function highlight(x, y, layer) {
+    const obj = layer.objects.find(obj => {
         return collidesWithCursor(obj, x, y);
     });
     if (obj) {
@@ -602,6 +655,76 @@ function deselectChar() {
     render(false, false, true);
 };
 
+function createObjPopup(x, y, fields) {
+    const popup = document.createElement('div');
+    popup.id = 'popup';
+    fields.forEach(field => {
+        const container = document.createElement('div');
+        container.classList.add('popup-field');
+        const label = document.createElement('label');
+        label.innerText = field.name;
+        const input = document.createElement('input');
+        input.type = fields.type;
+        field.attributes.forEach(attr => {
+            input.setAttribute(attr.type, attr.value);
+        });
+        input.addEventListener(field.evtType, field.callback);
+        container.appendChild(label);
+        container.appendChild(input);
+        popup.appendChild(container);
+    });
+    const close = document.createElement('button');
+    close.innerText = 'Close';
+    close.addEventListener('click', _ => {
+        popup.remove();
+    });
+    popup.appendChild(close);
+    popup.style.left = x + 'px';
+    popup.style.top = y + 'px';
+    return popup;
+};
+
+function showObjPopup() {
+    const obj = LEVEL.OBJECTLAYER.objects.find(obj => {
+        return collidesWithCursor(obj, SESSION.MOUSEX, SESSION.MOUSEY, true);
+    });
+    console.log(obj)
+    if (document.getElementById('popup')) {
+        document.getElementById('popup').remove();
+    };
+    if (!obj) { return; };
+    const groupField = {
+        name: 'group',
+        type: 'number',
+        attributes: [
+            {
+                type: 'min',
+                value: 1,
+            },
+            {
+                type: 'max',
+                value: 8,
+            },
+        ],
+        evtType: 'change',
+        callback: evt => {
+            const newGroup = parseInt(evt.srcElement.value);
+            obj.properties.group = newGroup;
+            render(false, true, false);
+        }
+    }
+    const fields = [groupField];
+    const popup = createObjPopup(obj.x + obj.width, obj.y, fields);
+    document.body.appendChild(popup);
+};
+
+function setSelectedClass(el) {
+    Array.from(document.getElementsByClassName('tool')).forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    el.classList.add('selected');
+};
+
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
         const blockSize = LEVEL.BLOCK_SIZE;
@@ -629,7 +752,7 @@ function initEditor() {
 
         // Highlight
         if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { highlightTile(tileX, tileY); };
-        if (SESSION.SELECTED_TOOL_TYPE === 'CHAR') { highlightChar(mouseX, mouseY); };
+        if (SESSION.SELECTED_TOOL_TYPE === 'CHAR') { highlight(mouseX, mouseY, LEVEL.CHARSLAYER); };
     });
 
     highlightCanvas.addEventListener('click', _ => {
@@ -643,11 +766,17 @@ function initEditor() {
                     deleteChar(SESSION.MOUSEX, SESSION.MOUSEY)
                     return;
                 };
-                if (SESSION.SELECTED_CHAR_TYPE === 's') { // Select
-                    return;
-                };
                 if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 24) { // Spawns and doors and diamonds
                     addCharObj(SESSION.SELECTED_CHAR_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
+                };
+                break;
+
+            case 'OBJE':
+                if (SESSION.SELECTED_OBJE_TYPE === 'e') {
+                    showObjPopup();
+                }
+                else {
+                    addObject(SESSION.SELECTED_OBJE_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
                 };
                 break;
         };
@@ -681,13 +810,6 @@ function initEditor() {
         hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
     });
 
-    function setSelectedClass(el) {
-        Array.from(document.getElementsByClassName('tool')).forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        el.classList.add('selected');
-    };
-
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
             SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
@@ -706,6 +828,15 @@ function initEditor() {
             setSelectedClass(el);
         });
     });
+
+    Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            SESSION.SELECTED_OBJE_TYPE = el.dataset.aid;
+            SESSION.SELECTED_TOOL_TYPE = 'OBJE';
+            setSelectedClass(el);
+        });
+    });
+
     document.getElementById('resize').addEventListener('click', resizeLevel);
 
     document.getElementById('level-width').value = LEVEL.WIDTH;

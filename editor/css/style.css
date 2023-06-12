@@ -24,6 +24,13 @@ canvas#highlight:active {
     animation: none;
 }
 
+div#popup {
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    border: solid 4px gray;
+}
+
 @keyframes highlight_blink {
     0% {
         opacity: 1;
