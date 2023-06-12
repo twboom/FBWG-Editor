@@ -48,6 +48,10 @@ Fireboy &amp; Watergirl Level Editor
 * Wind generator, gid = 39
 * Moving platform, type = 'platform'
 
+## Large objects id's
+* Portal white side right, gid = 40
+* Portal white side left, gid = 41
+
 ## Blank chars object
 * {
 *    "gid":0,

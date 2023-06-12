@@ -51,7 +51,10 @@
        {
           "firstgid":24,
           "source":"../../../assets/tilemaps/tilesets/Objects.json"
-       }
+       },{
+         "firstgid":40,
+         "source":"../../../assets/tilemaps/tilesets/LargeObjects.json"
+      }
     ],
     "tilewidth":32,
     "type":"map",
