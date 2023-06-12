@@ -319,7 +319,7 @@ function setBlock([x, y], id) {
     render(true, false, false);
 };
 
-function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible, width, x, y, deleting = false) {
+function setObject({gid, height, id, name, dx, dy, group, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
         for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
             if (LEVEL.OBJECTLAYER[i].id == id) {
@@ -351,16 +351,28 @@ function setObject(gid, height, id, name, dx, dy, group, rotation, type, visible
        "x":x,
        "y":y
     };
+    if (!dx && !dy) {
+        if (!group) {
+            objectTemplate.Array.splice(4, 2);
+        } else {
+            objectTemplate.properties.Array.splice(0, 2);
+            objectTemplate.propertytypes.Array.splice(0,2);
+        };
+    } 
+    if (objType == "platform") {
+        objectTemplate.Array.splice(0, 1);
+        objectTemplate.Array.type = objType;
+    };
     LEVEL.OBJECTLAYER.objects.push(objectTemplate);
     render(false, true, false);
 };
 
-function addObjectObj(type, [x, y], [width, height], autoDeleteOthers=true, [dx, dy, group] ) {
+function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [dx, dy, group] ) {
     let  options = {
-        "gid":type,
+        "gid":objType,
         "height":height,
         "id":Date.now(),
-        "name":name,
+        "name":"",
         "properties":{
           "dx":dx,
           "dy":dy,
@@ -371,13 +383,39 @@ function addObjectObj(type, [x, y], [width, height], autoDeleteOthers=true, [dx,
           "dy":"int",
           "group":"int"
         },
-        "rotation":rotation,
-        "type":type,
+        "rotation":0,
+        "type":"",
         "visible":visible,
         "width":width,
         "x":x,
         "y":y
     }
+    if (!dx && !dy) {
+        if (!group) {
+            options.Array.splice(4, 2);
+        } else {
+            options.properties.Array.splice(0, 2);
+            options.propertytypes.Array.splice(0,2);
+        };
+    } 
+    if (objType == "platform") {
+        options.Array.splice(0, 1);
+        options.Array.type = objType;
+    };
+    if (autoDeleteOthers) {
+        if (typeof gid == Number){
+            const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == objType);
+            others.forEach(el => {
+                setChar({id: el.id}, null, null, true);
+            });    
+        } else {
+            const others = LEVEL.CHARSLAYER.objects.filter(({ type }) => type = objType);
+            others.forEach(el => {
+                setObject({id: el.id}, null, null, true);
+            })
+        }
+    }
+    setObject(options, x, y)
 }
 
 
