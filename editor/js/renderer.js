@@ -60,37 +60,39 @@ function renderTileLayer() {
 function renderObjectLayer(layer) {
     const objects = layer.objects;
     objects.forEach(obj => {
-        // if (obj.gid) {
-        //     switch (obj.gid){
-        //         case 24: //button
-        //             break;
-        //         case 25: //lever (off is to left)
-        //             break;
-        //         case 26: //lever (off is to right)
-        //             break;
-        //         case 28: //box
-        //             break;
-        //         case 29: //licht emitter
-        //             break;
-        //         case 30: //rotation boxmirror
-        //             break;
-        //         case 31: //light receiver
-        //             break;
-        //         case 34: //ball
-        //             break;
-        //         case 35: //rotation mirror
-        //             break;
-        //         case 36: //boxmirror
-        //             break;
-        //         case 37: //heavy box
-        //             break;
-        //         case 38: //timed button
-        //             break;
-        //         case 39: //wind generator
-        //             break;
-        //     }
-        // } else if (obj.type == 'platform') { //platform
-        // }
+        if (obj.gid) {
+            switch (obj.gid){
+                case 24: //button
+                    break;
+                case 25: //lever (off is to left)
+                    break;
+                case 26: //lever (off is to right)
+                    break;
+                case 28: // Box normal
+                    drawImage('assets/objects/box_normal.svg', 64, 64, obj.x, obj.y - 64, objCtx);
+                    return;
+                case 29: //licht emitter
+                    break;
+                case 30: //rotation boxmirror
+                    break;
+                case 31: //light receiver
+                    break;
+                case 34: //ball
+                    break;
+                case 35: //rotation mirror
+                    break;
+                case 36: //boxmirror
+                    break;
+                case 37: // Box heavy
+                    drawImage('assets/objects/box_heavy.svg', 64, 64, obj.x, obj.y - 64, objCtx);
+                    return
+                case 38: //timed button
+                    break;
+                case 39: //wind generator
+                    break;
+            }
+        } else if (obj.type == 'platform') { //platform
+        }
         objCtx.beginPath();
         let objY = obj.y;
         if (obj.type === 'platform') {
