@@ -60,14 +60,20 @@ function renderTileLayer() {
 function renderObjectLayer(layer) {
     const objects = layer.objects;
     objects.forEach(obj => {
+        console.log(obj)
+        let group;
+        if (obj.properties) { group = obj.properties.group; };
         if (obj.gid) {
             switch (obj.gid){
                 case 24: //button
-                    break;
+                    drawImage(`assets/objects/button_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
+                    return;
                 case 25: //lever (off is to left)
-                    break;
+                    drawImage(`assets/objects/lever_left_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
+                    return;
                 case 26: //lever (off is to right)
-                    break;
+                    drawImage(`assets/objects/lever_right_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
+                    return;
                 case 28: // Box normal
                     drawImage('assets/objects/box_normal.svg', 64, 64, obj.x, obj.y - 64, objCtx);
                     return;
