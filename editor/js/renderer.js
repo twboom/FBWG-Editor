@@ -485,9 +485,6 @@ function deleteChar(x, y) {
 };
 
 function moveChar(objId) {
-    // const obj = LEVEL.CHARSLAYER.objects.find(obj => {
-    //     return collidesWithCursor(obj, x, y);
-    // });
     console.log()
     const x = SESSION.MOUSEX;
     const y = SESSION.MOUSEY;
