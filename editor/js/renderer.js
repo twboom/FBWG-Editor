@@ -72,7 +72,6 @@ function renderObjectLayer(layer) {
 function drawImage(src, sizeX, sizeY, x, y, ctx) {
     let img = new Image(sizeX, sizeY);
     if (src in CACHE) {
-        console.log(src)
         img = CACHE[src].cloneNode(true)
     } else {
         img.src = src;
