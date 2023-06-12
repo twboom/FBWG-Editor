@@ -392,7 +392,7 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
        "y":y
     };
     LEVEL.CHARSLAYER.objects.push(charTemplate);
-    render(false, false, true);
+    render(false, false, true); 
 };
 
 function addCharObj(type, [x, y], autoDeleteOthers=true) {
