@@ -390,9 +390,9 @@ function setBlock([x, y], id) {
 
 function setObject({gid, height, id, name, properties, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
-        for (let i = 0; LEVEL.OBJECTLAYER.length; i++){
-            if (LEVEL.OBJECTLAYER[i].id == id) {
-                LEVEL.CHARSLAYER.splice(i, 1);
+        for (let i = 0; LEVEL.OBJECTLAYER.objects.length; i++){
+            if (LEVEL.OBJECTLAYER.objects[i].id == id) {
+                LEVEL.OBJECTLAYER.objects.splice(i, 1);
                 render(false, true, false);
                 return;
             };
@@ -430,6 +430,7 @@ function setObject({gid, height, id, name, properties, rotation, type, visible, 
     };
     LEVEL.OBJECTLAYER.objects.push(objectTemplate);
     render(false, true, false);
+    return objectTemplate
 };
 
 function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [dx, dy, group] ) {
@@ -520,10 +521,12 @@ function addObject(type, [x, y]) {
         options.propertytypes.dx = 'int';
     };
 
-    setObject(options, x, y);
+    const obj = setObject(options, x, y);
 
     SESSION.SELECTED_OBJE_TYPE = 'e';
     setSelectedClass(document.querySelector('button.tool.obje-option[data-aid="e"]'));
+
+    showObjPopup(obj);
 };
 
 function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
@@ -717,8 +720,23 @@ function showObjPopup() {
             obj.properties.group = newGroup;
             render(false, true, false);
         }
-    }
-    const fields = [groupField];
+    };
+    const deleteField = {
+        name: '',
+        type: 'button',
+        attributes: [
+            {
+                type: 'value',
+                value: 'Delete',
+            },
+        ],
+        evtType: 'click',
+        callback: _ => {
+            setObject({id: obj.id}, null, null, true);
+            popup.remove();
+        }
+    };
+    const fields = [groupField, deleteField];
     const popup = createObjPopup(obj.x + obj.width, obj.y, fields);
     document.body.appendChild(popup);
 };
