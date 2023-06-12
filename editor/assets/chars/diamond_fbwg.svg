@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <defs>
+        <linearGradient id="fill">
+            <stop offset="0%" stop-color="red" />
+            <stop offset="50%" stop-color="red" />
+            <stop offset="50%" stop-color="lightskyblue" />
+            <stop offset="100%" stop-color="lightskyblue" />
+        </linearGradient>
+        <linearGradient id="stroke">
+            <stop offset="0%" stop-color="firebrick" />
+            <stop offset="50%" stop-color="firebrick" />
+            <stop offset="50%" stop-color="blue" />
+            <stop offset="100%" stop-color="blue" />
+        </linearGradient>
+    </defs>
+    <style>
+        polygon {
+            fill: url(#fill);
+            stroke: url(#stroke);
+            stroke-width: 4px;
+        }
+    </style>
+    <polygon points="
+        16,24
+        24,16
+        40,16
+        48,24
+        32,44
+    " />
+</svg>
