@@ -22,7 +22,7 @@ Fireboy &amp; Watergirl Level Editor
 * 7 = purple
 * 8 = white
 
-## Special id's
+## Chars id's
 * spawn fb, gid = 16
 * spawn wg, gid = 17
 * Door fb, gid = 18
@@ -31,6 +31,22 @@ Fireboy &amp; Watergirl Level Editor
 * Diamond wg, gid = 21
 * Diamond silver, gid = 22
 * Diamond fbwg, gid = 23
+
+## Objects id's 
+Button, gid = 24
+Lever, gid = 25
+Lever, gid = 26
+Normal box, gid = 28
+Light emitter, gid = 29
+Rotation boxmirror, gid = 30
+Light receiver, gid = 31
+Ball, gid = 34
+Rotation mirror, gid = 35
+Boxmirror, gid = 36
+Heavy box, gid = 37
+Timed button, gid = 38
+Wind generator, gid = 39
+Moving platform, type = 'platform'
 
 ## Blank chars object
 * {
