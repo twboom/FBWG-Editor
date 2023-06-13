@@ -738,6 +738,57 @@ function showObjPopup() {
         }
     };
     const fields = [groupField, deleteField];
+    if (obj.type === 'platform') {
+        const widthField = {
+            name: 'Width (tiles)',
+            type: 'number',
+            attributes: [
+                {
+                    type: 'min',
+                    value: 1,
+                },
+                {
+                    type: 'max',
+                    value: LEVEL.WIDTH / LEVEL.BLOCK_SIZE,
+                },
+                {
+                    type: 'value',
+                    value: obj.width / LEVEL.BLOCK_SIZE,
+                },
+            ],
+            evtType: 'change',
+            callback: evt => {
+                const width = parseInt(evt.srcElement.value) * LEVEL.BLOCK_SIZE;
+                obj.width = width;
+                render(false, true, false)
+            }
+        };
+        const heightField = {
+            name: 'Height (tiles)',
+            type: 'number',
+            attributes: [
+                {
+                    type: 'min',
+                    value: 1,
+                },
+                {
+                    type: 'max',
+                    value: LEVEL.HEIGHT / LEVEL.BLOCK_SIZE,
+                },
+                {
+                    type: 'value',
+                    value: obj.height / LEVEL.BLOCK_SIZE,
+                },
+            ],
+            evtType: 'change',
+            callback: evt => {
+                const height = parseInt(evt.srcElement.value) * LEVEL.BLOCK_SIZE;
+                obj.height = height;
+                render(false, true, false)
+            }
+        };
+        fields.push(widthField, heightField)
+    };
     const popup = createObjPopup(obj.x + obj.width, obj.y, fields);
     document.body.appendChild(popup);
 };
