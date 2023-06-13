@@ -1102,16 +1102,18 @@ function initEditor() {
 
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            // console.log(SESSION.SELECTED_OBJE_TYPE, el.dataset.aid);
-            if (SESSION.SELECTED_OBJE_TYPE === el.dataset.aid) {
-                // SESSION.SELECTED_OBJE_TYPE = undefined;
-                // SESSION.SELECTED_TOOL_TYPE = undefined;
+            console.log(SESSION.SELECTED_OBJE_TYPE, el.dataset.aid);
+            if (SESSION.SELECTED_OBJE_TYPE == el.dataset.aid) {
+                console.log('bonjour')
+                SESSION.SELECTED_OBJE_TYPE = undefined;
+                SESSION.SELECTED_TOOL_TYPE = undefined;
+                setSelectedClass(undefined);
             } else {
                 SESSION.SELECTED_OBJE_TYPE = el.dataset.aid;
                 SESSION.SELECTED_TOOL_TYPE = 'OBJE';
                 setSelectedClass(el);
             };
-            // console.log(SESSION.SELECTED_OBJE_TYPE, SESSION.SELECTED_TOOL_TYPE);
+            console.log(SESSION.SELECTED_OBJE_TYPE, SESSION.SELECTED_TOOL_TYPE);
         });
     });
 
