@@ -746,13 +746,25 @@ function createPopup(x, y, fields) {
         container.classList.add('popup-field');
         const label = document.createElement('label');
         label.innerText = field.name;
-        const input = document.createElement('input');
-        input.type = field.type;
+        container.appendChild(label);
+        let input;
+        if (field.type === 'select') {
+            input = document.createElement('select');
+            field.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.innerText = opt.name;
+                option.value = opt.value;
+                if (opt.default) { option.selected = 'selected'; };
+                input.appendChild(option);
+            });
+        } else {
+            input = document.createElement('input');
+            input.type = field.type;
+        }
         field.attributes.forEach(attr => {
             input.setAttribute(attr.type, attr.value);
         });
         input.addEventListener(field.evtType, field.callback);
-        container.appendChild(label);
         container.appendChild(input);
         popup.appendChild(container);
     });
