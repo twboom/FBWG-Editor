@@ -631,13 +631,17 @@ function move(objId, layer, type) {
     };
 }
 
-function highlight(x, y, layer) {
+function highlight(x, y, layer, mayBePlatform=false) {
     const obj = layer.objects.find(obj => {
-        return collidesWithCursor(obj, x, y);
+        return collidesWithCursor(obj, x, y, mayBePlatform);
     });
     if (obj) {
         hlCtx.beginPath();
-        hlCtx.rect(obj.x, obj.y - obj.height, obj.width, obj.height)
+        if (obj.type === 'platform') {
+            hlCtx.rect(obj.x, obj.y + obj.height, obj.width, -obj.height)
+        } else {
+            hlCtx.rect(obj.x, obj.y - obj.height, obj.width, obj.height)
+        }
         hlCtx.strokeStyle = 'cyan';
         hlCtx.lineWidth = 8;
         hlCtx.stroke();
@@ -885,6 +889,7 @@ function initEditor() {
         // Highlight
         if (SESSION.SELECTED_TOOL_TYPE === 'TILE') { highlightTile(tileX, tileY); };
         if (SESSION.SELECTED_TOOL_TYPE === 'CHAR') { highlight(mouseX, mouseY, LEVEL.CHARSLAYER); };
+        if (SESSION.SELECTED_TOOL_TYPE === 'OBJE') { highlight(mouseX, mouseY, LEVEL.OBJECTLAYER, true); };
     });
 
     highlightCanvas.addEventListener('click', _ => {
