@@ -29,6 +29,8 @@ const SESSION = {
     SELECTED_LAYER_TYPE: undefined,
     SNAPY: 0,
     SNAPX: 0,
+    BEFORE_SNAP_X: undefined,
+    BEFORE_SNAP_Y: undefined,
     ALLOWMULTIPLESPAWNS: false
 };
 
@@ -621,13 +623,33 @@ function move(objId, layer, type) {
     const y = SESSION.MOUSEY;
     const obj = layer.objects.find(({ id }) => id === objId);
     if (obj) {
-        obj.x = (x - SESSION.MOUSEDOWNX) + obj.x;
-        obj.y = (y - SESSION.MOUSEDOWNY) + obj.y;
+        let xPos = (x - SESSION.MOUSEDOWNX) + obj.x;
+        let yPos = (y - SESSION.MOUSEDOWNY) + obj.y;
+
+        SESSION.BEFORE_SNAP_X = xPos;
+        SESSION.BEFORE_SNAP_Y = yPos;
+
+        if (SESSION.SNAPX !== 0) {
+            xPos = Math.round((xPos / SESSION.SNAPX)) * SESSION.SNAPX;
+        };
+
+        if (SESSION.SNAPY !== 0) {
+            yPos = Math.round((yPos / SESSION.SNAPY)) * SESSION.SNAPY;
+        };
+
+        
         if (type === 'CHAR') {
-            drawChar(obj.gid, obj.x, obj.y, hlCtx)
+            drawChar(obj.gid, xPos, yPos, hlCtx)
         } else if (type === 'OBJE') {
             drawObj(obj, hlCtx)
         };
+        
+        if (xPos === obj.x && yPos === obj.y) { return; };
+        
+        console.log('update')
+
+        obj.x = xPos;
+        obj.y = yPos;
         SESSION.MOUSEDOWNX = x;
         SESSION.MOUSEDOWNY = y;
     };
@@ -691,9 +713,7 @@ function deselectElement() {
 };
 
 function createPopup(x, y, fields) {
-    if (document.getElementById('popup')) {
-        document.getElementById('popup').remove();
-    };
+    removePopup();
     const popup = document.createElement('div');
     popup.id = 'popup';
     fields.forEach(field => {
@@ -720,6 +740,12 @@ function createPopup(x, y, fields) {
     popup.style.left = x + 'px';
     popup.style.top = y + 'px';
     return popup;
+};
+
+function removePopup() {
+    if (document.getElementById('popup')) {
+        document.getElementById('popup').remove();
+    };
 };
 
 function showObjPopup() {
@@ -1009,6 +1035,7 @@ function initEditor() {
                 deselectElement();
             }
         };
+        removePopup();
     });
 
     document.addEventListener('mouseup', _ => {
