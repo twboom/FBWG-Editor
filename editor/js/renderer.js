@@ -628,7 +628,8 @@ function collidesWithCursor(obj, x, y, mayBePlatform=false) {
             x >= obj.x &&
             x <= obj.x + obj.width &&
             y <= obj.y + obj.height &&
-            y >= obj.y - obj.height
+            y >= obj.y - obj.height &&
+            obj.type === 'platform'
         ) { return true };
     } else { return false; };
 };
@@ -1055,7 +1056,7 @@ function initEditor() {
         };
         if (SESSION.SELECTED_TOOL_TYPE === 'OBJE' && SESSION.SELECTED_OBJE_TYPE === 'm') {
             const obj = LEVEL.OBJECTLAYER.objects.find(obj => {
-                return collidesWithCursor(obj, mouseX, mouseY);
+                return collidesWithCursor(obj, mouseX, mouseY, true);
             });
             if (obj) {
                 selectElement(obj.id, 'OBJE');
