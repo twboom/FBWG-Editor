@@ -65,14 +65,14 @@ function renderTileLayer() {
 
 function drawPlatform(obj, ctx) {
     const COLOR_LOOKUP = [
-        'red',
-        'green',
-        'blue',
-        'yellow',
-        'magenta',
-        'lightskyblue',
-        'blueviolet',
-        'white',
+        '#FF0000', //red
+        '#008000', //green
+        '#0000FF', //blue
+        '#FFFF00', //yellow
+        '#FF00FF', //magenta
+        '#87CEFA', //lightskyblue
+        '#8A2BE2', //blueviolet
+        '#FFFFFF', //white
     ]
     ctx.beginPath();
     ctx.rect(obj.x, obj.y + obj.height, obj.width, -obj.height)
@@ -83,6 +83,20 @@ function drawPlatform(obj, ctx) {
     ctx.beginPath();
     ctx.rect(obj.x + strokeOffset, obj.y + obj.height - strokeOffset, obj.width - strokeWidth, -obj.height + strokeWidth);
     ctx.strokeStyle = 'gray';
+    ctx.lineWidth = strokeWidth;
+    ctx.stroke();
+
+    const dx = obj.properties.dx;
+    const dy = obj.properties.dy;
+    ctx.beginPath();
+    ctx.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
+    ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
+    console.log(COLOR_LOOKUP[obj.properties.group - 1] + '07f');
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
+    ctx.strokeStyle = '#8080807f';
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
 };
