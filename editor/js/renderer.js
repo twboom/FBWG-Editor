@@ -27,6 +27,8 @@ const SESSION = {
     SELECTED_OBJE_TYPE: undefined,
     SELECTED_ELEMENT_ID: undefined,
     SELECTED_LAYER_TYPE: undefined,
+    SNAPY: 0,
+    SNAPX: 0,
     ALLOWMULTIPLESPAWNS: false
 };
 
@@ -878,7 +880,11 @@ function createMovementPopup(obj) {
         ],
         evtType: 'change',
         callback: evt => {
-            const x = parseInt(evt.srcElement.value);
+            let x = parseInt(evt.srcElement.value);
+            if (SESSION.SNAPX !== 0) {
+                x = Math.round((x / SESSION.SNAPX)) * SESSION.SNAPX;
+            };
+            if (obj.x === x) { return };
             obj.x = x;
             renderCurrentLayer();
         }
@@ -894,12 +900,62 @@ function createMovementPopup(obj) {
         ],
         evtType: 'change',
         callback: evt => {
-            const y = parseInt(evt.srcElement.value);
+            let y = parseInt(evt.srcElement.value);
+            if (SESSION.SNAPY !== 0) {
+                y = Math.round((y / SESSION.SNAPY)) * SESSION.SNAPY;
+            };
+            if (obj.y === y) { return };
             obj.y = y;
             renderCurrentLayer();
         }
     };
-    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField]);
+    const xSnapField = {
+        name: 'X Snap',
+        type: 'number',
+        attributes: [
+            {
+                type: 'min',
+                value: 0,
+            },
+            {
+                type: 'max',
+                value: LEVEL.BLOCK_SIZE,
+            },
+            {
+                type: 'value',
+                value: SESSION.SNAPX,
+            },
+        ],
+        evtType: 'change',
+        callback: evt => {
+            const xSnap = parseInt(evt.srcElement.value);
+            SESSION.SNAPX = xSnap;
+        }
+    };
+    const ySnapField = {
+        name: 'Y Snap',
+        type: 'number',
+        attributes: [
+            {
+                type: 'min',
+                value: 0,
+            },
+            {
+                type: 'max',
+                value: LEVEL.BLOCK_SIZE,
+            },
+            {
+                type: 'value',
+                value: SESSION.SNAPY,
+            },
+        ],
+        evtType: 'change',
+        callback: evt => {
+            const ySnap = parseInt(evt.srcElement.value);
+            SESSION.SNAPY = ySnap;
+        }
+    };
+    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField, xSnapField, ySnapField]);
     document.body.appendChild(popup);
 };
 
