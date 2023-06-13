@@ -29,8 +29,7 @@ const SESSION = {
     SELECTED_LAYER_TYPE: undefined,
     SNAPY: 0,
     SNAPX: 0,
-    BEFORE_SNAP_X: undefined,
-    BEFORE_SNAP_Y: undefined,
+    CURRENTLY_DRAGGING: false,
     ALLOWMULTIPLESPAWNS: false
 };
 
@@ -650,35 +649,20 @@ function move(objId, layer, type) {
     if (obj) {
         let xPos = (x - SESSION.MOUSEDOWNX) + obj.x;
         let yPos = (y - SESSION.MOUSEDOWNY) + obj.y;
-
-        SESSION.BEFORE_SNAP_X = xPos;
-        SESSION.BEFORE_SNAP_Y = yPos;
-
-        if (SESSION.SNAPX !== 0) {
-            xPos = Math.round((xPos / SESSION.SNAPX)) * SESSION.SNAPX;
-        };
-
-        if (SESSION.SNAPY !== 0) {
-            yPos = Math.round((yPos / SESSION.SNAPY)) * SESSION.SNAPY;
-        };
-
         
         if (type === 'CHAR') {
             drawChar(obj.gid, xPos, yPos, hlCtx)
         } else if (type === 'OBJE') {
             drawObj(obj, hlCtx)
         };
-        
-        if (xPos === obj.x && yPos === obj.y) { return; };
-        
-        console.log('update')
-
+                
         obj.x = xPos;
         obj.y = yPos;
         SESSION.MOUSEDOWNX = x;
         SESSION.MOUSEDOWNY = y;
+        SESSION.CURRENTLY_DRAGGING = true;
     };
-}
+};
 
 function highlight(x, y, layer, mayBePlatform=false) {
     const obj = layer.objects.find(obj => {
@@ -726,7 +710,15 @@ function deselectElement() {
     const layer = SESSION.SELECTED_LAYER_TYPE === 'CHAR' ? LEVEL.CHARSLAYER : LEVEL.OBJECTLAYER;
     obj = layer.objects.find(({ id }) => id === SESSION.SELECTED_ELEMENT_ID);
     obj.visible = true;
-    // Create movement popup
+    if (SESSION.CURRENTLY_DRAGGING) {
+        if (SESSION.SNAPX !== 0) {
+            obj.x = Math.round((obj.x / SESSION.SNAPX)) * SESSION.SNAPX;
+        };
+
+        if (SESSION.SNAPY !== 0) {
+            obj.y = Math.round((obj.y / SESSION.SNAPY)) * SESSION.SNAPY;
+        };
+    };
     createMovementPopup(obj);
     SESSION.SELECTED_ELEMENT_ID = undefined;
     if (SESSION.SELECTED_LAYER_TYPE === 'CHAR') {
@@ -734,7 +726,7 @@ function deselectElement() {
     } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
         render(false, true, false);
     };
-    SESSION.SELECTED_LAYER_TYPE = undefined
+    SESSION.SELECTED_LAYER_TYPE = undefined;
 };
 
 function createPopup(x, y, fields) {
@@ -1082,6 +1074,7 @@ function initEditor() {
     document.addEventListener('mouseup', _ => {
         SESSION.MOUSEDOWN = false;
         deselectElement();
+        SESSION.CURRENTLY_DRAGGING = false;
     });
 
     highlightCanvas.addEventListener('mouseleave', _ => {
