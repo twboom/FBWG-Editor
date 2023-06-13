@@ -963,7 +963,9 @@ function setSelectedClass(el) {
     Array.from(document.getElementsByClassName('tool')).forEach(btn => {
         btn.classList.remove('selected');
     });
-    el.classList.add('selected');
+    if (el) {
+        el.classList.add('selected');
+    };
 };
 
 function initEditor() {
@@ -1069,28 +1071,47 @@ function initEditor() {
 
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
-            SESSION.SELECTED_TOOL_TYPE = 'TILE';
-            setSelectedClass(el);
+            if (SESSION.SELECTED_TILE_TYPE == parseInt(el.dataset.tid)) {
+                SESSION.SELECTED_TILE_TYPE = undefined;
+                SESSION.SELECTED_TOOL_TYPE = undefined;
+                setSelectedClass(undefined);
+            } else {
+                SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
+                SESSION.SELECTED_TOOL_TYPE = 'TILE';
+                setSelectedClass(el);
+            };
         });
     });
 
     Array.from(document.getElementsByClassName('char-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_CHAR_TYPE = parseInt(el.dataset.gid);
-            if (isNaN(SESSION.SELECTED_CHAR_TYPE)) {
-                SESSION.SELECTED_CHAR_TYPE = el.dataset.gid;
-            }
-            SESSION.SELECTED_TOOL_TYPE = 'CHAR';
-            setSelectedClass(el);
+            if (SESSION.SELECTED_CHAR_TYPE == parseInt(el.dataset.gid) || SESSION.SELECTED_CHAR_TYPE == el.dataset.gid) {
+                SESSION.SELECTED_CHAR_TYPE = undefined;
+                SESSION.SELECTED_TOOL_TYPE = undefined;
+                setSelectedClass(undefined);
+            } else {
+                SESSION.SELECTED_CHAR_TYPE = parseInt(el.dataset.gid);
+                if (isNaN(SESSION.SELECTED_CHAR_TYPE)) {
+                    SESSION.SELECTED_CHAR_TYPE = el.dataset.gid;
+                }
+                SESSION.SELECTED_TOOL_TYPE = 'CHAR';
+                setSelectedClass(el);
+            };
         });
     });
 
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_OBJE_TYPE = el.dataset.aid;
-            SESSION.SELECTED_TOOL_TYPE = 'OBJE';
-            setSelectedClass(el);
+            // console.log(SESSION.SELECTED_OBJE_TYPE, el.dataset.aid);
+            if (SESSION.SELECTED_OBJE_TYPE === el.dataset.aid) {
+                // SESSION.SELECTED_OBJE_TYPE = undefined;
+                // SESSION.SELECTED_TOOL_TYPE = undefined;
+            } else {
+                SESSION.SELECTED_OBJE_TYPE = el.dataset.aid;
+                SESSION.SELECTED_TOOL_TYPE = 'OBJE';
+                setSelectedClass(el);
+            };
+            // console.log(SESSION.SELECTED_OBJE_TYPE, SESSION.SELECTED_TOOL_TYPE);
         });
     });
 
