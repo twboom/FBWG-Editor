@@ -909,53 +909,7 @@ function createMovementPopup(obj) {
             renderCurrentLayer();
         }
     };
-    const xSnapField = {
-        name: 'X Snap',
-        type: 'number',
-        attributes: [
-            {
-                type: 'min',
-                value: 0,
-            },
-            {
-                type: 'max',
-                value: LEVEL.BLOCK_SIZE,
-            },
-            {
-                type: 'value',
-                value: SESSION.SNAPX,
-            },
-        ],
-        evtType: 'change',
-        callback: evt => {
-            const xSnap = parseInt(evt.srcElement.value);
-            SESSION.SNAPX = xSnap;
-        }
-    };
-    const ySnapField = {
-        name: 'Y Snap',
-        type: 'number',
-        attributes: [
-            {
-                type: 'min',
-                value: 0,
-            },
-            {
-                type: 'max',
-                value: LEVEL.BLOCK_SIZE,
-            },
-            {
-                type: 'value',
-                value: SESSION.SNAPY,
-            },
-        ],
-        evtType: 'change',
-        callback: evt => {
-            const ySnap = parseInt(evt.srcElement.value);
-            SESSION.SNAPY = ySnap;
-        }
-    };
-    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField, xSnapField, ySnapField]);
+    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField]);
     document.body.appendChild(popup);
 };
 
@@ -1098,4 +1052,11 @@ function initEditor() {
 
     document.getElementById('level-width').value = LEVEL.WIDTH;
     document.getElementById('level-height').value = LEVEL.HEIGHT;
+
+    document.getElementById('snap-x').addEventListener('change', evt => {
+        SESSION.SNAPX = parseInt(evt.target.value);
+    });
+    document.getElementById('snap-y').addEventListener('change', evt => {
+        SESSION.SNAPY = parseInt(evt.target.value);
+    });
 };

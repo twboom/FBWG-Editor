@@ -10,11 +10,6 @@
     <script defer src="js/renderer.js"></script>
     <script defer src="js/canvas.js"></script>
     <script defer src="js/export.js"></script>
-
-    <style>
-        .button1 {background-color: #646464;}
-    </style>
-
 </head> 
 <body>
     <div id="canvas-container">
@@ -39,6 +34,17 @@
             </div>
             <div class="options">
                 <button id="resize">Resize level</button>
+            </div>
+        </div>
+        <hr>
+        <div>
+            <div class="options">
+                <label for="snap-x">Snap X:</label>
+                <input type="number" name="snap-x" id="snap-x" min="0" value="0">
+            </div>
+            <div class="options">
+                <label for="snap-y">Snap Y:</label>
+                <input type="number" name="snap-y" id="snap-y" min="0" value="0">
             </div>
         </div>
         <hr>
