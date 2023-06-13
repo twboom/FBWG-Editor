@@ -67,14 +67,14 @@ function renderTileLayer() {
 
 function drawPlatform(obj, ctx) {
     const COLOR_LOOKUP = [
-        'red',
-        'green',
-        'blue',
-        'yellow',
-        'magenta',
-        'lightskyblue',
-        'blueviolet',
-        'white',
+        '#FF0000', //red
+        '#008000', //green
+        '#0000FF', //blue
+        '#FFFF00', //yellow
+        '#FF00FF', //magenta
+        '#87CEFA', //lightskyblue
+        '#8A2BE2', //blueviolet
+        '#FFFFFF', //white
     ]
     ctx.beginPath();
     ctx.rect(obj.x, obj.y + obj.height, obj.width, -obj.height)
@@ -87,6 +87,30 @@ function drawPlatform(obj, ctx) {
     ctx.strokeStyle = 'gray';
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
+
+    //draw the preview
+    const dx = obj.properties.dx;
+    const dy = obj.properties.dy;
+    ctx.beginPath();
+    ctx.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
+    ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
+    console.log(COLOR_LOOKUP[obj.properties.group - 1] + '07f');
+    ctx.fill();
+    ctx.beginPath();
+    ctx.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
+    ctx.strokeStyle = '#8080807f';
+    ctx.lineWidth = strokeWidth;
+    ctx.stroke();
+
+    //draw the dottet line
+    ctx.beginPath();
+    ctx.setLineDash([5, 15]);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#404040';
+    ctx.moveTo(obj.x + 0.5*obj.width, obj.y + 0.5*obj.height);
+    ctx.lineTo(obj.x + 0.5*obj.width + dx*LEVEL.BLOCK_SIZE, obj.y + 0.5*obj.height - dy*LEVEL.BLOCK_SIZE);
+    ctx.stroke();
+    ctx.setLineDash([]);
 };
 
 function drawObj(obj, ctx) {
@@ -450,7 +474,7 @@ function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [
         "id":Date.now(),
         "name":"",
         "properties":{
-          "dx":dx,
+          "dx":-dx,
           "dy":dy,
           "group":group
         },
@@ -860,6 +884,7 @@ function showObjPopup() {
             callback: evt => {
                 const dx = parseInt(evt.srcElement.value);
                 obj.properties.dx = dx;
+                render(false, true, false);
             }
         };
         const dyField = {
@@ -875,6 +900,7 @@ function showObjPopup() {
             callback: evt => {
                 const dy = parseInt(evt.srcElement.value);
                 obj.properties.dy = dy;
+                render(false, true, false);
             }
         };
         fields.push(widthField, heightField, dxField, dyField);
@@ -943,7 +969,9 @@ function setSelectedClass(el) {
     Array.from(document.getElementsByClassName('tool')).forEach(btn => {
         btn.classList.remove('selected');
     });
-    el.classList.add('selected');
+    if (el) {
+        el.classList.add('selected');
+    };
 };
 
 function initEditor() {
@@ -1050,28 +1078,49 @@ function initEditor() {
 
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
-            SESSION.SELECTED_TOOL_TYPE = 'TILE';
-            setSelectedClass(el);
+            if (SESSION.SELECTED_TILE_TYPE == parseInt(el.dataset.tid)) {
+                SESSION.SELECTED_TILE_TYPE = undefined;
+                SESSION.SELECTED_TOOL_TYPE = undefined;
+                setSelectedClass(undefined);
+            } else {
+                SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
+                SESSION.SELECTED_TOOL_TYPE = 'TILE';
+                setSelectedClass(el);
+            };
         });
     });
 
     Array.from(document.getElementsByClassName('char-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_CHAR_TYPE = parseInt(el.dataset.gid);
-            if (isNaN(SESSION.SELECTED_CHAR_TYPE)) {
-                SESSION.SELECTED_CHAR_TYPE = el.dataset.gid;
-            }
-            SESSION.SELECTED_TOOL_TYPE = 'CHAR';
-            setSelectedClass(el);
+            if (SESSION.SELECTED_CHAR_TYPE == parseInt(el.dataset.gid) || SESSION.SELECTED_CHAR_TYPE == el.dataset.gid) {
+                SESSION.SELECTED_CHAR_TYPE = undefined;
+                SESSION.SELECTED_TOOL_TYPE = undefined;
+                setSelectedClass(undefined);
+            } else {
+                SESSION.SELECTED_CHAR_TYPE = parseInt(el.dataset.gid);
+                if (isNaN(SESSION.SELECTED_CHAR_TYPE)) {
+                    SESSION.SELECTED_CHAR_TYPE = el.dataset.gid;
+                }
+                SESSION.SELECTED_TOOL_TYPE = 'CHAR';
+                setSelectedClass(el);
+            };
         });
     });
 
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            SESSION.SELECTED_OBJE_TYPE = el.dataset.aid;
-            SESSION.SELECTED_TOOL_TYPE = 'OBJE';
-            setSelectedClass(el);
+            console.log(SESSION.SELECTED_OBJE_TYPE, el.dataset.aid);
+            if (SESSION.SELECTED_OBJE_TYPE == el.dataset.aid) {
+                console.log('bonjour')
+                SESSION.SELECTED_OBJE_TYPE = undefined;
+                SESSION.SELECTED_TOOL_TYPE = undefined;
+                setSelectedClass(undefined);
+            } else {
+                SESSION.SELECTED_OBJE_TYPE = el.dataset.aid;
+                SESSION.SELECTED_TOOL_TYPE = 'OBJE';
+                setSelectedClass(el);
+            };
+            console.log(SESSION.SELECTED_OBJE_TYPE, SESSION.SELECTED_TOOL_TYPE);
         });
     });
 
