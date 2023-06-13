@@ -1,7 +1,7 @@
 const CONFIG = {
     SLOPE_STEEPNESS: 0.6,
     OBJ_NO_GROUP_REQUIRED: ['box_normal', 'box_heavy'],
-    OBJ_NO_POPUP_GID: [28, 37],
+    OBJ_NO_GROUP_FIELD_GID: [28, 37],
 };
 
 const LEVEL = {
@@ -722,30 +722,32 @@ function showObjPopup() {
         document.getElementById('popup').remove();
     };
     if (!obj) { return; };
-    if (CONFIG.OBJ_NO_POPUP_GID.includes(obj.gid)) { return; };
-    const groupField = {
-        name: 'group',
-        type: 'number',
-        attributes: [
-            {
-                type: 'min',
-                value: 1,
-            },
-            {
-                type: 'max',
-                value: 8,
-            },
-            {
-                type: 'value',
-                value: obj.properties.group,
-            },
-        ],
-        evtType: 'change',
-        callback: evt => {
-            const newGroup = parseInt(evt.srcElement.value);
-            obj.properties.group = newGroup;
-            render(false, true, false);
-        }
+    let groupField;
+    if (!CONFIG.OBJ_NO_GROUP_FIELD_GID.includes(obj.gid)) {
+        groupField = {
+            name: 'group',
+            type: 'number',
+            attributes: [
+                {
+                    type: 'min',
+                    value: 1,
+                },
+                {
+                    type: 'max',
+                    value: 8,
+                },
+                {
+                    type: 'value',
+                    value: obj.properties.group,
+                },
+            ],
+            evtType: 'change',
+            callback: evt => {
+                const newGroup = parseInt(evt.srcElement.value);
+                obj.properties.group = newGroup;
+                render(false, true, false);
+            }
+        };
     };
     const deleteField = {
         name: '',
@@ -762,7 +764,8 @@ function showObjPopup() {
             popup.remove();
         }
     };
-    const fields = [groupField, deleteField];
+    const fields = [];
+    if (!CONFIG.OBJ_NO_GROUP_FIELD_GID.includes(obj.gid)) { fields.push(groupField); };
     if (obj.type === 'platform') {
         const widthField = {
             name: 'Width (tiles)',
@@ -845,6 +848,7 @@ function showObjPopup() {
         };
         fields.push(widthField, heightField, dxField, dyField);
     };
+    fields.push(deleteField);
     const popup = createObjPopup(obj.x + obj.width, obj.y, fields);
     document.body.appendChild(popup);
 };
