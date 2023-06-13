@@ -86,6 +86,7 @@ function drawPlatform(obj, ctx) {
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
 
+    //draw the preview
     const dx = obj.properties.dx;
     const dy = obj.properties.dy;
     ctx.beginPath();
@@ -93,12 +94,21 @@ function drawPlatform(obj, ctx) {
     ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
     console.log(COLOR_LOOKUP[obj.properties.group - 1] + '07f');
     ctx.fill();
-
     ctx.beginPath();
     ctx.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
     ctx.strokeStyle = '#8080807f';
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
+
+    //draw the dottet line
+    ctx.beginPath();
+    ctx.setLineDash([5, 15]);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#404040';
+    ctx.moveTo(obj.x + 0.5*obj.width, obj.y + 0.5*obj.height);
+    ctx.lineTo(obj.x + 0.5*obj.width + dx*LEVEL.BLOCK_SIZE, obj.y + 0.5*obj.height - dy*LEVEL.BLOCK_SIZE);
+    ctx.stroke();
+    ctx.setLineDash([]);
 };
 
 function drawObj(obj, ctx) {
@@ -848,6 +858,7 @@ function showObjPopup() {
             callback: evt => {
                 const dx = parseInt(evt.srcElement.value);
                 obj.properties.dx = dx;
+                render(false, true, false);
             }
         };
         const dyField = {
@@ -863,6 +874,7 @@ function showObjPopup() {
             callback: evt => {
                 const dy = parseInt(evt.srcElement.value);
                 obj.properties.dy = dy;
+                render(false, true, false);
             }
         };
         fields.push(widthField, heightField, dxField, dyField);
