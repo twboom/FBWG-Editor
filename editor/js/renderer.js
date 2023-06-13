@@ -787,7 +787,38 @@ function showObjPopup() {
                 render(false, true, false)
             }
         };
-        fields.push(widthField, heightField)
+        const dxField = {
+            name: 'dx (tiles)',
+            type: 'number',
+            attributes: [
+
+                {
+                    type: 'value',
+                    value: obj.properties.dx,
+                },
+            ],
+            evtType: 'change',
+            callback: evt => {
+                const dx = parseInt(evt.srcElement.value);
+                obj.properties.dx = dx;
+            }
+        };
+        const dyField = {
+            name: 'dy (tiles)',
+            type: 'number',
+            attributes: [
+                {
+                    type: 'value',
+                    value: obj.properties.dy,
+                },
+            ],
+            evtType: 'change',
+            callback: evt => {
+                const dy = parseInt(evt.srcElement.value);
+                obj.properties.dy = dy;
+            }
+        };
+        fields.push(widthField, heightField, dxField, dyField);
     };
     const popup = createObjPopup(obj.x + obj.width, obj.y, fields);
     document.body.appendChild(popup);
