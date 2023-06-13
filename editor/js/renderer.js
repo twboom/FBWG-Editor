@@ -1136,4 +1136,11 @@ function initEditor() {
     document.getElementById('snap-y').addEventListener('change', evt => {
         SESSION.SNAPY = parseInt(evt.target.value);
     });
+
+    document.addEventListener('mousedown', evt => {
+        if (!document.getElementById('popup')) { return; };
+        if (!evt.composedPath().includes(document.getElementById('popup'))) {
+            document.getElementById('popup').remove();
+        };
+    });
 };
