@@ -448,7 +448,7 @@ function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [
         "id":Date.now(),
         "name":"",
         "properties":{
-          "dx":dx,
+          "dx":-dx,
           "dy":dy,
           "group":group
         },
