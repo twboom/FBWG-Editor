@@ -25,7 +25,8 @@ const SESSION = {
     SELECTED_TILE_TYPE: undefined,
     SELECTED_CHAR_TYPE: undefined,
     SELECTED_OBJE_TYPE: undefined,
-    SELECTED_CHAR_ID: undefined,
+    SELECTED_ELEMENT_ID: undefined,
+    SELECTED_LAYER_TYPE: undefined,
     ALLOWMULTIPLESPAWNS: false
 };
 
@@ -84,53 +85,57 @@ function drawPlatform(obj, ctx) {
     ctx.stroke();
 };
 
+function drawObj(obj, ctx) {
+    let group;
+    if (obj.properties) { group = obj.properties.group; };
+    if (obj.type == 'platform') { // Platform
+        drawPlatform(obj, ctx);
+    } else if (obj.gid) {
+        switch (obj.gid) {
+            case 24: // Button
+                drawImage(`assets/objects/button_${group}.svg`, 64, 64, obj.x, obj.y - 64, ctx);
+                break;
+            case 25: // Lever (off is to left)
+                drawImage(`assets/objects/lever_left_${group}.svg`, 64, 64, obj.x, obj.y - 64, ctx);
+                break;
+            case 26: // Lever (off is to right)
+                drawImage(`assets/objects/lever_right_${group}.svg`, 64, 64, obj.x, obj.y - 64, ctx);
+                break;
+            case 28: // Box normal
+                drawImage('assets/objects/box_normal.svg', 64, 64, obj.x, obj.y - 64, ctx);
+                break;
+            case 29: //licht emitter
+                break;
+            case 30: //rotation boxmirror
+                break;
+            case 31: //light receiver
+                break;
+            case 34: //ball
+                break;
+            case 35: //rotation mirror
+                break;
+            case 36: //boxmirror
+                break;
+            case 37: // Box heavy
+                drawImage('assets/objects/box_heavy.svg', 64, 64, obj.x, obj.y - 64, ctx);
+                break
+            case 38: //timed button
+                break;
+            case 39: //wind generator
+                break;
+            default:
+                ctx.beginPath();
+                ctx.rect(obj.x, obj.y, obj.width, -obj.height)
+                ctx.fillStyle = 'purple';
+                ctx.fill();
+        };
+    };
+};
+
 function renderObjectLayer(layer) {
     const objects = layer.objects;
     objects.forEach(obj => {
-        let group;
-        if (obj.properties) { group = obj.properties.group; };
-        if (obj.type == 'platform') { // Platform
-            drawPlatform(obj, objCtx);
-        } else if (obj.gid) {
-            switch (obj.gid) {
-                case 24: // Button
-                    drawImage(`assets/objects/button_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
-                    return;
-                case 25: // Lever (off is to left)
-                    drawImage(`assets/objects/lever_left_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
-                    return;
-                case 26: // Lever (off is to right)
-                    drawImage(`assets/objects/lever_right_${group}.svg`, 64, 64, obj.x, obj.y - 64, objCtx);
-                    return;
-                case 28: // Box normal
-                    drawImage('assets/objects/box_normal.svg', 64, 64, obj.x, obj.y - 64, objCtx);
-                    return;
-                case 29: //licht emitter
-                    break;
-                case 30: //rotation boxmirror
-                    break;
-                case 31: //light receiver
-                    break;
-                case 34: //ball
-                    break;
-                case 35: //rotation mirror
-                    break;
-                case 36: //boxmirror
-                    break;
-                case 37: // Box heavy
-                    drawImage('assets/objects/box_heavy.svg', 64, 64, obj.x, obj.y - 64, objCtx);
-                    return
-                case 38: //timed button
-                    break;
-                case 39: //wind generator
-                    break;
-                default:
-                    objCtx.beginPath();
-                    objCtx.rect(obj.x, obj.y, obj.width, -obj.height)
-                    objCtx.fillStyle = 'purple';
-                    objCtx.fill();
-            };
-        };
+        drawObj(obj, objCtx);
     });
 };
 
@@ -608,14 +613,18 @@ function deleteChar(x, y) {
     };
 };
 
-function moveChar(objId) {
+function move(objId, layer, type) {
     const x = SESSION.MOUSEX;
     const y = SESSION.MOUSEY;
-    const obj = LEVEL.CHARSLAYER.objects.find(({ id }) => id === objId)
+    const obj = layer.objects.find(({ id }) => id === objId);
     if (obj) {
         obj.x = (x - SESSION.MOUSEDOWNX) + obj.x;
         obj.y = (y - SESSION.MOUSEDOWNY) + obj.y;
-        drawChar(obj.gid, obj.x, obj.y, hlCtx)
+        if (type === 'CHAR') {
+            drawChar(obj.gid, obj.x, obj.y, hlCtx)
+        } else if (type === 'OBJE') {
+            drawObj(obj, hlCtx)
+        };
         SESSION.MOUSEDOWNX = x;
         SESSION.MOUSEDOWNY = y;
     };
@@ -642,22 +651,33 @@ function highlightTile(x, y) {
     hlCtx.fill();
 };
 
-function selectChar(objId) {
-    obj = LEVEL.CHARSLAYER.objects.find(({ id }) => id === objId);
+function selectElement(objId, layerType) {
+    const layer = layerType === 'CHAR' ? LEVEL.CHARSLAYER : LEVEL.OBJECTLAYER;
+    obj = layer.objects.find(({ id }) => id === objId);
     if (!obj) { return; };
-    SESSION.SELECTED_CHAR_ID = obj.id;
+    SESSION.SELECTED_ELEMENT_ID = obj.id;
     obj.visible = false;
-    render(false, false, true)
-};
+    SESSION.SELECTED_LAYER_TYPE = layerType
+    if (SESSION.SELECTED_LAYER_TYPE === 'CHAR') {
+        render(false, false, true);
+    } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
+        render(false, true, false);
+    };};
 
-function deselectChar() {
-    if (!SESSION.SELECTED_CHAR_ID) {
+function deselectElement() {
+    if (!SESSION.SELECTED_ELEMENT_ID) {
         return
     };
-    obj = LEVEL.CHARSLAYER.objects.find(({ id }) => id === SESSION.SELECTED_CHAR_ID);
+    const layer = SESSION.SELECTED_LAYER_TYPE === 'CHAR' ? LEVEL.CHARSLAYER : LEVEL.OBJECTLAYER;
+    obj = layer.objects.find(({ id }) => id === SESSION.SELECTED_ELEMENT_ID);
     obj.visible = true;
-    SESSION.SELECTED_CHAR_ID = undefined;
-    render(false, false, true);
+    SESSION.SELECTED_ELEMENT_ID = undefined;
+    if (SESSION.SELECTED_LAYER_TYPE === 'CHAR') {
+        render(false, false, true);
+    } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
+        render(false, true, false);
+    };
+    SESSION.SELECTED_LAYER_TYPE = undefined
 };
 
 function createObjPopup(x, y, fields) {
@@ -853,7 +873,12 @@ function initEditor() {
         };
 
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'CHAR' && SESSION.SELECTED_CHAR_TYPE === 'm') {
-            moveChar(SESSION.SELECTED_CHAR_ID);
+            move(SESSION.SELECTED_ELEMENT_ID, LEVEL.CHARSLAYER, 'CHAR');
+        };
+
+
+        if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'OBJE' && SESSION.SELECTED_OBJE_TYPE === 'm') {
+            move(SESSION.SELECTED_ELEMENT_ID, LEVEL.OBJECTLAYER, 'OBJE');
         };
 
         // Highlight
@@ -881,7 +906,7 @@ function initEditor() {
                 if (SESSION.SELECTED_OBJE_TYPE === 'e') {
                     showObjPopup();
                 }
-                else {
+                else if (SESSION.SELECTED_OBJE_TYPE !== 'm') {
                     addObject(SESSION.SELECTED_OBJE_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
                 };
                 break;
@@ -899,16 +924,26 @@ function initEditor() {
                 return collidesWithCursor(obj, mouseX, mouseY);
             });
             if (obj) {
-                selectChar(obj.id);
+                selectElement(obj.id, 'CHAR');
             } else {
-                deselectChar();
+                deselectElement();
+            };
+        };
+        if (SESSION.SELECTED_TOOL_TYPE === 'OBJE' && SESSION.SELECTED_OBJE_TYPE === 'm') {
+            const obj = LEVEL.OBJECTLAYER.objects.find(obj => {
+                return collidesWithCursor(obj, mouseX, mouseY);
+            });
+            if (obj) {
+                selectElement(obj.id, 'OBJE');
+            } else {
+                deselectElement();
             }
         };
     });
 
     document.addEventListener('mouseup', _ => {
         SESSION.MOUSEDOWN = false;
-        deselectChar();
+        deselectElement();
     });
 
     highlightCanvas.addEventListener('mouseleave', _ => {
