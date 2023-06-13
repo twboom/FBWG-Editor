@@ -135,6 +135,7 @@ function drawObj(obj, ctx) {
 function renderObjectLayer(layer) {
     const objects = layer.objects;
     objects.forEach(obj => {
+        if (obj.visible === false) { return };
         drawObj(obj, objCtx);
     });
 };
@@ -184,7 +185,7 @@ function drawChar(gid, x, y, ctx) {
 function renderCharsLayer() {
     const chars = LEVEL.CHARSLAYER.objects;
     chars.forEach(obj => {
-        if (!obj.visible) { return };
+        if (obj.visible === false) { return };
         drawChar(obj.gid, obj.x, obj.y, charCtx);
     });
 };
