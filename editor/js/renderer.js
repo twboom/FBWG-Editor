@@ -667,7 +667,8 @@ function selectElement(objId, layerType) {
         render(false, false, true);
     } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
         render(false, true, false);
-    };};
+    };
+};
 
 function deselectElement() {
     if (!SESSION.SELECTED_ELEMENT_ID) {
@@ -676,6 +677,8 @@ function deselectElement() {
     const layer = SESSION.SELECTED_LAYER_TYPE === 'CHAR' ? LEVEL.CHARSLAYER : LEVEL.OBJECTLAYER;
     obj = layer.objects.find(({ id }) => id === SESSION.SELECTED_ELEMENT_ID);
     obj.visible = true;
+    // Create movement popup
+    createMovementPopup(obj);
     SESSION.SELECTED_ELEMENT_ID = undefined;
     if (SESSION.SELECTED_LAYER_TYPE === 'CHAR') {
         render(false, false, true);
@@ -685,7 +688,10 @@ function deselectElement() {
     SESSION.SELECTED_LAYER_TYPE = undefined
 };
 
-function createObjPopup(x, y, fields) {
+function createPopup(x, y, fields) {
+    if (document.getElementById('popup')) {
+        document.getElementById('popup').remove();
+    };
     const popup = document.createElement('div');
     popup.id = 'popup';
     fields.forEach(field => {
@@ -718,9 +724,6 @@ function showObjPopup() {
     const obj = LEVEL.OBJECTLAYER.objects.find(obj => {
         return collidesWithCursor(obj, SESSION.MOUSEX, SESSION.MOUSEY, true);
     });
-    if (document.getElementById('popup')) {
-        document.getElementById('popup').remove();
-    };
     if (!obj) { return; };
     let groupField;
     if (!CONFIG.OBJ_NO_GROUP_FIELD_GID.includes(obj.gid)) {
@@ -849,7 +852,54 @@ function showObjPopup() {
         fields.push(widthField, heightField, dxField, dyField);
     };
     fields.push(deleteField);
-    const popup = createObjPopup(obj.x + obj.width, obj.y, fields);
+    const popup = createPopup(obj.x + obj.width, obj.y, fields);
+    document.body.appendChild(popup);
+};
+
+function createMovementPopup(obj) {
+    if (!obj) { return; };
+    const currentLayer = SESSION.SELECTED_LAYER_TYPE;
+    function renderCurrentLayer() {
+        if (currentLayer === 'CHAR') {
+            render(false, false, true);
+        } else if (currentLayer === 'OBJE') {
+            render(false, true, false);
+        }
+    }
+    const xField = {
+        name: 'x',
+        type: 'number',
+        attributes: [
+
+            {
+                type: 'value',
+                value: obj.x,
+            },
+        ],
+        evtType: 'change',
+        callback: evt => {
+            const x = parseInt(evt.srcElement.value);
+            obj.x = x;
+            renderCurrentLayer();
+        }
+    };
+    const yField = {
+        name: 'y',
+        type: 'number',
+        attributes: [
+            {
+                type: 'value',
+                value: obj.y,
+            },
+        ],
+        evtType: 'change',
+        callback: evt => {
+            const y = parseInt(evt.srcElement.value);
+            obj.y = y;
+            renderCurrentLayer();
+        }
+    };
+    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField]);
     document.body.appendChild(popup);
 };
 
