@@ -698,8 +698,10 @@ function selectElement(objId, layerType) {
     SESSION.SELECTED_LAYER_TYPE = layerType
     if (SESSION.SELECTED_LAYER_TYPE === 'CHAR') {
         render(false, false, true);
+        drawChar(obj.gid, obj.x, obj.y, hlCtx);
     } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
         render(false, true, false);
+        drawObj(obj, hlCtx);
     };
 };
 
