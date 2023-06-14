@@ -718,6 +718,8 @@ function deselectElement() {
         if (SESSION.SNAPY !== 0) {
             obj.y = Math.round((obj.y / SESSION.SNAPY)) * SESSION.SNAPY;
         };
+        // Clear hlCtx to prevent ghost object from appearing
+        hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
     };
     createMovementPopup(obj);
     SESSION.SELECTED_ELEMENT_ID = undefined;
