@@ -10,6 +10,7 @@
     <script defer src="js/renderer.js"></script>
     <script defer src="js/canvas.js"></script>
     <script defer src="js/export.js"></script>
+    <script defer src="js/import.js"></script>
 </head> 
 <body>
     <div id="canvas-container">
@@ -19,6 +20,13 @@
         <canvas id="highlight"></canvas>
     </div>
     <div id="input-container">
+        <hr>
+        <div id="import-container">
+            <button id="create-empty">Create empty level</button>
+            <button id="import-tutorial">Import tutorial level</button>
+            <input type="file" name="import-file" id="import-file">
+        </div>
+        <hr>
         <div id="export-container">
             <button id="export">Export level JSON file</button>
         </div>
