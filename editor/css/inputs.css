@@ -3,21 +3,12 @@ div#input-container {
     left: 1300px;
 }
 
-button.tool {
+button.tool, button.editor-option {
     width: 64px;
     height: 64px;
 }
 
-button.tool.selected {
-    background-color: cyan;
-}
-
-button.editor-option {
-    width: 64px;
-    height: 64px;
-}
-
-button.editor-option.selected {
+button.tool.selected, button.editor-option.active {
     background-color: cyan;
 }
 

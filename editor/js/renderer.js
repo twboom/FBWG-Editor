@@ -953,13 +953,28 @@ function setSelectedClass(el) {
     });
     if (el) {
         el.classList.add('selected');
+        // if (el.dataset.aid == 'multispawn') {
+        //     if (!EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
+        //         el.classList.remove('selected');
+        //     }
+        // } else if (el.dataset.aid == 'previews') {
+        //     if (!EDITORCONFIG.PLATFORMPREVIEWS) {
+        //         el.classList.remove('selected');
+        //     }
+        // }
+    };
+};
+
+function toggleActiveClass(el) {
+    if (el) {
+        el.classList.toggle('active');
         if (el.dataset.aid == 'multispawn') {
             if (!EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
-                el.classList.remove('selected');
+                el.classList.remove('active');
             }
         } else if (el.dataset.aid == 'previews') {
             if (!EDITORCONFIG.PLATFORMPREVIEWS) {
-                el.classList.remove('selected');
+                el.classList.remove('active');
             }
         }
     };
@@ -1119,22 +1134,19 @@ function initEditor() {
             if (el.dataset.aid == 'multispawn') {
                 if (EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
                     EDITORCONFIG.ALLOWMULTIPLESPAWNS = false;
-                    setSelectedClass(el);
                 } else {
                     EDITORCONFIG.ALLOWMULTIPLESPAWNS = true;
-                    setSelectedClass(el);
                 }
             } else {
                 if (EDITORCONFIG.PLATFORMPREVIEWS) {
                     EDITORCONFIG.PLATFORMPREVIEWS = false;
-                    setSelectedClass(el);
                     render(false, true, false);
                 } else {
                     EDITORCONFIG.PLATFORMPREVIEWS = true;
-                    setSelectedClass(el);
                     render(false, true, false);
                 }
             }
+            toggleActiveClass(el);
         })
     })
 
