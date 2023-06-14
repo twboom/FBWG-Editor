@@ -91,7 +91,6 @@ function drawPlatform(obj, ctx) {
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
 
-    console.log(EDITORCONFIG.PLATFORMPREVIEWS);
     if (EDITORCONFIG.PLATFORMPREVIEWS) {drawPlatformPreview(obj, ctx);};
 };
 
@@ -205,6 +204,7 @@ function drawChar(gid, x, y, ctx) {
     switch (gid){
         case 16: // Spawn FB
             drawImage('assets/chars/spawn_fb.svg', 64, 64, x, y - 64, ctx);
+            console.log('fb spawn');
             break;
         case 17: // Spawn FB
             drawImage('assets/chars/spawn_wg.svg', 64, 64, x, y - 64, ctx);
@@ -487,57 +487,6 @@ function setObject({gid, height, id, name, properties, rotation, type, visible, 
     return objectTemplate
 };
 
-function addObjectObj(objType, [x, y], [width, height], autoDeleteOthers=true, [dx, dy, group] ) {
-    let  options = {
-        "gid":objType,
-        "height":height,
-        "id":Date.now(),
-        "name":"",
-        "properties":{
-          "dx":-dx,
-          "dy":dy,
-          "group":group
-        },
-        "propertytypes":{
-          "dx":"int",
-          "dy":"int",
-          "group":"int"
-        },
-        "rotation":0,
-        "type":"",
-        "visible":visible,
-        "width":width,
-        "x":x,
-        "y":y
-    }
-    if (!dx && !dy) {
-        if (!group) {
-            options.Array.splice(4, 2);
-        } else {
-            options.properties.Array.splice(0, 2);
-            options.propertytypes.Array.splice(0,2);
-        };
-    } 
-    if (objType == "platform") {
-        options.Array.splice(0, 1);
-        options.Array.type = objType;
-    };
-    if (autoDeleteOthers) {
-        if (typeof gid == Number){
-            const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == objType);
-            others.forEach(el => {
-                setChar({id: el.id}, null, null, true);
-            });    
-        } else {
-            const others = LEVEL.CHARSLAYER.objects.filter(({ type }) => type = objType);
-            others.forEach(el => {
-                setObject({id: el.id}, null, null, true);
-            })
-        }
-    }
-    setObject(options, x, y);
-};
-
 function addObject(type, [x, y]) {
     const GID_LOOKUP = {
         'button': 24,
@@ -610,7 +559,7 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
     render(false, false, true); 
 };
 
-function addCharObj(type, [x, y], autoDeleteOthers=true) {
+function addCharObj(type, [x, y]) {
     const options = {
         "gid": type,
         "height": 64,
@@ -621,9 +570,12 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
         "visible": true,
         "width": 64,
     };
-    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19 && autoDeleteOthers && !EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
+    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19  && !EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
+        console.log('no other spawns allowed');
         const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
+        console.log(others);
         others.forEach(el => {
+            console.log('deleting', el, el.id)
             setChar({id: el.id}, null, null, true);
         });
     };
@@ -999,7 +951,6 @@ function setSelectedClass(el) {
     Array.from(document.getElementsByClassName('tool')).forEach(btn => {
         btn.classList.remove('selected');
     });
-    console.log(el.classList);
     if (el) {
         el.classList.add('selected');
         if (el.dataset.aid == 'multispawn') {
