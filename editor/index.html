@@ -45,14 +45,20 @@
             </div>
         </div>
         <hr>
-        <div>
-            <div class="options">
-                <label for="snap-x">Snap X:</label>
-                <input type="number" name="snap-x" id="snap-x" min="0" value="0">
+        <div class="tool-container">
+            <div class="tool-category">
+                <div class="options">
+                    <label for="snap-x">Snap X:</label>
+                    <input type="number" name="snap-x" id="snap-x" min="0" value="0">
+                </div>
+                <div class="options">
+                    <label for="snap-y">Snap Y:</label>
+                    <input type="number" name="snap-y" id="snap-y" min="0" value="0">
+                </div>
             </div>
-            <div class="options">
-                <label for="snap-y">Snap Y:</label>
-                <input type="number" name="snap-y" id="snap-y" min="0" value="0">
+            <div class="tool-category">
+                <button class="editor-option" data-aid="multispawn">Multiple spawns</button>
+                <button class="editor-option" data-aid="previews">Platform previews</button>
             </div>
         </div>
         <hr>
@@ -104,13 +110,6 @@
                 <button class="tool obje-option" data-aid="platform">Platform</button>
                 <button class="tool obje-option" data-aid="button">Button</button>
                 <button class="tool obje-option" data-aid="lever">Lever</button>
-            </div>
-        </div>
-        <hr>
-        <div class="tool-container">
-            <div class="tool-category">
-                <button class="editor-option" data-aid="multispawn">Multiple spawns</button>
-                <button class="editor-option" data-aid="previews">Platform previews</button>
             </div>
         </div>
     </div>
