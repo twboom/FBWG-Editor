@@ -1,6 +1,9 @@
 body {
     margin: 0;
-    /* overflow: hidden; */
+    display: flex;
+    justify-content: space-evenly;
+    width: 98%;
+    margin-left: 1%;
 }
 
 * {
@@ -8,16 +11,15 @@ body {
 }
 
 div#canvas-container {
-    position: absolute;
-    left: 0;
-    top: 0;
     border: solid gray 16px;  
     display: grid;
+    height: 100%;
 }
 
 canvas {
     grid-column: 1;
     grid-row: 1;
+    width: 100%;
 }
 
 canvas#highlight {
