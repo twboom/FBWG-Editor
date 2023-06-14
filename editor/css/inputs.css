@@ -21,4 +21,5 @@ div.tool-category {
     display: grid;
     grid-auto-flow: column;
     grid-template-rows: repeat(2, 64px);
+    gap: 4px;
 }
