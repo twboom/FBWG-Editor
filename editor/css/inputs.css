@@ -12,6 +12,15 @@ button.tool.selected {
     background-color: cyan;
 }
 
+button.editor-option {
+    width: 64px;
+    height: 64px;
+}
+
+button.editor-option.selected {
+    background-color: cyan;
+}
+
 div.tool-container {
     display: flex;
     gap: 32px;

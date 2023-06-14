@@ -30,8 +30,12 @@ const SESSION = {
     SNAPY: 0,
     SNAPX: 0,
     CURRENTLY_DRAGGING: false,
-    ALLOWMULTIPLESPAWNS: false
 };
+
+const EDITORCONFIG = {
+    ALLOWMULTIPLESPAWNS: false,
+    PLATFORMPREVIEWS: false,
+}
 
 const CACHE = {};
 
@@ -87,9 +91,26 @@ function drawPlatform(obj, ctx) {
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
 
+    console.log(EDITORCONFIG.PLATFORMPREVIEWS);
+    if (EDITORCONFIG.PLATFORMPREVIEWS) {drawPlatformPreview(obj, ctx);};
+};
+
+function drawPlatformPreview(obj, ctx) {
+    const COLOR_LOOKUP = [
+        '#FF0000', //red
+        '#008000', //green
+        '#0000FF', //blue
+        '#FFFF00', //yellow
+        '#FF00FF', //magenta
+        '#87CEFA', //lightskyblue
+        '#8A2BE2', //blueviolet
+        '#FFFFFF', //white
+    ];
     //draw the preview
     const dx = obj.properties.dx;
     const dy = obj.properties.dy;
+    const strokeWidth = 8;
+    const strokeOffset = strokeWidth / 2
     ctx.beginPath();
     ctx.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
     ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
@@ -600,7 +621,7 @@ function addCharObj(type, [x, y], autoDeleteOthers=true) {
         "visible": true,
         "width": 64,
     };
-    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19 && autoDeleteOthers && !SESSION.ALLOWMULTIPLESPAWNS) {
+    if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19 && autoDeleteOthers && !EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
         const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
         others.forEach(el => {
             setChar({id: el.id}, null, null, true);
@@ -978,8 +999,18 @@ function setSelectedClass(el) {
     Array.from(document.getElementsByClassName('tool')).forEach(btn => {
         btn.classList.remove('selected');
     });
+    console.log(el.classList);
     if (el) {
         el.classList.add('selected');
+        if (el.dataset.aid == 'multispawn') {
+            if (!EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
+                el.classList.remove('selected');
+            }
+        } else if (el.dataset.aid == 'previews') {
+            if (!EDITORCONFIG.PLATFORMPREVIEWS) {
+                el.classList.remove('selected');
+            }
+        }
     };
 };
 
@@ -1119,7 +1150,6 @@ function initEditor() {
 
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
-            console.log(SESSION.SELECTED_OBJE_TYPE, el.dataset.aid);
             if (SESSION.SELECTED_OBJE_TYPE == el.dataset.aid) {
                 console.log('bonjour')
                 SESSION.SELECTED_OBJE_TYPE = undefined;
@@ -1130,9 +1160,32 @@ function initEditor() {
                 SESSION.SELECTED_TOOL_TYPE = 'OBJE';
                 setSelectedClass(el);
             };
-            console.log(SESSION.SELECTED_OBJE_TYPE, SESSION.SELECTED_TOOL_TYPE);
         });
     });
+
+    Array.from(document.getElementsByClassName('editor-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            if (el.dataset.aid == 'multispawn') {
+                if (EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
+                    EDITORCONFIG.ALLOWMULTIPLESPAWNS = false;
+                    setSelectedClass(el);
+                } else {
+                    EDITORCONFIG.ALLOWMULTIPLESPAWNS = true;
+                    setSelectedClass(el);
+                }
+            } else {
+                if (EDITORCONFIG.PLATFORMPREVIEWS) {
+                    EDITORCONFIG.PLATFORMPREVIEWS = false;
+                    setSelectedClass(el);
+                    render(false, true, false);
+                } else {
+                    EDITORCONFIG.PLATFORMPREVIEWS = true;
+                    setSelectedClass(el);
+                    render(false, true, false);
+                }
+            }
+        })
+    })
 
     document.getElementById('resize').addEventListener('click', resizeLevel);
 
