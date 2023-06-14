@@ -538,10 +538,10 @@ function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, 
         for (let i = 0; LEVEL.CHARSLAYER.objects.length; i++){
             if (LEVEL.CHARSLAYER.objects[i].id == id) {
                 LEVEL.CHARSLAYER.objects.splice(i, 1);
-                render(false, false, true);
                 return;
             };
         };
+        render(false, false, true);
     };
     let charTemplate = {
        "gid":gid,
