@@ -237,7 +237,7 @@ function renderCharsLayer() {
     });
 };
 
-function init(levelJSON) {
+function init(levelJSON, reload=false) {
     
     LEVEL.BLOCK_SIZE = levelJSON.tileheight;
     LEVEL.WIDTH = levelJSON.width;
@@ -250,7 +250,9 @@ function init(levelJSON) {
     LEVEL.CHARSLAYER = levelJSON.layers.find( ({ name }) => name === 'Chars');
     render(LEVEL);
 
-    initEditor();
+    if (!reload) {
+        initEditor();
+    };
 };
 
 function resizeCanvas() {
@@ -950,6 +952,7 @@ function setSelectedClass(el) {
     Array.from(document.getElementsByClassName('tool')).forEach(btn => {
         btn.classList.remove('selected');
     });
+    console.log(el)
     if (el) {
         el.classList.add('selected');
         // if (el.dataset.aid == 'multispawn') {
@@ -1091,6 +1094,7 @@ function initEditor() {
             } else {
                 SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
                 SESSION.SELECTED_TOOL_TYPE = 'TILE';
+                console.log('tile')
                 setSelectedClass(el);
             };
         });

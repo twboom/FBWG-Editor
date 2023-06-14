@@ -7,7 +7,9 @@ function importJSON(json) {
     const proceed = confirm('Are you sure?\nThis will delete your current progress!');
     if (!proceed) { alert('Alright, nothing happend!'); return; };
     // Potential for file checks
-    init(json)
+
+    // Init app
+    init(json, true)
 };
 
 function importLocal(evt) {
