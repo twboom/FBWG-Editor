@@ -204,7 +204,6 @@ function drawChar(gid, x, y, ctx) {
     switch (gid){
         case 16: // Spawn FB
             drawImage('assets/chars/spawn_fb.svg', 64, 64, x, y - 64, ctx);
-            console.log('fb spawn');
             break;
         case 17: // Spawn FB
             drawImage('assets/chars/spawn_wg.svg', 64, 64, x, y - 64, ctx);
