@@ -1032,7 +1032,16 @@ function initEditor() {
                     return;
                 };
                 if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 24) { // Spawns and doors and diamonds
-                    addCharObj(SESSION.SELECTED_CHAR_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
+                    let xPos = SESSION.MOUSEX;
+                    let yPos = SESSION.MOUSEY;
+                    if (SESSION.SNAPX !== 0) {
+                        xPos = Math.round((xPos / SESSION.SNAPX)) * SESSION.SNAPX;
+                    };
+            
+                    if (SESSION.SNAPY !== 0) {
+                        yPos = Math.round((yPos / SESSION.SNAPY)) * SESSION.SNAPY;
+                    };
+                    addCharObj(SESSION.SELECTED_CHAR_TYPE, [xPos - 32, yPos + 32])
                 };
                 break;
 
@@ -1041,7 +1050,16 @@ function initEditor() {
                     showObjPopup();
                 }
                 else if (SESSION.SELECTED_OBJE_TYPE !== 'm') {
-                    addObject(SESSION.SELECTED_OBJE_TYPE, [SESSION.MOUSEX - 32, SESSION.MOUSEY + 32])
+                    let xPos = SESSION.MOUSEX;
+                    let yPos = SESSION.MOUSEY;
+                    if (SESSION.SNAPX !== 0) {
+                        xPos = Math.round((xPos / SESSION.SNAPX)) * SESSION.SNAPX;
+                    };
+            
+                    if (SESSION.SNAPY !== 0) {
+                        yPos = Math.round((yPos / SESSION.SNAPY)) * SESSION.SNAPY;
+                    };
+                    addObject(SESSION.SELECTED_OBJE_TYPE, [xPos - 32, yPos + 32])
                 };
                 break;
         };
