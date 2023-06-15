@@ -20,8 +20,11 @@ function importLocal(evt) {
         const text = reader.result;
         const json = JSON.parse(text);
         importJSON(json);
+        // Remove file from file field
+        input.value = '';
     };
     reader.readAsText(input.files[0]);
+
 };
 
 function importURL(src) {
