@@ -445,7 +445,7 @@ function setBlock([x, y], id) {
 
 function setObject({gid, height, id, name, properties, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
-        for (let i = 0; LEVEL.OBJECTLAYER.objects.length; i++){
+        for (let i = 0; i < LEVEL.OBJECTLAYER.objects.length; i++){
             if (LEVEL.OBJECTLAYER.objects[i].id == id) {
                 LEVEL.OBJECTLAYER.objects.splice(i, 1);
                 render(false, true, false);
@@ -536,13 +536,13 @@ function addObject(type, [x, y]) {
 
 function setChar({gid, height, id, name, rotation, type, visible, width}, x, y, deleting = false) {
     if (deleting) {
-        for (let i = 0; LEVEL.CHARSLAYER.objects.length; i++){
+        for (let i = 0; i < LEVEL.CHARSLAYER.objects.length; i++){
             if (LEVEL.CHARSLAYER.objects[i].id == id) {
                 LEVEL.CHARSLAYER.objects.splice(i, 1);
-                return;
+                render(false, false, true);
+                return
             };
         };
-        render(false, false, true);
     };
     let charTemplate = {
        "gid":gid,
@@ -574,7 +574,6 @@ function addCharObj(type, [x, y]) {
     if (SESSION.SELECTED_CHAR_TYPE >= 16 && SESSION.SELECTED_CHAR_TYPE <= 19  && !EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
         console.log('no other spawns allowed');
         const others  = LEVEL.CHARSLAYER.objects.filter(({ gid }) => gid == type);
-        console.log(others);
         others.forEach(el => {
             console.log('deleting', el, el.id)
             setChar({id: el.id}, null, null, true);
@@ -952,7 +951,6 @@ function setSelectedClass(el) {
     Array.from(document.getElementsByClassName('tool')).forEach(btn => {
         btn.classList.remove('selected');
     });
-    console.log(el)
     if (el) {
         el.classList.add('selected');
         // if (el.dataset.aid == 'multispawn') {
@@ -1098,7 +1096,6 @@ function initEditor() {
             } else {
                 SESSION.SELECTED_TILE_TYPE = parseInt(el.dataset.tid);
                 SESSION.SELECTED_TOOL_TYPE = 'TILE';
-                console.log('tile')
                 setSelectedClass(el);
             };
         });
