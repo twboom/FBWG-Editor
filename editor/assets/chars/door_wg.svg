@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style>
+        rect#inner {
+            fill: lightblue;
+        }
+
+        rect#outer {
+            fill: blue;
+        }
+    </style>
+    <rect id="outer" x="8" y="8" width="48" height="56" />
+    <rect id="inner" x="16" y="16" width="32" height="48" />
+</svg>

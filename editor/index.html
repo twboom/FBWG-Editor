@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FBWG Editor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/inputs.css">
+    <script defer src="js/renderer.js"></script>
+    <script defer src="js/canvas.js"></script>
+    <script defer src="js/export.js"></script>
+    <script defer src="js/import.js"></script>
+</head> 
+<body>
+    <div id="canvas-container">
+        <canvas id="tiles"></canvas>
+        <canvas id="objects"></canvas>
+        <canvas id="chars"></canvas>
+        <canvas id="highlight"></canvas>
+    </div>
+    <div id="input-container">
+        <hr>
+        <div id="import-container">
+            <button id="create-empty">Create empty level</button>
+            <button id="import-tutorial">Import tutorial level</button>
+            <input type="file" name="import-file" id="import-file">
+        </div>
+        <hr>
+        <div id="export-container">
+            <button id="export">Export level JSON file</button>
+            <button id="export-url">Export to text (clipboard)</button>
+        </div>
+        <hr>
+        <div id="level-settings">
+            <div class="options">
+                <label for="level-width">Width:</label>
+                <input type="number" name="level-width" id="level-width" min="1">
+            </div>
+            <div class="options">
+                <label for="level-height">Height:</label>
+                <input type="number" name="level-height" id="level-height" min="1">
+            </div>
+            <div class="options">
+                <button id="resize">Resize level</button>
+            </div>
+        </div>
+        <hr>
+        <div class="tool-container">
+            <div class="tool-category">
+                <div class="options">
+                    <label for="snap-x">Snap X:</label>
+                    <input type="number" name="snap-x" id="snap-x" min="0" value="0">
+                </div>
+                <div class="options">
+                    <label for="snap-y">Snap Y:</label>
+                    <input type="number" name="snap-y" id="snap-y" min="0" value="0">
+                </div>
+            </div>
+            <div class="tool-category">
+                <button class="editor-option" data-aid="multispawn">Multiple spawns</button>
+                <button class="editor-option" data-aid="previews">Platform previews</button>
+            </div>
+        </div>
+        <hr>
+        <div class="tool-container">
+            <div class="tool-category">
+                <button class="tool tile-option" data-tid="0">Air</button>
+                <button class="tool tile-option" data-tid="1">Block</button>
+            </div>
+            <div class="tool-category">
+                <button class="tool tile-option" data-tid="2">Slope TR</button>
+                <button class="tool tile-option" data-tid="3">Slope TL</button>
+                <button class="tool tile-option" data-tid="4">Slope BR</button>
+                <button class="tool tile-option" data-tid="5">Slope BL</button>
+            </div>
+            <div class="tool-category">
+                <button class="tool tile-option" data-tid="6">Water</button>
+                <button class="tool tile-option" data-tid="7">Lava</button>
+                <button class="tool tile-option" data-tid="8">Acid</button>
+            </div>
+        </div>
+        <hr>
+        <div class="tool-container">
+            <div class="tool-category">
+                <button class="tool char-option" data-gid="d">Delete char</button>
+                <button class="tool char-option" data-gid="m">Move char</button>
+            </div>
+            <div class="tool-category">
+                <button class="tool char-option" data-gid="16">Spawn FB</button>
+                <button class="tool char-option" data-gid="17">Spawn WG</button>
+                <button class="tool char-option" data-gid="18">Door FB</button>
+                <button class="tool char-option" data-gid="19">Door WG</button>
+            </div>
+            <div class="tool-category">
+                <button class="tool char-option" data-gid="20">Diamond FB</button>
+                <button class="tool char-option" data-gid="21">Diamond WG</button>
+                <button class="tool char-option" data-gid="22">Diamond Silver</button>
+                <button class="tool char-option" data-gid="23">Diamond FBWG</button>
+            </div>
+        </div>
+        <hr>
+        <div class="tool-container">
+            <div class="tool-category">
+                <button class="tool obje-option" data-aid="e">Edit object</button>
+                <button class="tool obje-option" data-aid="m">Move object</button>
+            </div>
+            <div class="tool-category">
+                <button class="tool obje-option" data-aid="box_normal">Box normal</button>
+                <button class="tool obje-option" data-aid="box_heavy">Box heavy</button>
+                <button class="tool obje-option" data-aid="platform">Platform</button>
+                <button class="tool obje-option" data-aid="button">Button</button>
+                <button class="tool obje-option" data-aid="lever">Lever</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
