@@ -394,8 +394,8 @@ function resizeLevel() {
 
     // Unfuckup objects and chars
     function isOutside(x, y) {
-        const canvasWidth = LEVEL.WIDTH * LEVEL.BLOCK_SIZE;
-        const canvasHeight = LEVEL.HEIGHT * LEVEL.BLOCK_SIZE;
+        const canvasWidth = highlightCanvas.offsetWidth;
+        const canvasHeight = highlightCanvas.offsetHeight;
 
         if (
             x < 0 ||
@@ -695,7 +695,7 @@ function deselectElement() {
             obj.y = Math.round((obj.y / SESSION.SNAPY)) * SESSION.SNAPY;
         };
         // Clear hlCtx to prevent ghost object from appearing
-        hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
+        clearHighlight();
     };
     createMovementPopup(obj);
     SESSION.SELECTED_ELEMENT_ID = undefined;
@@ -982,6 +982,10 @@ function toggleActiveClass(el) {
     };
 };
 
+function clearHighlight() {
+    hlCtx.clearRect(0, 0, highlightCanvas.offsetWidth, highlightCanvas.offsetHeight);
+}
+
 function initEditor() {
     highlightCanvas.addEventListener('mousemove', evt => {
         const blockSize = LEVEL.BLOCK_SIZE;
@@ -996,7 +1000,7 @@ function initEditor() {
         SESSION.TILEX = tileX;
         SESSION.TILEY = tileY;
 
-        hlCtx.clearRect(0, 0, LEVEL.WIDTH * blockSize, LEVEL.HEIGHT * blockSize);
+        clearHighlight();
 
         // Dragging function
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
@@ -1082,7 +1086,7 @@ function initEditor() {
 
     highlightCanvas.addEventListener('mouseleave', _ => {
         SESSION.MOUSEDOWN = false;
-        hlCtx.clearRect(0, 0, LEVEL.WIDTH * LEVEL.BLOCK_SIZE, LEVEL.HEIGHT * LEVEL.BLOCK_SIZE);
+        clearHighlight();
     });
 
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {

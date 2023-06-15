@@ -1,9 +1,10 @@
 body {
     margin: 0;
-    display: flex;
-    justify-content: space-evenly;
-    width: 98%;
-    margin-left: 1%;
+    /* display: flex; */
+    /* justify-content: space-evenly; */
+    /* width: 98%; */
+    /* margin-left: 1%; */
+    overflow: auto;
 }
 
 * {
@@ -13,13 +14,16 @@ body {
 div#canvas-container {
     border: solid gray 16px;  
     display: grid;
-    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    /* width: auto; */
 }
 
 canvas {
     grid-column: 1;
     grid-row: 1;
-    width: 100%;
+    /* width: 100%; */
 }
 
 canvas#highlight {
