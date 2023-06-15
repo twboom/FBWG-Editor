@@ -814,7 +814,7 @@ function showObjPopup() {
                 },
                 {
                     type: 'max',
-                    value: LEVEL.WIDTH / LEVEL.BLOCK_SIZE,
+                    value: LEVEL.WIDTH,
                 },
                 {
                     type: 'value',
@@ -838,7 +838,7 @@ function showObjPopup() {
                 },
                 {
                     type: 'max',
-                    value: LEVEL.HEIGHT / LEVEL.BLOCK_SIZE,
+                    value: LEVEL.HEIGHT,
                 },
                 {
                     type: 'value',
