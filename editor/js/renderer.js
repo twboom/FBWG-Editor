@@ -618,6 +618,10 @@ function deleteChar(x, y) {
 function move(objId, layer, type) {
     const x = SESSION.MOUSEX;
     const y = SESSION.MOUSEY;
+    let previews = false
+    if (EDITORCONFIG.PLATFORMPREVIEWS == true) {
+        previews = true};
+    EDITORCONFIG.PLATFORMPREVIEWS = true
     const obj = layer.objects.find(({ id }) => id === objId);
     if (obj) {
         let xPos = (x - SESSION.MOUSEDOWNX) + obj.x;
@@ -634,6 +638,9 @@ function move(objId, layer, type) {
         SESSION.MOUSEDOWNX = x;
         SESSION.MOUSEDOWNY = y;
         SESSION.CURRENTLY_DRAGGING = true;
+    };
+    if (!previews) {
+        EDITORCONFIG.PLATFORMPREVIEWS = false;
     };
 };
 
@@ -953,15 +960,6 @@ function setSelectedClass(el) {
     });
     if (el) {
         el.classList.add('selected');
-        // if (el.dataset.aid == 'multispawn') {
-        //     if (!EDITORCONFIG.ALLOWMULTIPLESPAWNS) {
-        //         el.classList.remove('selected');
-        //     }
-        // } else if (el.dataset.aid == 'previews') {
-        //     if (!EDITORCONFIG.PLATFORMPREVIEWS) {
-        //         el.classList.remove('selected');
-        //     }
-        // }
     };
 };
 
