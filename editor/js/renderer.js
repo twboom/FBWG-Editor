@@ -751,24 +751,30 @@ function createPopup(x, y, fields, showInsideCanvas=true) {
     });
 
     // Show inside canavs
+    const hlBounds = highlightCanvas.getBoundingClientRect();
     document.body.appendChild(popup);
     const bounds = popup.getBoundingClientRect();
-    document.body.removeChild(popup)
+    document.body.removeChild(popup);
 
-    if ((x + bounds.width) > highlightCanvas.getBoundingClientRect().right && showInsideCanvas) {
-        popup.style.left = (x - bounds.width) + 'px';
-        console.log((x - bounds.width) + 'px', x, bounds.width)
+    if ((x + bounds.width) > hlBounds.right && showInsideCanvas) {
+        if ((x + bounds.width) > hlBounds.right) {
+            popup.style.left = (hlBounds.right - bounds.width) + 'px';
+        } else {
+            popup.style.left = (x - bounds.width) + 'px';
+        };
     } else {
         popup.style.left = x + 'px';
-    }
+    };
 
-    if ((y + bounds.height) > highlightCanvas.getBoundingClientRect().bottom && showInsideCanvas) {
-        popup.style.top = (y - bounds.height) + 'px';
-        console.log((y - bounds.height) + 'px', y, bounds.height)
+    if ((y + bounds.height) > hlBounds.bottom && showInsideCanvas) {
+        if ((y + bounds.height) > hlBounds.bottom) {
+            popup.style.top = (hlBounds.bottom - bounds.height) + 'px';
+        } else {
+            popup.style.top = (x - bounds.height) + 'px';
+        };
     } else {
-        console.log('y norm')
         popup.style.top = y + 'px';
-    }
+    };
 
     popup.appendChild(close);
     return popup;
