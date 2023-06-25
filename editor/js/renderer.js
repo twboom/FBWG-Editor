@@ -843,6 +843,24 @@ function showObjPopup() {
     };
     const fields = [];
     if (!CONFIG.OBJ_NO_GROUP_FIELD_GID.includes(obj.gid)) { fields.push(groupField); };
+    if (obj.gid === 25 || obj.gid === 26) {
+        const dirField = {
+            name: '',
+            type: 'button',
+            attributes: [
+                {
+                    'type': 'value',
+                    'value': 'Switch direction'
+                }
+            ],
+            evtType: 'click',
+            callback: _ => {
+                obj.gid = (obj.gid - 26) ? 26 : 25;
+                render(false, true, false);
+            }
+        }
+        fields.push(dirField);
+    }
     if (obj.type === 'platform') {
         const widthField = {
             name: 'Width (tiles)',
