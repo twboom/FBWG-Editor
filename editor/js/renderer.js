@@ -982,7 +982,11 @@ function createMovementPopup(obj) {
             renderCurrentLayer();
         }
     };
-    const popup = createPopup(obj.x + 16, obj.y + 16, [xField, yField]);
+    let y = obj.y
+    if (obj.type === 'platform') {
+        y += obj.height
+    }
+    const popup = createPopup(obj.x + 16, y + 16, [xField, yField]);
     document.body.appendChild(popup);
 };
 
