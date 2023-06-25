@@ -920,7 +920,7 @@ function showObjPopup() {
         fields.push(widthField, heightField, dxField, dyField);
     };
     fields.push(deleteField);
-    const popup = createPopup(obj.x + obj.width, obj.y, fields);
+    const popup = createPopup(SESSION.MOUSEX, SESSION.MOUSEY, fields);
     document.body.appendChild(popup);
 };
 
@@ -975,7 +975,7 @@ function createMovementPopup(obj) {
             renderCurrentLayer();
         }
     };
-    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField]);
+    const popup = createPopup(obj.x + 16, obj.y + 16, [xField, yField]);
     document.body.appendChild(popup);
 };
 
