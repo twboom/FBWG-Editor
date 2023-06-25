@@ -245,6 +245,9 @@ function init(levelJSON, reload=false) {
 
     resizeCanvas();
 
+    document.getElementById('level-width').value = LEVEL.WIDTH;
+    document.getElementById('level-height').value = LEVEL.HEIGHT;
+
     LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
     LEVEL.OBJECTLAYER = levelJSON.layers.find( ({ name }) => name === 'Objects');
     LEVEL.CHARSLAYER = levelJSON.layers.find( ({ name }) => name === 'Chars');
