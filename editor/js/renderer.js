@@ -95,6 +95,7 @@ function drawPlatform(obj, ctx) {
 };
 
 function drawPlatformPreview(obj, ctx) {
+    let ctxPlatf = ctx;
     const COLOR_LOOKUP = [
         '#FF0000', //red
         '#008000', //green
@@ -110,26 +111,27 @@ function drawPlatformPreview(obj, ctx) {
     const dy = obj.properties.dy;
     const strokeWidth = 8;
     const strokeOffset = strokeWidth / 2
-    ctx.beginPath();
-    ctx.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
-    ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
+    ctxPlatf.beginPath();
+    ctxPlatf.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
+    ctxPlatf.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
     console.log(COLOR_LOOKUP[obj.properties.group - 1] + '07f');
-    ctx.fill();
-    ctx.beginPath();
-    ctx.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
-    ctx.strokeStyle = '#8080807f';
-    ctx.lineWidth = strokeWidth;
-    ctx.stroke();
+    console.log(ctxPlatf.fillStyle);
+    ctxPlatf.fill();
+    ctxPlatf.beginPath();
+    ctxPlatf.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
+    ctxPlatf.strokeStyle = '#8080807f';
+    ctxPlatf.lineWidth = strokeWidth;
+    ctxPlatf.stroke();
 
-    //draw the dottet line
-    ctx.beginPath();
-    ctx.setLineDash([5, 15]);
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#404040';
-    ctx.moveTo(obj.x + 0.5*obj.width, obj.y + 0.5*obj.height);
-    ctx.lineTo(obj.x + 0.5*obj.width + dx*LEVEL.BLOCK_SIZE, obj.y + 0.5*obj.height - dy*LEVEL.BLOCK_SIZE);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    //draw the dotted line
+    ctxPlatf.beginPath();
+    ctxPlatf.setLineDash([5, 15]);
+    ctxPlatf.lineWidth = 4;
+    ctxPlatf.strokeStyle = '#404040';
+    ctxPlatf.moveTo(obj.x + 0.5*obj.width, obj.y + 0.5*obj.height);
+    ctxPlatf.lineTo(obj.x + 0.5*obj.width + dx*LEVEL.BLOCK_SIZE, obj.y + 0.5*obj.height - dy*LEVEL.BLOCK_SIZE);
+    ctxPlatf.stroke();
+    ctxPlatf.setLineDash([]);
 };
 
 function drawObj(obj, ctx) {
@@ -712,6 +714,9 @@ function deselectElement() {
         render(false, false, true);
     } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
         render(false, true, false);
+        if (obj.type == "platform") {
+            drawPlatformPreview(obj, objCtx);
+        };
     };
     SESSION.SELECTED_LAYER_TYPE = undefined;
 };
@@ -838,6 +843,24 @@ function showObjPopup() {
     };
     const fields = [];
     if (!CONFIG.OBJ_NO_GROUP_FIELD_GID.includes(obj.gid)) { fields.push(groupField); };
+    if (obj.gid === 25 || obj.gid === 26) {
+        const dirField = {
+            name: '',
+            type: 'button',
+            attributes: [
+                {
+                    'type': 'value',
+                    'value': 'Switch direction'
+                }
+            ],
+            evtType: 'click',
+            callback: _ => {
+                obj.gid = (obj.gid - 26) ? 26 : 25;
+                render(false, true, false);
+            }
+        }
+        fields.push(dirField);
+    }
     if (obj.type === 'platform') {
         const widthField = {
             name: 'Width (tiles)',
@@ -945,7 +968,7 @@ function createMovementPopup(obj) {
         name: 'x',
         type: 'number',
         attributes: [
-
+            
             {
                 type: 'value',
                 value: obj.x,
@@ -982,6 +1005,12 @@ function createMovementPopup(obj) {
             renderCurrentLayer();
         }
     };
+    
+    if (obj.type == "platform") {
+        console.log('is platform')
+        drawPlatformPreview(obj, objCtx);
+    };
+
     let y = obj.y
     if (obj.type === 'platform') {
         y += obj.height
@@ -1173,7 +1202,6 @@ function initEditor() {
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
             if (SESSION.SELECTED_OBJE_TYPE == el.dataset.aid) {
-                console.log('bonjour')
                 SESSION.SELECTED_OBJE_TYPE = undefined;
                 SESSION.SELECTED_TOOL_TYPE = undefined;
                 setSelectedClass(undefined);
