@@ -920,7 +920,11 @@ function showObjPopup() {
         fields.push(widthField, heightField, dxField, dyField);
     };
     fields.push(deleteField);
-    const popup = createPopup(SESSION.MOUSEX, SESSION.MOUSEY, fields);
+    let y = obj.y;
+    if (obj.type === 'platform') {
+        y += obj.height
+    }
+    const popup = createPopup(obj.x + 16, y + 16, fields);
     document.body.appendChild(popup);
 };
 
