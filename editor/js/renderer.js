@@ -96,6 +96,7 @@ function drawPlatform(obj, ctx) {
 };
 
 function drawPlatformPreview(obj, ctx) {
+    let ctxPlatf = ctx;
     const COLOR_LOOKUP = [
         '#FF0000', //red
         '#008000', //green
@@ -111,26 +112,27 @@ function drawPlatformPreview(obj, ctx) {
     const dy = obj.properties.dy;
     const strokeWidth = 8;
     const strokeOffset = strokeWidth / 2
-    ctx.beginPath();
-    ctx.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
-    ctx.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
-    console.log(COLOR_LOOKUP[obj.properties.group - 1] + '07f');
-    ctx.fill();
-    ctx.beginPath();
-    ctx.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
-    ctx.strokeStyle = '#8080807f';
-    ctx.lineWidth = strokeWidth;
-    ctx.stroke();
+    ctxPlatf.beginPath();
+    ctxPlatf.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
+    ctxPlatf.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + 'c0';
+    console.log(COLOR_LOOKUP[obj.properties.group - 1] + 'c0');
+    console.log(ctxPlatf.fillStyle);
+    ctxPlatf.fill();
+    ctxPlatf.beginPath();
+    ctxPlatf.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
+    ctxPlatf.strokeStyle = '#80808c0';
+    ctxPlatf.lineWidth = strokeWidth;
+    ctxPlatf.stroke();
 
-    //draw the dottet line
-    ctx.beginPath();
-    ctx.setLineDash([5, 15]);
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = '#404040';
-    ctx.moveTo(obj.x + 0.5*obj.width, obj.y + 0.5*obj.height);
-    ctx.lineTo(obj.x + 0.5*obj.width + dx*LEVEL.BLOCK_SIZE, obj.y + 0.5*obj.height - dy*LEVEL.BLOCK_SIZE);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    //draw the dotted line
+    ctxPlatf.beginPath();
+    ctxPlatf.setLineDash([5, 15]);
+    ctxPlatf.lineWidth = 4;
+    ctxPlatf.strokeStyle = '#404040';
+    ctxPlatf.moveTo(obj.x + 0.5*obj.width, obj.y + 0.5*obj.height);
+    ctxPlatf.lineTo(obj.x + 0.5*obj.width + dx*LEVEL.BLOCK_SIZE, obj.y + 0.5*obj.height - dy*LEVEL.BLOCK_SIZE);
+    ctxPlatf.stroke();
+    ctxPlatf.setLineDash([]);
 };
 
 function drawObj(obj, ctx) {
@@ -245,6 +247,9 @@ function init(levelJSON, reload=false) {
     LEVEL.HEIGHT = levelJSON.height;
 
     resizeCanvas();
+
+    document.getElementById('level-width').value = LEVEL.WIDTH;
+    document.getElementById('level-height').value = LEVEL.HEIGHT;
 
     LEVEL.TILELAYER = levelJSON.layers.find( ({ type }) => type === 'tilelayer' ).data;
     LEVEL.OBJECTLAYER = levelJSON.layers.find( ({ name }) => name === 'Objects');
@@ -619,6 +624,10 @@ function deleteChar(x, y) {
 function move(objId, layer, type) {
     const x = SESSION.MOUSEX;
     const y = SESSION.MOUSEY;
+    let previews = false
+    if (EDITORCONFIG.PLATFORMPREVIEWS == true) {
+        previews = true};
+    EDITORCONFIG.PLATFORMPREVIEWS = true
     const obj = layer.objects.find(({ id }) => id === objId);
     if (obj) {
         let xPos = (x - SESSION.MOUSEDOWNX) + obj.x;
@@ -635,6 +644,9 @@ function move(objId, layer, type) {
         SESSION.MOUSEDOWNX = x;
         SESSION.MOUSEDOWNY = y;
         SESSION.CURRENTLY_DRAGGING = true;
+    };
+    if (!previews) {
+        EDITORCONFIG.PLATFORMPREVIEWS = false;
     };
 };
 
@@ -703,11 +715,14 @@ function deselectElement() {
         render(false, false, true);
     } else if (SESSION.SELECTED_LAYER_TYPE === 'OBJE') {
         render(false, true, false);
+        if (obj.type == "platform") {
+            drawPlatformPreview(obj, objCtx);
+        };
     };
     SESSION.SELECTED_LAYER_TYPE = undefined;
 };
 
-function createPopup(x, y, fields) {
+function createPopup(x, y, fields, showInsideCanvas=true) {
     removePopup();
     const popup = document.createElement('div');
     popup.id = 'popup';
@@ -743,9 +758,34 @@ function createPopup(x, y, fields) {
     close.addEventListener('click', _ => {
         popup.remove();
     });
+
+    // Show inside canavs
+    const hlBounds = highlightCanvas.getBoundingClientRect();
+    document.body.appendChild(popup);
+    const bounds = popup.getBoundingClientRect();
+    document.body.removeChild(popup);
+
+    if ((x + bounds.width) > hlBounds.right && showInsideCanvas) {
+        if ((x + bounds.width) > hlBounds.right) {
+            popup.style.left = (hlBounds.right - bounds.width) + 'px';
+        } else {
+            popup.style.left = (x - bounds.width) + 'px';
+        };
+    } else {
+        popup.style.left = x + 'px';
+    };
+
+    if ((y + bounds.height) > hlBounds.bottom && showInsideCanvas) {
+        if ((y + bounds.height) > hlBounds.bottom) {
+            popup.style.top = (hlBounds.bottom - bounds.height) + 'px';
+        } else {
+            popup.style.top = (x - bounds.height) + 'px';
+        };
+    } else {
+        popup.style.top = y + 'px';
+    };
+
     popup.appendChild(close);
-    popup.style.left = x + 'px';
-    popup.style.top = y + 'px';
     return popup;
 };
 
@@ -804,6 +844,24 @@ function showObjPopup() {
     };
     const fields = [];
     if (!CONFIG.OBJ_NO_GROUP_FIELD_GID.includes(obj.gid)) { fields.push(groupField); };
+    if (obj.gid === 25 || obj.gid === 26) {
+        const dirField = {
+            name: '',
+            type: 'button',
+            attributes: [
+                {
+                    'type': 'value',
+                    'value': 'Switch direction'
+                }
+            ],
+            evtType: 'click',
+            callback: _ => {
+                obj.gid = (obj.gid - 26) ? 26 : 25;
+                render(false, true, false);
+            }
+        }
+        fields.push(dirField);
+    }
     if (obj.type === 'platform') {
         const widthField = {
             name: 'Width (tiles)',
@@ -889,7 +947,11 @@ function showObjPopup() {
         fields.push(widthField, heightField, dxField, dyField);
     };
     fields.push(deleteField);
-    const popup = createPopup(obj.x + obj.width, obj.y, fields);
+    let y = obj.y;
+    if (obj.type === 'platform') {
+        y += obj.height
+    }
+    const popup = createPopup(obj.x + 16, y + 16, fields);
     document.body.appendChild(popup);
 };
 
@@ -907,7 +969,7 @@ function createMovementPopup(obj) {
         name: 'x',
         type: 'number',
         attributes: [
-
+            
             {
                 type: 'value',
                 value: obj.x,
@@ -944,7 +1006,17 @@ function createMovementPopup(obj) {
             renderCurrentLayer();
         }
     };
-    const popup = createPopup(obj.x + obj.width, obj.y, [xField, yField]);
+    
+    if (obj.type == "platform") {
+        console.log('is platform')
+        drawPlatformPreview(obj, objCtx);
+    };
+
+    let y = obj.y
+    if (obj.type === 'platform') {
+        y += obj.height
+    }
+    const popup = createPopup(obj.x + 16, y + 16, [xField, yField]);
     document.body.appendChild(popup);
 };
 
@@ -954,9 +1026,7 @@ function setSelectedClass(el) {
     });
     if (el) {
         el.classList.add('selected');
-    } else {
-        SESSION.SELECTED_TOOL_TYPE = undefined;
-    }
+    };
 };
 
 function toggleActiveClass(el) {
@@ -1153,7 +1223,6 @@ function initEditor() {
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
             if (SESSION.SELECTED_OBJE_TYPE == el.dataset.aid) {
-                console.log('bonjour')
                 SESSION.SELECTED_OBJE_TYPE = undefined;
                 SESSION.SELECTED_TOOL_TYPE = undefined;
                 setSelectedClass(undefined);
