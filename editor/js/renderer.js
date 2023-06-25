@@ -15,6 +15,7 @@ const LEVEL = {
 
 const SESSION = {
     MOUSEDOWN: false,
+    RIGHTMOUSEDOWN: false,
     MOUSEDOWNX: 0,
     MOUSEDOWNY: 0,
     MOUSEX: 0,
@@ -1064,8 +1065,12 @@ function initEditor() {
         clearHighlight();
 
         // Dragging function
-        if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
-            setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
+        if ((SESSION.MOUSEDOWN || SESSION.RIGHTMOUSEDOWN) && SESSION.SELECTED_TOOL_TYPE === 'TILE') {
+            if (SESSION.MOUSEDOWN) {
+                setBlock([SESSION.TILEX, SESSION.TILEY], SESSION.SELECTED_TILE_TYPE)
+            } else {
+                setBlock([SESSION.TILEX, SESSION.TILEY], 0);
+            }
         };
 
         if (SESSION.MOUSEDOWN && SESSION.SELECTED_TOOL_TYPE === 'CHAR' && SESSION.SELECTED_CHAR_TYPE === 'm') {
@@ -1128,8 +1133,20 @@ function initEditor() {
         };
     });
 
+    highlightCanvas.addEventListener('contextmenu', evt => {
+        if (SESSION.SELECTED_TOOL_TYPE == 'TILE') {
+            setBlock([SESSION.TILEX, SESSION.TILEY], 0);
+        };
+    });
+
     highlightCanvas.addEventListener('mousedown', evt => {
-        SESSION.MOUSEDOWN = true;
+        if (evt.button == 0) {
+            SESSION.MOUSEDOWN = true;
+        } else if (evt.button == 2) {
+            SESSION.RIGHTMOUSEDOWN = true;
+        } else {
+            return;
+        }
         const mouseX = evt.offsetX > 0 ? evt.offsetX : 0;
         const mouseY = evt.offsetY > 0 ? evt.offsetY : 0;
         SESSION.MOUSEDOWNX = mouseX;
@@ -1157,8 +1174,12 @@ function initEditor() {
         removePopup();
     });
 
-    document.addEventListener('mouseup', _ => {
-        SESSION.MOUSEDOWN = false;
+    document.addEventListener('mouseup', evt => {
+        if (evt.button == 0) {
+            SESSION.MOUSEDOWN = false;
+        } else if (evt.button == 2) {
+            SESSION.RIGHTMOUSEDOWN = false;
+        }
         deselectElement();
         SESSION.CURRENTLY_DRAGGING = false;
     });
