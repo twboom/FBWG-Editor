@@ -713,7 +713,7 @@ function deselectElement() {
     SESSION.SELECTED_LAYER_TYPE = undefined;
 };
 
-function createPopup(x, y, fields) {
+function createPopup(x, y, fields, showInsideCanvas=true) {
     removePopup();
     const popup = document.createElement('div');
     popup.id = 'popup';
@@ -749,9 +749,28 @@ function createPopup(x, y, fields) {
     close.addEventListener('click', _ => {
         popup.remove();
     });
+
+    // Show inside canavs
+    document.body.appendChild(popup);
+    const bounds = popup.getBoundingClientRect();
+    document.body.removeChild(popup)
+
+    if ((x + bounds.width) > highlightCanvas.getBoundingClientRect().right && showInsideCanvas) {
+        popup.style.left = (x - bounds.width) + 'px';
+        console.log((x - bounds.width) + 'px', x, bounds.width)
+    } else {
+        popup.style.left = x + 'px';
+    }
+
+    if ((y + bounds.height) > highlightCanvas.getBoundingClientRect().bottom && showInsideCanvas) {
+        popup.style.top = (y - bounds.height) + 'px';
+        console.log((y - bounds.height) + 'px', y, bounds.height)
+    } else {
+        console.log('y norm')
+        popup.style.top = y + 'px';
+    }
+
     popup.appendChild(close);
-    popup.style.left = x + 'px';
-    popup.style.top = y + 'px';
     return popup;
 };
 
