@@ -113,13 +113,13 @@ function drawPlatformPreview(obj, ctx) {
     const strokeOffset = strokeWidth / 2
     ctxPlatf.beginPath();
     ctxPlatf.rect(obj.x + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - dy*LEVEL.BLOCK_SIZE, obj.width, -obj.height)
-    ctxPlatf.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + '07f';
-    console.log(COLOR_LOOKUP[obj.properties.group - 1] + '07f');
+    ctxPlatf.fillStyle = COLOR_LOOKUP[obj.properties.group - 1] + 'c0';
+    console.log(COLOR_LOOKUP[obj.properties.group - 1] + 'c0');
     console.log(ctxPlatf.fillStyle);
     ctxPlatf.fill();
     ctxPlatf.beginPath();
     ctxPlatf.rect(obj.x + strokeOffset + dx*LEVEL.BLOCK_SIZE, obj.y + obj.height - strokeOffset - dy*LEVEL.BLOCK_SIZE, obj.width - strokeWidth, -obj.height + strokeWidth);
-    ctxPlatf.strokeStyle = '#8080807f';
+    ctxPlatf.strokeStyle = '#80808c0';
     ctxPlatf.lineWidth = strokeWidth;
     ctxPlatf.stroke();
 
