@@ -87,6 +87,13 @@ export class Button extends Mechanics {
     };
 };
 
+export class TimerButton extends Mechanics {
+    constructor(x, y, group, time) {
+        super(x, y, group);
+        this.time = time;
+    };
+};
+
 export class Lever extends Mechanics {
     constructor(x, y, group, direction) {
         super(x, y, group);
@@ -99,6 +106,18 @@ export class Platform extends Mechanics {
         super(x, y, group);
         this.dx = dx;
         this.dy = dy;
+    };
+};
+
+export class RotationMirror extends Mechanics {
+    constructor(x, y, group) {
+        super(x, y, group);
+    };
+};
+
+export class RotationBoxMirror extends Mechanics {
+    constructor(x, y, group){
+        super(x, y ,group);
     };
 };
 
@@ -126,5 +145,96 @@ export class Slider extends Polyline {
         super(x, y, group, [x1, y1], [x2, y2]);
         this.max = max;
         this.min = min;
+    };
+};
+
+/* Moveable objects */
+export class MoveableObject extends Object {
+    constructor(x, y) {
+        super(x, y);
+    };
+};
+
+export class Ball extends MoveableObject {
+    constructor(x, y) {
+        super(x, y);
+    };
+};
+
+export class Box extends MoveableObject {
+    constructor(x, y) {
+        super(x, y);
+    };
+};
+
+export class HeavyBox extends MoveableObject {
+    constructor(x, y) {
+        super(x, y);
+    };
+};
+
+export class MirrorBox extends MoveableObject {
+    constructor(x, y) {
+        super(x, y);
+    };
+};
+
+/* Portal objects */
+export class Portal extends Object {
+    constructor(x, y, group, initialState, portalId) {
+        super(x, y);
+        this.group = group;
+        this.initialState = initialState;
+        this.portalId = portalId;
+    };
+};
+
+export class PortalLeft extends Portal {
+    constructor(x, y, group, initialState, portalId) {
+        super(x, y, group, initialState, portalId);
+    };
+};
+
+export class PortalRight extends Portal {
+    constructor(x, y, group, initialState, portalId) {
+        super(x, y, group, initialState, portalId);
+    };
+};
+
+/* Light objects */
+export class Lights extends Object {
+    constructor(x, y, color, group) {
+        super(x, y);
+        this.color = color;
+        this.group = group
+    };
+};
+
+export class LightEmitter extends Lights {
+    constructor(x, y, color, initialState, group) {
+        super(x, y, color, group);
+        this.initialState = initialState;
+    };
+};
+
+export class LightReceiver extends Lights {
+    constructor(x, y, color, group) {
+        super(x, y, color, group);
+    };
+};
+
+/* Wind objects */
+export class WindObjects extends Object {
+    constructor(x, y, group, initialState, length) {
+        super(x, y);
+        this.group = group;
+        this.initialState = initialState;
+        this.length = length;
+    };
+};
+
+export class Fan extends WindObjects {
+    constructor(x, y, group, initialState, length) {
+        super(x, y, group, initialState, length);
     };
 };
