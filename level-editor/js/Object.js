@@ -49,6 +49,30 @@ export class Diamond extends Object {
     };
 };
 
+export class FBDiamond extends Diamond {
+    constructor(X, y, type) {
+        super(x, y, type);
+    };
+};
+
+export class WGDiamond extends Diamond {
+    constructor(x, y, type) {
+        super(x, y, type);
+    };
+};
+
+export class SilverDiamond extends Diamond {
+    constructor(x, y, type) {
+        super(x, y, type);
+    };
+};
+
+export class FBWGDiamond extends Diamond {
+    constructor(X, y, type) {
+        super(x, y, type);
+    };
+};
+
 /* Mechanical objects */
 export class Mechanics extends Object {
     constructor(x, y, group) {
@@ -75,5 +99,32 @@ export class Platform extends Mechanics {
         super(x, y, group);
         this.dx = dx;
         this.dy = dy;
+    };
+};
+
+/* Polyline objects */
+export class Polyline extends Object {
+    constructor(x, y, group, [x1, y1], [x2, y2]) {
+        super(x, y);
+        this.group = group;
+        this.pos1 = [x1, y1];
+        this.pos2 = [x2, y2];
+    };
+};
+
+export class Hanger extends Polyline {
+    constructor(x, y, group, [x1, y1], [x2, y2], barWidth, density, fullRotation) {
+        super(x, y, group, [x1, y1], [x2, y2]);
+        this.barWidth = barWidth;
+        this.density = density;
+        this.fullRotation = fullRotation;
+    };
+};
+
+export class Slider extends Polyline {
+    constructor(x, y, group, [x1, y1], [x2, y2], max, min) {
+        super(x, y, group, [x1, y1], [x2, y2]);
+        this.max = max;
+        this.min = min;
     };
 };
