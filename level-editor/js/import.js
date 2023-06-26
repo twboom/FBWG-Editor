@@ -32,7 +32,7 @@ function importURL(src) {
         .then(importJSON);
 };
 
-function initImport() {
+export function initImport() {
     document.getElementById('create-empty').addEventListener('click', _ => {
         importURL(IMPORT_CONFIG.BLANK_LEVEL);
     });
@@ -41,5 +41,3 @@ function initImport() {
     });
     document.getElementById('import-file').addEventListener('change', importLocal);
 };
-
-initImport();
