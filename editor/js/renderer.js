@@ -1274,3 +1274,7 @@ function initEditor() {
         };
     });
 };
+
+window.onbeforeunload = evt => {
+    evt.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+}
