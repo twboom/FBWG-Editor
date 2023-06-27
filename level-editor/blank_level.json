@@ -1,63 +1,20 @@
 {
-    "height":0,
-    "infinite":false,
-    "layers":[
-       {
-          "data":[],
-          "height":0,
-          "name":"Ground",
-          "opacity":1,
-          "type":"tilelayer",
-          "visible":true,
-          "width":0,
-          "x":0,
-          "y":0
-       },
-       {
-          "draworder":"topdown",
-          "name":"Chars",
-          "objects":[],
-          "opacity":1,
-          "type":"objectgroup",
-          "visible":true,
-          "x":0,
-          "y":0
-       },
-       {
-          "draworder":"topdown",
-          "name":"Objects",
-          "objects":[],
-          "opacity":1,
-          "type":"objectgroup",
-          "visible":true,
-          "x":0,
-          "y":0
-       }
-    ],
-    "nextobjectid":144,
-    "orientation":"orthogonal",
-    "renderorder":"right-down",
-    "tiledversion":"1.1.6",
-    "tileheight":32,
-    "tilesets":[
-       {
-          "firstgid":1,
-          "source":"../../../assets/tilemaps/tilesets/Ground.json"
-       },
-       {
-          "firstgid":16,
-          "source":"../../../assets/tilemaps/tilesets/Chars.json"
-       },
-       {
-          "firstgid":24,
-          "source":"../../../assets/tilemaps/tilesets/Objects.json"
-       },{
-         "firstgid":40,
-         "source":"../../../assets/tilemaps/tilesets/LargeObjects.json"
-      }
-    ],
-    "tilewidth":32,
-    "type":"map",
-    "version":1,
-    "width":0
- }
+  "filetype": "FBWG_EDITOR",
+  "heigth": 0,
+  "data": "",
+  "Objects": [
+     { "t": "FBGP", "s": 1, "x": [], "y": []},
+     { "t": "WGGP", "s": 1, "x": [], "y": []},
+     { "t": "DI", "dt": [], "x": [], "y": []},
+     { "t": "B", "x": [], "y": [], "g": [], "r": [], "tm": []},
+     { "t": "L", "x": [], "y": [], "g": [], "r": [], "os": []},
+     { "t": "P", "x": [], "y": [], "w": [], "h": [], "g": [], "dx": [], "dy": []},
+     { "t": "MO", "x": [], "y": [], "ot": []},
+     { "t": "PO", "x": [], "y": [], "r": [], "g": [], "ps": [], "is": []},
+     { "t": "LO", "x": [], "y": [], "r": [], "lt": [], "g": [], "c": [], "is": []},
+     { "t": "RO", "bm": [], "x": [], "y": [], "r": [], "g": []},
+     { "t": "WG", "x": [], "y": [], "r": [], "g": [], "is": [], "l": []},
+     { "t": "H", "x": [], "y": [], "x2": [], "y2": [], "bw": [], "ds": [], "fr": []},
+     { "t": "SL", "x": [], "y": [], "x2": [],"y2": [], "g": [], "mx": [], "mn": []}],
+  "tilesets": [[1, "ground"], [16, "chars"], [24, "objects"]]
+}

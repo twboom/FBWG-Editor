@@ -33,11 +33,16 @@ function importURL(src) {
 };
 
 export function initImport() {
+    // Import the blank level
     document.getElementById('create-empty').addEventListener('click', _ => {
         importURL(IMPORT_CONFIG.BLANK_LEVEL);
     });
+
+    // Import the tutorial level
     document.getElementById('import-tutorial').addEventListener('click', _ => {
         importURL(IMPORT_CONFIG.EXAMPLE_LEVEL);
     });
+
+    // Import a level file
     document.getElementById('import-file').addEventListener('change', importLocal);
 };

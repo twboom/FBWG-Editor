@@ -181,23 +181,24 @@ export class MirrorBox extends MoveableObject {
 
 /* Portal objects */
 export class Portal extends Object {
-    constructor(x, y, group, initialState, portalId) {
+    constructor(x, y, group, initialState, portalId, rotation) {
         super(x, y);
         this.group = group;
         this.initialState = initialState;
         this.portalId = portalId;
+        this.rotation = rotation
     };
 };
 
 export class PortalLeft extends Portal {
-    constructor(x, y, group, initialState, portalId) {
-        super(x, y, group, initialState, portalId);
+    constructor(x, y, group, initialState, portalId, rotation) {
+        super(x, y, group, initialState, portalId, rotation);
     };
 };
 
 export class PortalRight extends Portal {
-    constructor(x, y, group, initialState, portalId) {
-        super(x, y, group, initialState, portalId);
+    constructor(x, y, group, initialState, portalId, rotation) {
+        super(x, y, group, initialState, portalId, rotation);
     };
 };
 
