@@ -1,6 +1,7 @@
 import * as Objects from './Object.js'
 import { SESSION } from './session.js';
 import { Level } from './Level.js';
+import { render } from './Renderer.js';
 
 export const IMPORT_CONFIG = {
     BLANK_LEVEL: 'blank_level.json',
@@ -14,6 +15,7 @@ function importJSON(json) {
 
     // Init app
     importLevelFile(json);
+    render(true, false);
 };
 
 function importLocal(evt) {

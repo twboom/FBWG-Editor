@@ -1,5 +1,5 @@
 import { SESSION } from './session.js';
-import { FLUID_COLOR } from './lookup.js';
+import { FLUID_COLOR, BLOCK_COLOR } from './lookup.js';
 
 const CONFIG = {
     BLOCK_SIZE: 32,
