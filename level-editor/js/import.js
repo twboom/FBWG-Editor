@@ -2,6 +2,7 @@ import * as Objects from './Object.js'
 import { SESSION } from './session.js';
 import { Level } from './Level.js';
 import { render } from './Renderer.js';
+import { resizeCanvas } from './canvas.js';
 
 export const IMPORT_CONFIG = {
     BLANK_LEVEL: 'blank_level.json',
@@ -15,7 +16,8 @@ function importJSON(json) {
 
     // Init app
     importLevelFile(json);
-    render(true, false);
+    resizeCanvas();
+    render(true, true);
 };
 
 function importLocal(evt) {
@@ -110,14 +112,30 @@ function importLevelFile(LEVELSJON) {
     if (objects) {
         // Iterate trough objects
         for (let i = 0; i < objects.length; i ++) {
+            // Get the object
             let object = objects[i];
+
+            // Check if the object is a platform , silder or hanger
+            if (!object.gid) {
+                switch(object.type) {
+                    case 'platform':
+                        levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group, object.properties.dx, object.properties.dy);
+                        break;
+                    case 'slider':
+                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties.group, [object.polyLine[0].x, object.polyLine[0].y], [object.polyLine[1].x, object.polyLine[1].y], object.properties.max, object.properties.min);
+                        break;
+                    case 'hanging':
+                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.group, [object.polyLine[0].x, object.polyLine[0].y], [object.polyLine[1].x, object.polyLine[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation);
+                        break;
+                };
+            };
             if (object.gid >= firstObj && (
             (object.gid > firstChar && object.gid > firstLargeObj) ||
             (object.gid < firstChar && object.gid < firstLargeObj) ||
             (object.gid < firstLargeObj && object.gid > firstChar) ||
             (object.gid > firstLargeObj && object.gid < firstChar))) {
                 // Object is a normal object
-                switch (object.gid - firstObj){
+                switch (object.gid - firstObj) {
                     case 0:
                         // Button
                         levelObjects[i] =new Objects.Button(object.x, object.y, object.rotation, object.properties.group);
@@ -231,7 +249,7 @@ function importLevelFile(LEVELSJON) {
                     break;
                 case 7:
                     // Diamond FWG
-                    levelObjects[i + add] =new Objects.Diamond(char.x, chary, 3);
+                    levelObjects[i + add] =new Objects.Diamond(char.x, char.y, char.rotation, 3);
                     break;
             };
         };

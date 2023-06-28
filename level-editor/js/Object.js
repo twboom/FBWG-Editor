@@ -79,8 +79,10 @@ export class Lever extends Mechanics {
 };
 
 export class Platform extends Mechanics {
-    constructor(x, y, rotation, group, dx, dy) {
+    constructor(x, y, rotation, width, heigth, group, dx, dy) {
         super(x, y, rotation, group);
+        this.width = width;
+        this.heigth = heigth;
         this.dx = dx;
         this.dy = dy;
     };

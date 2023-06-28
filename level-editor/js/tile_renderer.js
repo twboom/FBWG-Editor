@@ -1,5 +1,5 @@
 import { SESSION } from './session.js';
-import { FLUID_COLOR, BLOCK_COLOR } from './lookup.js';
+import { FLUID_COLOR, BLOCK_COLOR, BLOCK_SIZE } from './lookup.js';
 
 const CONFIG = {
     BLOCK_SIZE: 32,
@@ -12,9 +12,13 @@ export function drawTile(x, y, ctx) {
 
     // Draw the tile
     ctx.beginPath();
-    ctx.rect(x, y, CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE);
+    ctx.rect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
     ctx.fillStyle = BLOCK_COLOR[type];
     ctx.fill();
+
+    // Draw the grid
+    ctx.strokeStyle = '#333333';
+    ctx.stroke();
 };
 
 export function drawFluid(x, y, ctx) {
@@ -22,29 +26,29 @@ export function drawFluid(x, y, ctx) {
     let type = SESSION.LEVEL.tiles[y][x];
 
     // Get the previous and next tiles type
-    let prevType = (x == 0) ? prevType = null : prevType = SESSION.LEVEL.tiles[y][x - 1];
-    let nextType = (x == SESSION.LEVEL.widht) ? null : SESSION.LEVEL.tiles[y][x - 1];
+    let prevType = (x == 0) ? null : SESSION.LEVEL.tiles[y][x - 1];
+    let nextType = (x == SESSION.LEVEL.widht) ? null : SESSION.LEVEL.tiles[y][x + 1];
     
     // Convert to pixel coördinates
-    x *= CONFIG.BLOCK_SIZE;
-    y *= CONFIG.BLOCK_SIZE;
+    x *= BLOCK_SIZE;
+    y *= BLOCK_SIZE;
     
     // Draw fluid background
     ctx.beginPath();
-    ctx.rect(x, y, CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE);
+    ctx.rect(x, y, BLOCK_SIZE, BLOCK_SIZE);
     ctx.fillStyle = FLUID_COLOR[type - 6];
     ctx.fill();
 
     // Function to draw the slope on the edge of a fluid
     function drawEdge(left = false) {
         ctx.beginPath();
-        ctx.moveTo(x, y + CONFIG.BLOCK_SIZE);
-        ctx.lineTo(x + CONFIG.BLOCK_SIZE, y + CONFIG.BLOCK_SIZE);
+        ctx.moveTo(x, y + BLOCK_SIZE);
+        ctx.lineTo(x + BLOCK_SIZE, y + BLOCK_SIZE);
         if (left) {
-            ctx.lineTo(x + CONFIG.BLOCK_SIZE, y);
-            ctx.lineTo(x, y + CONFIG.SLOPE_STEEPNESS * CONFIG.BLOCK_SIZE);
+            ctx.lineTo(x + BLOCK_SIZE, y);
+            ctx.lineTo(x, y + CONFIG.SLOPE_STEEPNESS * BLOCK_SIZE);
         } else {
-            ctx.lineTo(x + CONFIG.BLOCK_SIZE, y + CONFIG.SLOPE_STEEPNESS * CONFIG.BLOCK_SIZE);
+            ctx.lineTo(x + BLOCK_SIZE, y + CONFIG.SLOPE_STEEPNESS * BLOCK_SIZE);
             ctx.lineTo(x, y);  
         };
         ctx.fillStyle = 'white';
@@ -58,49 +62,57 @@ export function drawFluid(x, y, ctx) {
     // Fill the bottom of the fluid
     if (prevType == type && nextType == type) {
         ctx.beginPath();
-        ctx.rect(x, y + CONFIG.SLOPE_STEEPNESS * CONFIG.BLOCK_SIZE, CONFIG.BLOCK_SIZE, (1 - CONFIG.SLOPE_STEEPNESS) * CONFIG.BLOCK_SIZE);
+        ctx.rect(x, y + CONFIG.SLOPE_STEEPNESS * BLOCK_SIZE, BLOCK_SIZE, (1 - CONFIG.SLOPE_STEEPNESS) * BLOCK_SIZE);
         ctx.fillStyle = 'white';
         ctx.fill();
     };
+
+    // Draw the grid
+    ctx.beginPath();
+    ctx.rect(x, y, BLOCK_SIZE, BLOCK_SIZE);
+    ctx.strokeStyle = '#333333';
+    ctx.stroke();
 };
 
 export function drawSlope(x, y, ctx, isBackground=false) {
     // Get the tiles type
-    let type = SESSION.LEVEL.tiles[y][x]
+    let type =  isBackground ? 7 - SESSION.LEVEL.tiles[y][x] : SESSION.LEVEL.tiles[y][x];
 
     // Convert to pixel coörnidates
-    x *= SESSION.LEVEL.BLOCK_SIZE
-    y *= SESSION.LEVEL.BLOCK_SIZE
+    x *= BLOCK_SIZE
+    y *= BLOCK_SIZE
 
     // Draw the slope
-    tileCtx.beginPath();
+    ctx.beginPath();
     switch (type) {
         case 2:
-            tileCtx.moveTo(x, y + SESSION.LEVEL.BLOCK_SIZE);
-            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y  + SESSION.LEVEL.BLOCK_SIZE);
-            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y);
+            ctx.moveTo(x, y + BLOCK_SIZE);
+            ctx.lineTo(x + BLOCK_SIZE, y  + BLOCK_SIZE);
+            ctx.lineTo(x + BLOCK_SIZE, y);
             break
         case 3:
-            tileCtx.moveTo(x, y);
-            tileCtx.lineTo(x, y + SESSION.LEVEL.BLOCK_SIZE);
-            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y + SESSION.LEVEL.BLOCK_SIZE);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y + BLOCK_SIZE);
+            ctx.lineTo(x + BLOCK_SIZE, y + BLOCK_SIZE);
             break
         case 4:
-            tileCtx.moveTo(x, y);
-            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y);
-            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y + SESSION.LEVEL.BLOCK_SIZE);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + BLOCK_SIZE, y);
+            ctx.lineTo(x + BLOCK_SIZE, y + BLOCK_SIZE);
             break
         case 5:
-            tileCtx.moveTo(x, y);
-            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y);
-            tileCtx.lineTo(x , y + SESSION.LEVEL.BLOCK_SIZE);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + BLOCK_SIZE, y);
+            ctx.lineTo(x , y + BLOCK_SIZE);
             break    
     }
 
     // Change color to black for the background
-    if (isBackground) { tileCtx.fillStyle = BLOCK_COLOR[0] } else { tileCtx.fillStyle = BLOCK_COLOR[1] };
-    tileCtx.fill();
+    if (isBackground) { ctx.fillStyle = BLOCK_COLOR[0] } else { ctx.fillStyle = BLOCK_COLOR[1] };
+    ctx.fill();
+    ctx.strokeStyle = '#333333';
+    ctx.stroke();
 
     // Call the funcion again to draw the background
-    if (!isBackground) { drawTriangle(7-type, [x/SESSION.LEVEL.BLOCK_SIZE, y/SESSION.LEVEL.BLOCK_SIZE], ctx,  true) };
+    if (!isBackground) { drawSlope(x/BLOCK_SIZE, y/BLOCK_SIZE, ctx,  true) };
 };
