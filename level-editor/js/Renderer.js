@@ -1,4 +1,5 @@
 import { DO_RENDER } from './session.js';
+import { TILE_RENDERER } from './session.js';
 import { drawTile, drawFluid, drawSlope } from './tile_renderer.js'
 
 export class SpriteRenderer {
@@ -33,8 +34,18 @@ export class TileRenderer {
     };
 };
 
-export function render() {
-
+export function render({do_tiles = true, do_objects = true}) {
+    // Render the correct layer
+    if (do_tiles) {
+        const tiles = SESSION.LEVEL.tiles
+        for (let y = 0; y < tiles.length; y++) {
+            for (let x = 0; x < tiles[y].length; x++) {
+                TILE_RENDERER.render(x, y, tiles[y][x], ctx);
+            };
+        };
+    };
+    if (do_objects) {};
+    
     // Only render next frame if it is needed
     if (DO_RENDER) {
         requestAnimationFrame(render);
