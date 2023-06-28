@@ -1,5 +1,6 @@
 import { Level } from './Level.js';
 import { TileRenderer } from './Renderer.js';
+import { initImport } from './import.js';
 import { SESSION } from './session.js';
 
 window.onbeforeunload = evt => {
@@ -13,6 +14,7 @@ function init() {
     SESSION.OBJECT_CTX = SESSION.OBJECT_CANVAS.getContext('2d');
     SESSION.TILE_RENDERER = new TileRenderer();
     SESSION.LEVEL = new Level();
+    initImport();
 };
 
 init();

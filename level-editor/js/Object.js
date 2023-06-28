@@ -1,13 +1,13 @@
-import { FIRST_FREE_ID, LEVEL } from './session.js';
+import { SESSION } from './session.js';
 
 export class Object {
     constructor(x, y, rotation) {
         this.x = x;
         this.y = y;
         this.rotation = rotation
-        this.id = FIRST_FREE_ID;
-        FIRST_FREE_ID++;
-        LEVEL.objects.push(this);
+        this.id = SESSION.FIRST_FREE_ID;
+        SESSION.FIRST_FREE_ID++;
+        SESSION.LEVEL.objects.push(this);
     };
 };
 

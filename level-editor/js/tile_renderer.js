@@ -1,4 +1,4 @@
-import { LEVEL } from './session.js';
+import { SESSION } from './session.js';
 import { FLUID_COLOR } from './lookup.js';
 
 const CONFIG = {
@@ -8,7 +8,7 @@ const CONFIG = {
 
 export function drawTile(x, y, ctx) {
     // Get the tiles type
-    let type = LEVEL.tiles[y][x];
+    let type = SESSION.LEVEL.tiles[y][x];
 
     // Draw the tile
     ctx.beginPath();
@@ -19,11 +19,11 @@ export function drawTile(x, y, ctx) {
 
 export function drawFluid(x, y, ctx) {
     // Get the tiles type
-    let type = LEVEL.tiles[y][x];
+    let type = SESSION.LEVEL.tiles[y][x];
 
     // Get the previous and next tiles type
-    let prevType = (x == 0) ? prevType = null : prevType = LEVEL.tiles[y][x - 1];
-    let nextType = (x == LEVEL.widht) ? null : LEVEL.tiles[y][x - 1];
+    let prevType = (x == 0) ? prevType = null : prevType = SESSION.LEVEL.tiles[y][x - 1];
+    let nextType = (x == SESSION.LEVEL.widht) ? null : SESSION.LEVEL.tiles[y][x - 1];
     
     // Convert to pixel coördinates
     x *= CONFIG.BLOCK_SIZE;
@@ -66,34 +66,34 @@ export function drawFluid(x, y, ctx) {
 
 export function drawSlope(x, y, ctx, isBackground=false) {
     // Get the tiles type
-    let type = LEVEL.tiles[y][x]
+    let type = SESSION.LEVEL.tiles[y][x]
 
     // Convert to pixel coörnidates
-    x *= LEVEL.BLOCK_SIZE
-    y *= LEVEL.BLOCK_SIZE
+    x *= SESSION.LEVEL.BLOCK_SIZE
+    y *= SESSION.LEVEL.BLOCK_SIZE
 
     // Draw the slope
     tileCtx.beginPath();
     switch (type) {
         case 2:
-            tileCtx.moveTo(x, y + LEVEL.BLOCK_SIZE);
-            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y  + LEVEL.BLOCK_SIZE);
-            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y);
+            tileCtx.moveTo(x, y + SESSION.LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y  + SESSION.LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y);
             break
         case 3:
             tileCtx.moveTo(x, y);
-            tileCtx.lineTo(x, y + LEVEL.BLOCK_SIZE);
-            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x, y + SESSION.LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y + SESSION.LEVEL.BLOCK_SIZE);
             break
         case 4:
             tileCtx.moveTo(x, y);
-            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y);
-            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y + LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y);
+            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y + SESSION.LEVEL.BLOCK_SIZE);
             break
         case 5:
             tileCtx.moveTo(x, y);
-            tileCtx.lineTo(x + LEVEL.BLOCK_SIZE, y);
-            tileCtx.lineTo(x , y + LEVEL.BLOCK_SIZE);
+            tileCtx.lineTo(x + SESSION.LEVEL.BLOCK_SIZE, y);
+            tileCtx.lineTo(x , y + SESSION.LEVEL.BLOCK_SIZE);
             break    
     }
 
@@ -102,5 +102,5 @@ export function drawSlope(x, y, ctx, isBackground=false) {
     tileCtx.fill();
 
     // Call the funcion again to draw the background
-    if (!isBackground) { drawTriangle(7-type, [x/LEVEL.BLOCK_SIZE, y/LEVEL.BLOCK_SIZE], ctx,  true) };
+    if (!isBackground) { drawTriangle(7-type, [x/SESSION.LEVEL.BLOCK_SIZE, y/SESSION.LEVEL.BLOCK_SIZE], ctx,  true) };
 };
