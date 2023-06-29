@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style>
+        polygon {
+            fill: lightskyblue;
+            stroke: blue;
+            stroke-width: 4px;
+        }
+    </style>
+    <polygon points="
+        16,24
+        24,16
+        40,16
+        48,24
+        32,44
+    " />
+</svg>

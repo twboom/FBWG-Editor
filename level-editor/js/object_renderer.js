@@ -1,3 +1,4 @@
+import { drawImage } from "./canvas.js";
 import { BLOCK_SIZE, FB_WG_COLOR } from "./lookup.js";
 
 export function render_object(object, ctx) {
@@ -7,62 +8,51 @@ export function render_object(object, ctx) {
     ctx.beginPath();
     switch(type) {
         case 'SpawnFB':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = FB_WG_COLOR[0];
+            drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'SpawnWG':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = FB_WG_COLOR[1];
+            drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'DoorFB':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = FB_WG_COLOR[0];
+            drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'DoorWG':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = FB_WG_COLOR[1];
+            drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'Diamond':
             ctx.beginPath();
             switch(object.type) {
                 case 0:
                     // FB diamond
-                    ctx.rect(object.x + 0.5 * BLOCK_SIZE, object.y -  0.5 * BLOCK_SIZE, BLOCK_SIZE, -BLOCK_SIZE);
-                    ctx.fillStyle = FB_WG_COLOR[0];
+                    drawImage('assets/objects/diamond_fb.svg', 64, 64, object.x, object.y - 64, ctx);
                     break;
                 case 1:
                     // WG diamond
-                    ctx.rect(object.x + 0.5 * BLOCK_SIZE, object.y -  0.5 * BLOCK_SIZE, BLOCK_SIZE, -BLOCK_SIZE);
-                    ctx.fillStyle = FB_WG_COLOR[1];
+                    drawImage('assets/objects/diamond_wg.svg', 64, 64, object.x, object.y - 64, ctx);
                     break;
                 case 2:
                     // Silver diamond
-                    ctx.rect(object.x + 0.5 * BLOCK_SIZE, object.y -  0.5 * BLOCK_SIZE, BLOCK_SIZE, -BLOCK_SIZE);
-                    ctx.fillStyle = '#AAAAAA';
+                    drawImage('assets/objects/diamond_silver.svg', 64, 64, object.x, object.y - 64, ctx);
                     break;
                 case 3:
                     // FBWG diamond
-                    console.log('FBWG DIAMOND');
-                    ctx.rect(object.x + 0.5 * BLOCK_SIZE, object.y - 0.5 * BLOCK_SIZE, 0.5 * BLOCK_SIZE, -BLOCK_SIZE);
-                    ctx.fillStyle = FB_WG_COLOR[0];
-                    ctx.fill();
-                    ctx.beginPath();
-                    ctx.rect(object.x + BLOCK_SIZE, object.y - 0.5 * BLOCK_SIZE, 0.5 * BLOCK_SIZE, -BLOCK_SIZE );
-                    ctx.fillStyle = FB_WG_COLOR[1];
+                    drawImage('assets/objects/diamond_fbwg.svg', 64, 64, object.x, object.y - 64, ctx);
                     break;
             };
             break;
         case 'Button':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = '#FF00FF';
+            drawImage(`assets/objects/button_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'TimerButton':
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
             ctx.fillStyle = '#FF00FF';
             break;
         case 'Lever':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = '#FF00FF';
+            if (object.direction == 0) {
+                drawImage(`assets/objects/lever_left_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+            } else {
+                drawImage(`assets/objects/lever_right_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+            };
             break;
         case 'Platform':
             ctx.rect(object.x, object.y, object.width, object.heigth);
@@ -81,8 +71,7 @@ export function render_object(object, ctx) {
             ctx.fillStyle = '#FF00FF';
             break;
         case 'Box':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = '#FF00FF';
+            drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'HeavyBox':
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);

@@ -24,3 +24,18 @@ export function resizeCanvas(blockSize = 32) {
     highlightCanvas.width = width;
     highlightCanvas.height = height;
 };
+
+
+const CACHE = {};
+export function drawImage(src, sizeX, sizeY, x, y, ctx) {
+    let img = new Image(sizeX, sizeY);
+    if (src in CACHE) {
+        img = CACHE[src].cloneNode(true)
+    } else {
+        img.src = src;
+        CACHE[src] = img;
+    };
+    img.onload = _ => {
+        ctx.drawImage(img, x, y);
+    };
+};

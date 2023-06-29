@@ -50,7 +50,6 @@ export function initEditor(){
                 // set objects
                 break;
         };
-        requestAnimationFrame(render(true, false));
     });
 
     // Add the eventlistener for right click
@@ -134,6 +133,25 @@ export function initEditor(){
                 el.classList.add('selected');
                 SESSION.SELECTED_TOOL_TYPE = 'tiles';
                 SESSION.SELECTED_TYLE_TYPE = el.dataset.action;
+            };
+        });
+    });
+
+    Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            // Deselect other selected buttons
+            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Check if the button is pressed twice
+            if (SESSION.SELECTED_OBJECT_TYPE ==  el.dataset.action) {
+                SESSION.SELECTED_TOOL_TYPE = undefined; 
+                SESSION.SELECTED_OBJECT_TYPE = undefined;
+            } else {
+                el.classList.add('selected');
+                SESSION.SELECTED_TOOL_TYPE = 'objects';
+                SESSION.SELECTED_OBJECT_TYPE = el.dataset.action;
             };
         });
     });
