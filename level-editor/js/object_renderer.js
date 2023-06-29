@@ -65,7 +65,6 @@ export function render_object(object, ctx) {
             ctx.fillStyle = '#FF00FF';
             break;
         case 'Platform':
-            console.log('platform');
             ctx.rect(object.x, object.y, object.width, object.heigth);
             ctx.fillStyle = '#FF00FF';
             break;

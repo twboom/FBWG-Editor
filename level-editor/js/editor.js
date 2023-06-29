@@ -50,9 +50,73 @@ export function initEditor(){
                 // set objects
                 break;
         };
+        requestAnimationFrame(render(true, false));
     });
 
+    // Add the eventlistener for right click
+    highlightCanvas.addEventListener('contextmenu', evt => {
+        if (SESSION.SELECTED_TOOL_TYPE == 'tiles') {
+            SESSION.LEVEL.tiles[Math.floor(evt.offsetY / BLOCK_SIZE)][Math.floor(evt.offsetX / BLOCK_SIZE)] = 0
+            render(true, false);
+        };
+    });
 
+    // Add the eventlistener for dragging
+    highlightCanvas.addEventListener('mousemove', evt => {
+        let tileX = Math.floor(evt.offsetX / BLOCK_SIZE);
+        let tileY = Math.floor(evt.offsetY / BLOCK_SIZE);
+
+        if ((SESSION.MOUSE_DOWN || SESSION.RIGHT_MOUSE_DOWN) && SESSION.SELECTED_TOOL_TYPE == 'tiles') {
+            if (SESSION.RIGHT_MOUSE_DOWN) {
+                SESSION.LEVEL.tiles[tileY][tileX] = 0;
+            } else {
+                let tile
+                switch(SESSION.SELECTED_TYLE_TYPE) {
+                    case 'air':
+                        tile = 0
+                        break;
+                    case 'block':
+                        tile = 1
+                        break;
+                    case 'slopeTR':
+                        tile = 2
+                        break;
+                    case 'slopeTL':
+                        tile = 3
+                        break;
+                    case 'slopeBR':
+                        tile = 4
+                        break;
+                    case 'slopeBL':
+                        tile = 5
+                        break;
+                    case 'lava':
+                        tile = 6
+                        break;
+                    case 'water':
+                        tile = 7
+                        break;
+                    case 'acid':
+                        tile = 8
+                        break;
+                };
+                SESSION.LEVEL.tiles[tileY][tileX] = tile;
+            };
+        };
+    });
+
+    // Add the eventlistener for pressing your mouse
+    highlightCanvas.addEventListener('mousedown', evt => {
+        if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
+        else if (evt.button == 2) { 
+            SESSION.RIGHT_MOUSE_DOWN = true; };
+    });
+
+    // Add the eventlistener for releasing your mouse
+    highlightCanvas.addEventListener('mouseup', evt => {
+        SESSION.MOUSE_DOWN = false;
+        SESSION.RIGHT_MOUSE_DOWN = false;
+    });
 
     // Add the eventlistener for the tile buttons
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
@@ -70,8 +134,6 @@ export function initEditor(){
                 el.classList.add('selected');
                 SESSION.SELECTED_TOOL_TYPE = 'tiles';
                 SESSION.SELECTED_TYLE_TYPE = el.dataset.action;
-                console.log(el);
-                console.log(SESSION.SELECTED_TOOL_TYPE, SESSION.SELECTED_TYLE_TYPE);
             };
         });
     });
