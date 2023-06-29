@@ -1,10 +1,10 @@
 import { SESSION } from "./session.js";
 
-let tileCanvas = document.getElementById('tiles');
+export let tileCanvas = document.getElementById('tiles');
 export const tileCtx = tileCanvas.getContext('2d');
-let objectCanvas = document.getElementById('objects');
+export let objectCanvas = document.getElementById('objects');
 export const objectCtx = objectCanvas.getContext('2d');
-let highlightCanvas = document.getElementById('highlight');
+export let highlightCanvas = document.getElementById('highlight');
 export const highlightCtx = highlightCanvas.getContext('2s');
 
 export function resizeCanvas(blockSize = 32) {

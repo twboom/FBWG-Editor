@@ -1,5 +1,6 @@
 import { Level } from './Level.js';
 import { TileRenderer } from './Renderer.js';
+import { initEditor } from './editor.js';
 import { initImport } from './import.js';
 import { SESSION } from './session.js';
 
@@ -15,6 +16,7 @@ function init() {
     SESSION.TILE_RENDERER = new TileRenderer();
     SESSION.LEVEL = new Level();
     initImport();
+    initEditor();
 };
 
 init();

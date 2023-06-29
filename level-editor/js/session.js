@@ -9,4 +9,6 @@ export const SESSION = {
     OBJECT_CANVAS: undefined,
     TILE_CTX: undefined,
     OBJECT_CTX: undefined,
+    SELECTED_TOOL_TYPE: undefined,
+    SELECTED_TYLE_TYPE: undefined,
 };
