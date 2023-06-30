@@ -117,6 +117,31 @@ export function initEditor(){
         SESSION.RIGHT_MOUSE_DOWN = false;
     });
 
+    // Add the eventlistener for the editor settings
+    Array.from(document.getElementsByClassName('editor-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            if (el.dataset.action == 'multispawn') {
+                if (SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    SESSION.ALLOW_MULTIPLE_LEVELPOINTS = false;
+                    el.classList.remove('active');
+                } else {
+                    SESSION.ALLOW_MULTIPLE_LEVELPOINTS = true;
+                    el.classList.add('active');
+                };
+            };
+            if (el.dataset.action == 'previews') {
+                if (SESSION.PLATFROM_PREVIEWS) {
+                    SESSION.PLATFROM_PREVIEWS = false;
+                    el.classList.remove('active');
+                } else {
+                    SESSION.PLATFROM_PREVIEWS = true;
+                    el.classList.add('active');
+                };
+                render(false, true);
+            };
+        });
+    });
+
     // Add the eventlistener for the tile buttons
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {

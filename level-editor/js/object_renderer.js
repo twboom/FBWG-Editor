@@ -1,11 +1,42 @@
 import { drawImage } from "./canvas.js";
-import { BLOCK_SIZE, FB_WG_COLOR } from "./lookup.js";
+import { BLOCK_SIZE, GROUP_COLOR } from "./lookup.js";
+import { SESSION } from "./session.js";
+
+function draw_platform_preview(object, ctx) {
+    // Get the preview's location
+    let previewX = object.x + object.dx * BLOCK_SIZE;
+    let previewY = object.y + -object.dy * BLOCK_SIZE;
+
+    // Draw the colored part
+    ctx.beginPath();
+    ctx.rect(previewX, previewY, object.width, object.heigth);
+    ctx.fillStyle = GROUP_COLOR[object.group - 1];
+    ctx.fill();
+
+    // Draw the edges
+    ctx.beginPath();
+    ctx.rect(previewX + 4, previewY + 4, object.width - 8, object.heigth - 8);
+    ctx.strokeStyle = 'gray';
+    ctx.lineWidth = 8;
+    ctx.stroke();
+
+    // Draw the dottet line
+    ctx.beginPath();
+    ctx.setLineDash([5, 15]);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#404040';
+    ctx.moveTo(object.x + 0.5 * object.width, object.y + 0.5 * object.heigth);
+    ctx.lineTo(previewX + 0.5 * object.width, previewY + 0.5 * object.heigth);
+    ctx.stroke();
+
+    // Reset the linedash
+    ctx.setLineDash([]);
+};
 
 export function render_object(object, ctx) {
     // Get the object's type
     let type = object.constructor.name;
     
-    ctx.beginPath();
     switch(type) {
         case 'SpawnFB':
             drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, ctx);
@@ -44,8 +75,10 @@ export function render_object(object, ctx) {
             drawImage(`assets/objects/button_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'TimerButton':
+            ctx.beginPath();
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
             ctx.fillStyle = '#FF00FF';
+            ctx.fill();
             break;
         case 'Lever':
             if (object.direction == 0) {
@@ -55,8 +88,21 @@ export function render_object(object, ctx) {
             };
             break;
         case 'Platform':
+            // Draw the colored part
+            ctx.beginPath();
             ctx.rect(object.x, object.y, object.width, object.heigth);
-            ctx.fillStyle = '#FF00FF';
+            ctx.fillStyle = GROUP_COLOR[object.group - 1];
+            ctx.fill();
+
+            // Draw the edges
+            ctx.beginPath();
+            ctx.rect(object.x + 4, object.y + 4, object.width - 8, object.heigth - 8);
+            ctx.strokeStyle = 'gray';
+            ctx.lineWidth = 8;
+            ctx.stroke();
+
+            // Draw the preview
+            if (SESSION.PLATFROM_PREVIEWS) {draw_platform_preview(object, ctx);};
             break;
         case 'RotationMirror':
             break;
@@ -67,34 +113,40 @@ export function render_object(object, ctx) {
         case 'Slider':
             break;
         case 'Ball':
+            ctx.beginPath();
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
             ctx.fillStyle = '#FF00FF';
+            ctx.fill();
             break;
         case 'Box':
             drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'HeavyBox':
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = '#FF00FF';
+            drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'MirrorBox':
+            ctx.beginPath();
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
             ctx.fillStyle = '#FF00FF';
+            ctx.fill();
             break;
         case 'PortalLeft':
             break;
         case 'PortalRight':
             break;
         case 'LightEmitter':
+            ctx.beginPath();
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
             ctx.fillStyle = '#FF00FF';
+            ctx.fill();
             break;
         case 'LightReceiver':
+            ctx.beginPath();
             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
             ctx.fillStyle = '#FF00FF';
+            ctx.fill();
             break;
         case 'Fan':
             break;
-    };
-    ctx.fill();
+    };  
 };

@@ -1,4 +1,4 @@
-import { objectCtx, tileCtx } from './canvas.js';
+import { objectCanvas, objectCtx, tileCanvas, tileCtx } from './canvas.js';
 import { render_object } from './object_renderer.js';
 import { SESSION } from './session.js';
 import { drawTile, drawFluid, drawSlope } from './tile_renderer.js'
@@ -38,6 +38,7 @@ export class TileRenderer {
 export function render({do_tiles = true, do_objects = true}) {
     // Render the correct layer
     if (do_tiles) {
+        tileCtx.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
         const tiles = SESSION.LEVEL.tiles;
         for (let y = 0; y < tiles.length; y++) {
             for (let x = 0; x < tiles[y].length; x++) {
@@ -46,6 +47,7 @@ export function render({do_tiles = true, do_objects = true}) {
         };
     };
     if (do_objects) {
+        objectCtx.clearRect(0, 0, objectCanvas.width, objectCanvas.height);
         const objects = SESSION.LEVEL.objects;
         for (let i = 0; i < objects.length; i++) {
             render_object(objects[i], objectCtx);

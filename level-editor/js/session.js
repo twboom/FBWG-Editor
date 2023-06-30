@@ -3,7 +3,6 @@ export const SESSION = {
     DO_RENDER: false,
     FIRST_FREE_ID: 0,
     LAST_PLACED_DIAMOND: 0,
-    ALLOW_MULTIPLE_LEVELPOINTS: 0,
     TILE_RENDERER: undefined,
     TILE_CANVAS: undefined,
     OBJECT_CANVAS: undefined,
@@ -14,4 +13,6 @@ export const SESSION = {
     SELECTED_OBJECT_TYPE: undefined,
     MOUSE_DOWN: false,
     RIGHT_MOUSE_DOWN: false,
+    ALLOW_MULTIPLE_LEVELPOINTS: false,
+    PLATFROM_PREVIEWS: false,
 };
