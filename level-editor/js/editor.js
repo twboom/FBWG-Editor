@@ -1,5 +1,5 @@
 import { render } from "./Renderer.js";
-import { highlightCanvas } from "./canvas.js";
+import { highlightCanvas, resizeCanvas } from "./canvas.js";
 import { BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js"
 
@@ -115,6 +115,18 @@ export function initEditor(){
     highlightCanvas.addEventListener('mouseup', evt => {
         SESSION.MOUSE_DOWN = false;
         SESSION.RIGHT_MOUSE_DOWN = false;
+    });
+
+
+    // Add the resize function
+    document.getElementById('resize').addEventListener('click', _ => {
+        // Get the width and heigth
+        SESSION.LEVEL.width = parseInt(document.getElementById('level-width').value);
+        SESSION.LEVEL.height = parseInt(document.getElementById('level-height').value);
+
+        // Re-render the canvas
+        resizeCanvas();
+        render(true, true);
     });
 
     // Add the eventlistener for the editor settings

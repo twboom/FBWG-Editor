@@ -255,5 +255,5 @@ function importLevelFile(LEVELSJON) {
         };
     };
     SESSION.LEVEL = new Level(width, height, tiles, levelObjects);
-    console.log(SESSION.LEVEL);
+    // console.log(SESSION.LEVEL);
 };
