@@ -6,10 +6,11 @@ const CONFIG = {
     SLOPE_STEEPNESS: 0.6,
 };
 
-export function drawTile(x, y, ctx) {
+export function drawTile(x, y, ctx, snowy = false) {
     // Get the tiles type
-    let type = SESSION.LEVEL.tiles[y][x];
-
+    let type = snowy ? 1 : SESSION.LEVEL.tiles[y][x];
+    if (type > 15) { type = 1; };
+    
     // Draw the tile
     ctx.beginPath();
     ctx.rect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
@@ -74,9 +75,30 @@ export function drawFluid(x, y, ctx) {
     ctx.stroke();
 };
 
-export function drawSlope(x, y, ctx, isBackground=false) {
+export function drawSlope(x, y, ctx, isBackground=false, snowy = false) {
     // Get the tiles type
-    let type =  isBackground ? 7 - SESSION.LEVEL.tiles[y][x] : SESSION.LEVEL.tiles[y][x];
+    let type
+    if (isBackground) {
+        if (snowy) {
+            if (SESSION.LEVEL.tiles[y][x] == 12) {
+                type = 5;
+            } else {
+                type = 4;
+            };
+        } else {
+            type = 7 - SESSION.LEVEL.tiles[y][x];
+        };
+    } else {
+        if (snowy) {
+            if (SESSION.LEVEL.tiles[y][x] == 12) {
+                type = 2;
+            } else {
+                type = 3;
+            };
+        } else {
+            type = SESSION.LEVEL.tiles[y][x]
+        };
+    };
 
     // Convert to pixel coörnidates
     x *= BLOCK_SIZE
@@ -114,5 +136,63 @@ export function drawSlope(x, y, ctx, isBackground=false) {
     ctx.stroke();
 
     // Call the funcion again to draw the background
-    if (!isBackground) { drawSlope(x/BLOCK_SIZE, y/BLOCK_SIZE, ctx,  true) };
+    if (!isBackground) { drawSlope(x/BLOCK_SIZE, y/BLOCK_SIZE, ctx,  true, snowy? true : false) };
+};
+
+export function drawSnow(x, y, ctx) {
+    // Get the tiles type
+    let type = SESSION.LEVEL.tiles[y][x];
+
+    switch(type) {
+        case 12:
+            // Snowy slope tr
+            drawSlope(x, y, ctx, false, true);
+
+            // Draw the snow
+            ctx.beginPath();
+            ctx.moveTo(x * BLOCK_SIZE - 2 * Math.sqrt(2), y * BLOCK_SIZE + BLOCK_SIZE - 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE + 2 * Math.sqrt(2), y * BLOCK_SIZE + BLOCK_SIZE + 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE + BLOCK_SIZE + 2 * Math.sqrt(2), y * BLOCK_SIZE + 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE + BLOCK_SIZE - 2 * Math.sqrt(2), y * BLOCK_SIZE - 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE - 2 * Math.sqrt(2), y * BLOCK_SIZE + BLOCK_SIZE - 2 * Math.sqrt(2));
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidht = 2;
+            ctx.fill();
+            ctx.stroke();
+            break;
+        case 13:
+            // Snowy splote tl
+            drawSlope(x, y, ctx, false, true);
+
+            // Draw the snow
+            ctx.beginPath();
+            ctx.moveTo(x * BLOCK_SIZE - 2 * Math.sqrt(2), y * BLOCK_SIZE + 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE + 2 * Math.sqrt(2), y * BLOCK_SIZE - 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE + BLOCK_SIZE + 2 * Math.sqrt(2), y * BLOCK_SIZE + BLOCK_SIZE - 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE + BLOCK_SIZE - 2 * Math.sqrt(2), y * BLOCK_SIZE + BLOCK_SIZE + 2 * Math.sqrt(2));
+            ctx.lineTo(x * BLOCK_SIZE - 2 * Math.sqrt(2), y * BLOCK_SIZE + 2 * Math.sqrt(2));
+            ctx.fillStyle = 'white';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidht = 2;
+            ctx.fill();
+            ctx.stroke();
+            break;
+        case 14:
+            // Snowy block
+            drawTile(x, y, ctx, true);
+
+            // Draw the snow
+            ctx.beginPath();
+            ctx.rect(x * BLOCK_SIZE - 2, y * BLOCK_SIZE - 4, BLOCK_SIZE + 4, 8);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.rect(x * BLOCK_SIZE - 2, y * BLOCK_SIZE - 4, BLOCK_SIZE + 4, 8);
+            ctx.strokeStyle = 'black';
+            ctx.lineWidht = 1;
+            ctx.stroke();
+            break;
+    };
 };

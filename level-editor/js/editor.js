@@ -72,32 +72,35 @@ export function initEditor(){
                 let tile
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
-                        tile = 0
+                        tile = 0;
                         break;
                     case 'block':
-                        tile = 1
+                        tile = 1;
                         break;
                     case 'slopeTR':
-                        tile = 2
+                        tile = 2;
                         break;
                     case 'slopeTL':
-                        tile = 3
+                        tile = 3;
                         break;
                     case 'slopeBR':
-                        tile = 4
+                        tile = 4;
                         break;
                     case 'slopeBL':
-                        tile = 5
+                        tile = 5;
                         break;
                     case 'lava':
-                        tile = 6
+                        tile = 6;
                         break;
                     case 'water':
-                        tile = 7
+                        tile = 7;
                         break;
                     case 'acid':
-                        tile = 8
+                        tile = 8;
                         break;
+                    case 'ice':
+                        console.log('ice');
+                        tile = 15;
                 };
                 SESSION.LEVEL.tiles[tileY][tileX] = tile;
             };
@@ -120,6 +123,9 @@ export function initEditor(){
 
     // Add the resize function
     document.getElementById('resize').addEventListener('click', _ => {
+        // Confirm the action
+        if (!confirm('This may result in a loss of contend.\nAnything outside the new level border will be removed.\nThis action in irreverisble.'));
+
         // Get the width and heigth
         SESSION.LEVEL.width = parseInt(document.getElementById('level-width').value);
         SESSION.LEVEL.height = parseInt(document.getElementById('level-height').value);

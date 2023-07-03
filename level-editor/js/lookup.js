@@ -2,6 +2,8 @@ export const FLUID_COLOR = [
     'blue',
     'red',
     'green',
+    undefined, undefined, undefined, undefined, undefined, undefined,
+    '#AAAAFF',
 ];
 
 export const BLOCK_COLOR = [
@@ -15,13 +17,13 @@ export const FB_WG_COLOR = [
 ];
 
 export const GROUP_COLOR = [
-    'red',
-    'green',
-    'blue',
-    'yellow',
-    'magenta',
-    'dodgerblue',
-    'violet',
-    'white',
+    '#FF0000',
+    '#00FF00',
+    '#0000FF',
+    '#FFFF00',
+    '#FF00FF',
+    '#005A9C',
+    '#8F00FF',
+    '#FFFFFF',
 ]
 export const BLOCK_SIZE = 32;
