@@ -20,7 +20,7 @@ function rotationFix(object) {
     return rotation;
 };
 
-function draw_wind(object, ctx) {
+function draw_wind(object, rotation, ctx) {
     ctx.beginPath();
     switch(rotation) {
         case 0:
@@ -73,7 +73,7 @@ function draw_platform_preview(object, ctx) {
 
 export function render_object(object, ctx) {
     // Get the object's type
-    let type = object.constructor.name;
+    let type = object == 'pulley' ? ' pulley' : object.constructor.name;
     let rotation = rotationFix(object);
     
     switch(type) {
@@ -111,7 +111,7 @@ export function render_object(object, ctx) {
             };
             break;
         case 'Button':
-            drawImage(`assets/objects/button_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+            drawImage(`assets/objects/button_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
             break;
         case 'TimerButton':
             ctx.beginPath();
@@ -121,9 +121,9 @@ export function render_object(object, ctx) {
             break;
         case 'Lever':
             if (object.direction == 1) {
-                drawImage(`assets/objects/lever_left_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+                drawImage(`assets/objects/lever_left_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
             } else {
-                drawImage(`assets/objects/lever_right_${object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+                drawImage(`assets/objects/lever_right_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
             };
             break;
         case 'Platform':
@@ -131,6 +131,7 @@ export function render_object(object, ctx) {
             ctx.beginPath();
             ctx.rect(object.x, object.y, object.width, object.heigth);
             ctx.fillStyle = object.group > 8 ? '#FFFF00' : GROUP_COLOR[object.group - 1];
+            ctx.fillStyle = object.group == undefined ? '#FFFFFF' : ctx.fillStyle;
             ctx.fill();
 
             // Draw the edges
@@ -283,7 +284,7 @@ export function render_object(object, ctx) {
             break;
         case 'Ball':
             ctx.beginPath();
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
+            ctx.arc(object.x + 0.5 * BLOCK_SIZE, object.y - 0.5 * BLOCK_SIZE, 0.5 * BLOCK_SIZE, 0, 360);
             ctx.fillStyle = '#FF00FF';
             ctx.fill();
             break;
@@ -323,7 +324,6 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'PortalLeft': 
-            console.log(object);
             // Draw the black part
             ctx.beginPath();
             switch(rotation) {
@@ -383,7 +383,6 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'PortalRight':
-            console.log(object);
             // Draw the white part
             ctx.beginPath();
             switch(rotation) {
@@ -576,7 +575,7 @@ export function render_object(object, ctx) {
             };
             ctx.fill();
 
-            if (object.initialState == 1) { draw_wind(object, ctx); };
+            if (object.initialState == 1 || SESSION.WIND_PREVEIWS) { draw_wind(object, rotation, ctx); };
             break;
     };  
 };

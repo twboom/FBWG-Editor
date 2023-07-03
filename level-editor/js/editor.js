@@ -157,6 +157,16 @@ export function initEditor(){
                 };
                 render(false, true);
             };
+            if (el.dataset.action == 'wind-previews') {
+                if (SESSION.WIND_PREVEIWS) {
+                    SESSION.WIND_PREVEIWS = false;
+                    el.classList.remove('active');
+                } else {
+                    SESSION.WIND_PREVEIWS = true;
+                    el.classList.add('active');
+                };
+                render(false, true);
+            };
         });
     });
 

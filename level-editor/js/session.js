@@ -15,4 +15,5 @@ export const SESSION = {
     RIGHT_MOUSE_DOWN: false,
     ALLOW_MULTIPLE_LEVELPOINTS: false,
     PLATFROM_PREVIEWS: false,
+    WIND_PREVEIWS: false,
 };
