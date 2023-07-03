@@ -78,6 +78,12 @@ export function resizeCanvas(blockSize = 32) {
             SESSION.LEVEL.tiles[i] = new Array(newWidth).fill(0);
         };
     };
+
+    // Move the toolbox
+    console.log(document.getElementById('input-container'));
+    document.getElementById('input-container').style.left = String((newWidth * 32 + 52)) + 'px';
+    console.log(String((newWidth * 32 + 52)) + 'px');
+    console.log(document.getElementById('input-container').style);
 };
 
 
