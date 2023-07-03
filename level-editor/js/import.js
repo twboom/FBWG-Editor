@@ -77,11 +77,14 @@ function importLevelFile(LEVELSJON) {
 
     
     // Find the firstchar, firstobj and firstlargeobj
+    let firstGround
     let firstChar
     let firstObj
     let firstLargeObj
     for (let i = 0; i < LEVELSJON.tilesets.length; i++) {
-        if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/Chars.json')) {
+        if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/Ground.json')) {
+            firstGround = LEVELSJON.tilesets[i].firstgid;
+        } else if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/Chars.json')) {
             firstChar = LEVELSJON.tilesets[i].firstgid;
         } else if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/Objects.json')) {
             firstObj = LEVELSJON.tilesets[i].firstgid;
@@ -105,10 +108,10 @@ function importLevelFile(LEVELSJON) {
             for (let x = 0; x < width; x++) {
 
                 // For some reason the game uses 11 instead of 1 sometimes
-                if (data[x + y*width] > 15) {
+                if (data[x + y*width] - firstGround + 1 > 15) {
                     tiles[y][x] = 1;
                 } else {
-                    tiles[y][x] = data[x + y*width];
+                    tiles[y][x] = data[x + y * width] == 0 ? 0 : data[x + y * width] - firstGround + 1;
                 };
             };
         };
@@ -135,6 +138,8 @@ function importLevelFile(LEVELSJON) {
                     case 'hanging':
                         levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.group, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation);
                         break;
+                    case 'pulley':
+                        levelObjects[i] = 'pulley';
                 };
             } else {
                 if (object.gid >= firstObj && (
@@ -150,7 +155,7 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 1:
                             // Lever left
-                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties.group, 0);
+                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0, 0);
                             break;
                         case 2:
                             // Lever right
@@ -216,7 +221,6 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 2:
                             // Fan
-                            console.log(object);
                             levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.properties.initialState ? object.properties.initialState : 0, object.properties.length ? object.properties.length : 8);
                             break;
                     };
