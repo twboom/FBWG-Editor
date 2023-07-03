@@ -75,16 +75,17 @@ function importLevelFile(LEVELSJON) {
         };
     };
 
+    
     // Find the firstchar, firstobj and firstlargeobj
     let firstChar
     let firstObj
     let firstLargeObj
     for (let i = 0; i < LEVELSJON.tilesets.length; i++) {
-        if (LEVELSJON.tilesets[i].source == "../../../assets/tilemaps/tilesets/Chars.json") {
+        if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/Chars.json')) {
             firstChar = LEVELSJON.tilesets[i].firstgid;
-        } else if (LEVELSJON.tilesets[i].source == "../../../assets/tilemaps/tilesets/Objects.json") {
+        } else if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/Objects.json')) {
             firstObj = LEVELSJON.tilesets[i].firstgid;
-        } else if (LEVELSJON.tilesets[i].source == "../../../assets/tilemaps/tilesets/LargeObjects.json") {
+        } else if (String(LEVELSJON.tilesets[i].source).includes('/assets/tilemaps/tilesets/LargeObjects.json')) {
             firstLargeObj = LEVELSJON.tilesets[i].firstgid;
         };
     };
@@ -102,7 +103,13 @@ function importLevelFile(LEVELSJON) {
 
             // Move trough x layers
             for (let x = 0; x < width; x++) {
-                tiles[y][x] = data[x + y*width];
+
+                // For some reason the game uses 11 instead of 1 sometimes
+                if (data[x + y*width] > 15) {
+                    tiles[y][x] = 1;
+                } else {
+                    tiles[y][x] = data[x + y*width];
+                };
             };
         };
     };
@@ -115,100 +122,104 @@ function importLevelFile(LEVELSJON) {
             // Get the object
             let object = objects[i];
 
-            // Check if the object is a platform , silder or hanger
+            // Check if the object is a platform, silder or hanger
             if (!object.gid) {
                 switch(object.type) {
                     case 'platform':
                         levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group, object.properties.dx, object.properties.dy);
                         break;
                     case 'slider':
-                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties.group, [object.polyLine[0].x, object.polyLine[0].y], [object.polyLine[1].x, object.polyLine[1].y], object.properties.max, object.properties.min);
+                        console.log(object);
+                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties.group, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.max, object.properties.min);
                         break;
                     case 'hanging':
-                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.group, [object.polyLine[0].x, object.polyLine[0].y], [object.polyLine[1].x, object.polyLine[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation);
+                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.group, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation);
                         break;
                 };
-            };
-            if (object.gid >= firstObj && (
-            (object.gid > firstChar && object.gid > firstLargeObj) ||
-            (object.gid < firstChar && object.gid < firstLargeObj) ||
-            (object.gid < firstLargeObj && object.gid > firstChar) ||
-            (object.gid > firstLargeObj && object.gid < firstChar))) {
-                // Object is a normal object
-                switch (object.gid - firstObj) {
-                    case 0:
-                        // Button
-                        levelObjects[i] =new Objects.Button(object.x, object.y, object.rotation, object.properties.group);
-                        break;
-                    case 1:
-                        // Lever left
-                        levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties.group, 0);
-                        break;
-                    case 2:
-                        // Lever right
-                        levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties.group, 1);
-                        break;
-                    case 4:
-                        // Box
-                        levelObjects[i] =new Objects.Box(object.x, object.y, object.rotation);
-                        break;
-                    case 5:
-                        // Light emitter
-                        levelObjects[i] =new Objects.LightEmitter(object.x, object.y, object.rotation, object.properties.color, object.properties.initialSate, object.properties.group);
-                        break;
-                    case 6:
-                        // Rotation box mirror
-                        levelObjects[i] =new Objects.RotationBoxMirror(object.x, object.y, object.rotation, object.properties.group);
-                        break;
-                    case 7:
-                        // Light receiever
-                        levelObjects[i] =new Objects.LigthReceiver(object.x, object.y, object.rotation, object.properties.color, object.properties.group);
-                        break;
-                    case 10:
-                        // Ball
-                        levelObjects[i] =new Objects.Ball(object.x, object.y, object.rotation);
-                        break;
-                    case 11:
-                        // Rotation mirror
-                        levelObjects[i] =new Objects.RotationMirror(object.x, object.y, object.rotation, object.properties.group);
-                        break;
-                    case 12:
-                        // Boxmirror
-                        levelObjects[i] =new Objects.MirrorBox(object.x, object.y, object.rotation);
-                        break;
-                    case 13:
-                        // Heavy box
-                        levelObjects[i] =new Objects.HeavyBox(object.x, object.y, object.rotation);
-                        break;
-                    case 14:
-                        // Timed button
-                        levelObjects[i] =new Objects.TimerButton(object.x, object.y, object.rotation, object.properties.group, object.properties.time);
-                        break;
-                    case 15:
-                        // Fan
-                        levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.proceed.initialSate, obj.proceed.length);
-                        break;
+            } else {
+                if (object.gid >= firstObj && (
+                (object.gid > firstChar && object.gid > firstLargeObj) ||
+                (object.gid < firstChar && object.gid < firstLargeObj) ||
+                (object.gid < firstLargeObj && object.gid > firstChar) ||
+                (object.gid > firstLargeObj && object.gid < firstChar))) {
+                    // Object is a normal object
+                    switch (object.gid - firstObj) {
+                        case 0:
+                            // Button
+                            levelObjects[i] =new Objects.Button(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0);
+                            break;
+                        case 1:
+                            // Lever left
+                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties.group, 0);
+                            break;
+                        case 2:
+                            // Lever right
+                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties.group, 1);
+                            break;
+                        case 4:
+                            // Box
+                            levelObjects[i] =new Objects.Box(object.x, object.y, object.rotation);
+                            break;
+                        case 5:
+                            // Light emitter
+                            levelObjects[i] =new Objects.LightEmitter(object.x, object.y, object.rotation, object.properties.color ? object.properties.color : "yellow", object.properties.initialState ? object.properties.initialState : 0, object.properties.group);
+                            break;
+                        case 6:
+                            // Rotation box mirror
+                            levelObjects[i] =new Objects.RotationBoxMirror(object.x, object.y, object.rotation, object.properties.group);
+                            break;
+                        case 7:
+                            // Light receiever
+                            levelObjects[i] =new Objects.LightReceiver(object.x, object.y, object.rotation, object.properties.color ? object.properties.color : "yellow", object.properties.group);
+                            break;
+                        case 10:
+                            // Ball
+                            levelObjects[i] =new Objects.Ball(object.x, object.y, object.rotation);
+                            break;
+                        case 11:
+                            // Rotation mirror
+                            levelObjects[i] =new Objects.RotationMirror(object.x, object.y, object.rotation, object.properties.group);
+                            break;
+                        case 12:
+                            // Boxmirror
+                            levelObjects[i] =new Objects.MirrorBox(object.x, object.y, object.rotation);
+                            break;
+                        case 13:
+                            // Heavy box
+                            levelObjects[i] =new Objects.HeavyBox(object.x, object.y, object.rotation);
+                            break;
+                        case 14:
+                            // Timed button
+                            levelObjects[i] =new Objects.TimerButton(object.x, object.y, object.rotation, object.properties.group, object.properties.time);
+                            break;
+                        case 15:
+                            // Fan
+                            levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.properties.initialState ? object.properties.initialState : 0, object.properties.length ? object.properties.length : 8);
+                            console.log(object);
+                            break;
+                    };
                 };
-            };
-            if (object.gid >= firstLargeObj && (
-            (object.gid > firstChar && object.gid > firstObj) ||
-            (object.gid < firstChar && object.gid < firstObj) ||
-            (object.gid < firstObj && object.gid > firstChar) ||
-            (object.gid > firstObj && object.gid < firstChar))) {
-                // Object is a large object
-                switch (object.gid - firstLargeObj) {
-                    case 0:
-                        // Portal left
-                        levelObjects[i] =new Objects.PortalLeft(object.x, object.y, object.rotation, object.properties.group, object.properties.initialSate, object.properties.portalId);
-                        break;
-                    case 1:
-                        // Portal right
-                        levelObjects[i] =new Objects.PortalRight(object.x, object.y, object.rotation, object.properties.group, object.properties.initialSate, object.properties.portalId);
-                        break;
-                    case 2:
-                        // Fan
-                        levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.proceed.initialSate, obj.proceed.length);
-                        break;
+                if (object.gid >= firstLargeObj && (
+                (object.gid > firstChar && object.gid > firstObj) ||
+                (object.gid < firstChar && object.gid < firstObj) ||
+                (object.gid < firstObj && object.gid > firstChar) ||
+                (object.gid > firstObj && object.gid < firstChar))) {
+                    // Object is a large object
+                    switch (object.gid - firstLargeObj) {
+                        case 0:
+                            // Portal left
+                            levelObjects[i] =new Objects.PortalLeft(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId : 0);
+                            break;
+                        case 1:
+                            // Portal right
+                            levelObjects[i] =new Objects.PortalRight(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId : 0);
+                            break;
+                        case 2:
+                            // Fan
+                            console.log(object);
+                            levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.properties.initialState ? object.properties.initialState : 0, object.properties.length ? object.properties.length : 8);
+                            break;
+                    };
                 };
             };
         };
@@ -255,5 +266,5 @@ function importLevelFile(LEVELSJON) {
         };
     };
     SESSION.LEVEL = new Level(width, height, tiles, levelObjects);
-    // console.log(SESSION.LEVEL);
+    console.log(SESSION.LEVEL);
 };
