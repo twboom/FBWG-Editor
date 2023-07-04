@@ -223,7 +223,7 @@ export function render_object(object, ctx) {
                     break;
                 case 90: /* untested */
                     // Render background circle
-                    ctx.arc(object.x - BLOCK_SIZE, object.y - BLOCK_SIZE, 1.5 * BLOCK_SIZE, 0, 360);
+                    ctx.arc(object.x + BLOCK_SIZE, object.y + BLOCK_SIZE, 1.5 * BLOCK_SIZE, 0, 360);
                     ctx.fill();
                 
                     // Render the box
@@ -234,14 +234,14 @@ export function render_object(object, ctx) {
 
                     // Render the mirror
                     ctx.beginPath();
-                    ctx.moveTo(object.x, object.y);
-                    ctx.lineTo(object.x + 2 * BLOCK_SIZE, object.y - 2 * BLOCK_SIZE);
+                    ctx.moveTo(object.x + 2 * BLOCK_SIZE, object.y);
+                    ctx.lineTo(object.x, object.y + 2 * BLOCK_SIZE);
                     ctx.lineWidth = 8
                     ctx.strokeStyle = '#FFFFFF';
                     break;
                 case 180: /* untested */
                     // Render backgorund circle
-                    ctx.arc(object.x - BLOCK_SIZE, object.y - BLOCK_SIZE, 1.5 * BLOCK_SIZE, 0, 360);
+                    ctx.arc(object.x - BLOCK_SIZE, object.y + BLOCK_SIZE, 1.5 * BLOCK_SIZE, 0, 360);
                     ctx.fill();
                 
                     // Render the box
@@ -252,8 +252,8 @@ export function render_object(object, ctx) {
 
                     // Render the mirror
                     ctx.beginPath();
-                    ctx.moveTo(object.x, object.y - 2 * BLOCK_SIZE);
-                    ctx.lineTo(object.x + 2 * BLOCK_SIZE, object.y);
+                    ctx.moveTo(object.x, object.y + 2 * BLOCK_SIZE);
+                    ctx.lineTo(object.x - 2 * BLOCK_SIZE, object.y);
                     ctx.lineWidth = 8
                     ctx.strokeStyle = '#FFFFFF';
                 break;
@@ -296,7 +296,19 @@ export function render_object(object, ctx) {
             break;
         case 'MirrorBox':
             ctx.beginPath();
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
+            switch(rotation) {
+                case 0:
+                    ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
+                    break;
+                case 90:
+                    ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
+                    break;
+                case 180:
+                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
+                    break;
+                case -90:
+                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
+            };
             ctx.fillStyle = '#FF00FF';
             ctx.fill();
 
@@ -499,10 +511,10 @@ export function render_object(object, ctx) {
             break;
         case 'LightReceiver':
             ctx.beginPath();
-            ctx.fillStyle = object.color == 'blue' || 'red' ? object.color : '#AAAA00';
+            ctx.fillStyle = object.color;
             switch(rotation) {
                 case 0:
-                    ctx.rect(object.x, object.y + BLOCK_SIZE, 2 * BLOCK_SIZE, -1 * BLOCK_SIZE);
+                    ctx.rect(object.x, object.y - BLOCK_SIZE, 2 * BLOCK_SIZE, -1 * BLOCK_SIZE);
                     ctx.fill();
                     
                     ctx.beginPath();

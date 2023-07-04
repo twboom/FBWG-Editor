@@ -107,7 +107,7 @@ function importLevelFile(LEVELSJON) {
             // Move trough x layers
             for (let x = 0; x < width; x++) {
 
-                // For some reason the game uses 11 instead of 1 sometimes
+                // Fix random numbers
                 if (data[x + y*width] - firstGround + 1 > 15) {
                     tiles[y][x] = 1;
                 } else {
@@ -132,11 +132,10 @@ function importLevelFile(LEVELSJON) {
                         levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group ? object.properties.group : 0, object.properties.dx ? object.properties.dx : 0, object.properties.dy ? object.properties.dy : 0);
                         break;
                     case 'slider':
-                        console.log(object);
-                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties.group, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.max, object.properties.min);
+                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.max, object.properties.min);
                         break;
                     case 'hanging':
-                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.group, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation);
+                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation ? object.properties.fullRotation : 0);
                         break;
                 };
             } else {
@@ -149,15 +148,15 @@ function importLevelFile(LEVELSJON) {
                     switch (object.gid - firstObj) {
                         case 0:
                             // Button
-                            levelObjects[i] =new Objects.Button(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0);
+                            levelObjects[i] =new Objects.Button(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0);
                             break;
                         case 1:
                             // Lever left
-                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0, 0);
+                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, 0);
                             break;
                         case 2:
                             // Lever right
-                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties.group, 1);
+                            levelObjects[i] =new Objects.Lever(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, 1);
                             break;
                         case 4:
                             // Box
@@ -165,11 +164,11 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 5:
                             // Light emitter
-                            levelObjects[i] =new Objects.LightEmitter(object.x, object.y, object.rotation, object.properties.color ? object.properties.color : "yellow", object.properties.initialState ? object.properties.initialState : 0, object.properties.group);
+                            levelObjects[i] =new Objects.LightEmitter(object.x, object.y, object.rotation, object.properties.color ? object.properties.color : "yellow", object.properties.initialState ? object.properties.initialState : 0, object.properties ? object.properties.group ? object.properties.group : 0 : 0);
                             break;
                         case 6:
                             // Rotation box mirror
-                            levelObjects[i] =new Objects.RotationBoxMirror(object.x, object.y, object.rotation, object.properties.group);
+                            levelObjects[i] =new Objects.RotationBoxMirror(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0: 0);
                             break;
                         case 7:
                             // Light receiever
@@ -193,11 +192,11 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 14:
                             // Timed button
-                            levelObjects[i] =new Objects.TimerButton(object.x, object.y, object.rotation, object.properties.group, object.properties.time);
+                            levelObjects[i] =new Objects.TimerButton(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.time ? object.properties.time : 300 : 300);
                             break;
                         case 15:
                             // Fan
-                            levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.properties.initialState ? object.properties.initialState : 0, object.properties.length ? object.properties.length : 8);
+                            levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties.initialState ? object.properties.initialState : 0, object.properties.length ? object.properties.length : 8);
                             console.log(object);
                             break;
                     };
@@ -211,15 +210,15 @@ function importLevelFile(LEVELSJON) {
                     switch (object.gid - firstLargeObj) {
                         case 0:
                             // Portal left
-                            levelObjects[i] =new Objects.PortalLeft(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId ? object.properties.portalId : 0 : 0);
+                            levelObjects[i] =new Objects.PortalLeft(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState ? object.properties.initialState : 0: 0, object.properties ? object.properties.portalId ? object.properties.portalId : 0 : 0);
                             break;
                         case 1:
                             // Portal right
-                            levelObjects[i] =new Objects.PortalRight(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId ? object.properties.portalId : 0 : 0);
+                            levelObjects[i] =new Objects.PortalRight(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState ? object.properties.initialState : 0: 0, object.properties ? object.properties.portalId ? object.properties.portalId : 0 : 0);
                             break;
                         case 2:
                             // Fan
-                            levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties.group, object.properties.initialState ? object.properties.initialState : 0, object.properties.length ? object.properties.length : 8);
+                            levelObjects[i] =new Objects.Fan(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState ? object.properties.initialState: 0 : 0, object.properties ? object.properties.length ? object.properties.length : 8 : 8);
                             break;
                     };
                 };
