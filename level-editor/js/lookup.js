@@ -18,7 +18,7 @@ export const FB_WG_COLOR = [
 
 export const GROUP_COLOR = [
     '#FF0000',
-    '#00FF00',
+    '#008000',
     '#0000FF',
     '#FFFF00',
     '#FF00FF',

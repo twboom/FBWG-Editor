@@ -42,7 +42,7 @@ function draw_wind(object, rotation, ctx) {
 
 function draw_platform_preview(object, ctx) {
     // Get the preview's location
-    let previewX = object.x + object.dx * BLOCK_SIZE;
+    let previewX = object.x + -object.dx * BLOCK_SIZE;
     let previewY = object.y + -object.dy * BLOCK_SIZE;
 
     // Draw the colored part
@@ -131,7 +131,7 @@ export function render_object(object, ctx) {
             ctx.beginPath();
             ctx.rect(object.x, object.y, object.width, object.heigth);
             ctx.fillStyle = object.group > 8 ? '#FFFF00' : GROUP_COLOR[object.group - 1];
-            ctx.fillStyle = object.group == undefined ? '#FFFFFF' : ctx.fillStyle;
+            ctx.fillStyle = object.group == 0 ? '#FFFFFF' : ctx.fillStyle;
             ctx.fill();
 
             // Draw the edges

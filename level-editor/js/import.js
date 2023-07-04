@@ -129,7 +129,7 @@ function importLevelFile(LEVELSJON) {
             if (!object.gid) {
                 switch(object.type) {
                     case 'platform':
-                        levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group, object.properties.dx, object.properties.dy);
+                        levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group ? object.properties.group : 0, object.properties.dx ? object.properties.dx : 0, object.properties.dy ? object.properties.dy : 0);
                         break;
                     case 'slider':
                         console.log(object);
@@ -138,8 +138,6 @@ function importLevelFile(LEVELSJON) {
                     case 'hanging':
                         levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.group, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation);
                         break;
-                    case 'pulley':
-                        levelObjects[i] = 'pulley';
                 };
             } else {
                 if (object.gid >= firstObj && (
@@ -213,11 +211,11 @@ function importLevelFile(LEVELSJON) {
                     switch (object.gid - firstLargeObj) {
                         case 0:
                             // Portal left
-                            levelObjects[i] =new Objects.PortalLeft(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId : 0);
+                            levelObjects[i] =new Objects.PortalLeft(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId ? object.properties.portalId : 0 : 0);
                             break;
                         case 1:
                             // Portal right
-                            levelObjects[i] =new Objects.PortalRight(object.x, object.y, object.rotation, object.properties ? object.properties.group : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId : 0);
+                            levelObjects[i] =new Objects.PortalRight(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, object.properties ? object.properties.initialState : 1, object.properties ? object.properties.portalId ? object.properties.portalId : 0 : 0);
                             break;
                         case 2:
                             // Fan
@@ -269,6 +267,26 @@ function importLevelFile(LEVELSJON) {
             };
         };
     };
+
+    // Check for undefined objects
+    for (let i = 0; i < levelObjects.length; i++) {
+        let stop = false;
+        if (levelObjects[i] == undefined) {
+            console.warn(objects[i], 'at place ',i);
+            stop = true
+        };
+        if (!stop) {
+            for (let j = 0; j < Object.keys(levelObjects[i]).length && !stop; j++) {
+                if (Object.values(levelObjects[i])[j] == undefined) {
+                    console.warn(levelObjects[i], objects[i]);
+                    stop = true
+                };
+            };
+        };
+    };
+
+
+
     SESSION.LEVEL = new Level(width, height, tiles, levelObjects);
     console.log(SESSION.LEVEL);
 };
