@@ -1,4 +1,4 @@
-import { drawImage } from "./canvas.js";
+import { drawImage, objectCtx, tileCanvas, tileCtx } from "./canvas.js";
 import { BLOCK_SIZE, GROUP_COLOR } from "./lookup.js";
 import { SESSION } from "./session.js";
 
@@ -335,123 +335,17 @@ export function render_object(object, ctx) {
             ctx.strokeStyle = '#FFFFFF';
             ctx.stroke();
             break;
-        case 'PortalLeft': 
-            // Draw the black part
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x, object.y, BLOCK_SIZE, -3 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y, 3 * BLOCK_SIZE, BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x, object.y, -BLOCK_SIZE, 3 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y, -3 * BLOCK_SIZE, -BLOCK_SIZE);
-                    break;
-            };
-            ctx.fillStyle = object.initialState == 1 ? '#000000' : '#000000AA';
-            ctx.fill();
-
-            // Draw the white part
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x + BLOCK_SIZE, object.y, BLOCK_SIZE, -3 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y + BLOCK_SIZE, 3 * BLOCK_SIZE, BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x - BLOCK_SIZE, object.y, -BLOCK_SIZE, 3 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y - BLOCK_SIZE, -3 * BLOCK_SIZE, -BLOCK_SIZE);
-                    break;
-            };
-            ctx.fillStyle = object.initialState == 1 ? '#FFFFFF' : '#FFFFFFAA';
-            ctx.fill();
-
-            // Draw the outline
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y, 3 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, 3 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y, -3 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-                    break;
-            };
-            ctx.strokeStyle = object.group ? GROUP_COLOR[object.group - 1] : 'white';
-            ctx.lineWidth = 4;
-            ctx.stroke();
+        case 'PortalLeft':
+            ctx.translate(-object.x, -object.y);
+            ctx.rotate((rotation * Math.PI) / 180);
+            drawImage('assets/objects/portal_left.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y - 3 * BLOCK_SIZE, ctx);
+            ctx.setTransform();
             break;
         case 'PortalRight':
-            // Draw the white part
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x, object.y, BLOCK_SIZE, -3 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y, 3 * BLOCK_SIZE, BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x, object.y, -BLOCK_SIZE, 3 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y, -3 * BLOCK_SIZE, -BLOCK_SIZE);
-                    break;
-            };
-            ctx.fillStyle = object.initialState == 1 ? '#FFFFFF' : ' #FFFFFFAA';
-            ctx.fill();
-
-            // Draw the black part
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x + BLOCK_SIZE, object.y, BLOCK_SIZE, -3 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y + BLOCK_SIZE, 3 * BLOCK_SIZE, BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x - BLOCK_SIZE, object.y, -BLOCK_SIZE, 3 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y - BLOCK_SIZE, -3 * BLOCK_SIZE, -BLOCK_SIZE);
-                    break;
-            };
-            ctx.fillStyle = object.initialState == 1 ? '#000000': '#000000AA';
-            ctx.fill();
-
-            // Draw the outline
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y, 3 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, 3 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y, -3 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-                    break;
-            };
-            ctx.strokeStyle = object.group ? GROUP_COLOR[object.group - 1] : 'white';
-            ctx.lineWidth = 4;
-            ctx.stroke();
+            ctx.translate(-object.x, -object.y);
+            ctx.rotate((rotation * Math.PI) / 180);
+            drawImage('assets/objects/portal_right.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y - 3 * BLOCK_SIZE, ctx);
+            ctx.setTransform();
             break;
         case 'LightEmitter':
             ctx.beginPath();
