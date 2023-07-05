@@ -336,16 +336,30 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'PortalLeft':
-            ctx.translate(-object.x, -object.y);
+            ctx.translate(object.x, object.y);
             ctx.rotate((rotation * Math.PI) / 180);
-            drawImage('assets/objects/portal_left.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y - 3 * BLOCK_SIZE, ctx);
-            ctx.setTransform();
+            ctx.translate(-object.x, -object.y);
+
+            ctx.beginPath(); ctx.rect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#FFFFFF'; ctx.fill();
+            ctx.beginPath(); ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#000000'; ctx.fill();
+            // drawImage('assets/objects/portal_left.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, ctx);
+
+            ctx.translate(object.x, object.y);
+            ctx.rotate((-rotation * Math.PI) / 180);
+            ctx.translate(-object.x, -object.y);
             break;
         case 'PortalRight':
-            ctx.translate(-object.x, -object.y);
+            ctx.translate(object.x, object.y);
             ctx.rotate((rotation * Math.PI) / 180);
-            drawImage('assets/objects/portal_right.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y - 3 * BLOCK_SIZE, ctx);
-            ctx.setTransform();
+            ctx.translate(-object.x, -object.y);
+
+            ctx.beginPath(); ctx.rect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#FFFFFF'; ctx.fill();
+            ctx.beginPath(); ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#000000'; ctx.fill();
+            // drawImage('assets/objects/portal_right.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, ctx);
+
+            ctx.translate(object.x, object.y);
+            ctx.rotate((-rotation * Math.PI) / 180);
+            ctx.translate(-object.x, -object.y);
             break;
         case 'LightEmitter':
             ctx.beginPath();
