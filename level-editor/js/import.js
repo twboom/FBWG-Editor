@@ -132,7 +132,7 @@ function importLevelFile(LEVELSJON) {
                         levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group ? object.properties.group : 0, object.properties.dx ? object.properties.dx : 0, object.properties.dy ? object.properties.dy : 0);
                         break;
                     case 'slider':
-                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.max, object.properties.min);
+                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties ? object.properties.max ? object.properties.max : 1 : 1, object.properties ? object.properties.min ? object.properties.min : -1 : -1);
                         break;
                     case 'hanging':
                         levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation ? object.properties.fullRotation : 0);

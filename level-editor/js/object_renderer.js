@@ -293,6 +293,26 @@ export function render_object(object, ctx) {
         case 'Hanger':
             break;
         case 'Slider':
+            console.log('slider');
+            ctx.beginPath();
+            // Vertical
+            if (object.pos1[0] == object.pos2[0]) {
+                ctx.rect(object.x + object.pos1[0] - 2, object.y + object.pos1[1], object.pos2[0] - object.pos1[0] + 4, object.pos2[1] - object.pos1[1]);
+            } 
+            // Horizontal
+            else if (object.pos1[1] == object.pos2[1]) {
+                ctx.rect(object.x + object.pos1[0], object.y + object.pos1[1] - 2, object.pos2[0] - object.pos1[0], object.pos2[1] - object.pos1[1] + 4);
+            };
+            ctx.fillStyle = GROUP_COLOR[object.group - 1];
+            ctx.strokeStyle = 'gray';
+            ctx.lineWidth = 2;
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(object.x + (object.pos1[0] + object.pos2[0]) / 2, object.y + (object.pos1[1] + object.pos2[1]) / 2, 0.25 * BLOCK_SIZE, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
             break;
         case 'Ball':
             ctx.beginPath();
@@ -517,5 +537,6 @@ export function render_object(object, ctx) {
             else { ctx.rect(object.x + 2, object.y, object.width - 4, object.heigth); };
             ctx.fillStyle = '#ADD8E6AA';
             ctx.fill();
+            break;
     };  
 };
