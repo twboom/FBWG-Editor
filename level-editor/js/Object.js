@@ -102,17 +102,16 @@ export class RotationBoxMirror extends Mechanics {
 
 /* Polyline objects */
 export class Polyline extends Object {
-    constructor(x, y, rotation, group, [x1, y1], [x2, y2]) {
+    constructor(x, y, rotation, group, pos = []) {
         super(x, y, rotation);
         this.group = group;
-        this.pos1 = [x1, y1];
-        this.pos2 = [x2, y2];
+        this.pos = pos;
     };
 };
 
 export class Hanger extends Polyline {
-    constructor(x, y, rotation, group, [x1, y1], [x2, y2], barWidth, density, fullRotation) {
-        super(x, y, rotation, group, [x1, y1], [x2, y2]);
+    constructor(x, y, rotation, group, pos = [], barWidth, density, fullRotation) {
+        super(x, y, rotation, group, pos);
         this.barWidth = barWidth;
         this.density = density;
         this.fullRotation = fullRotation;
@@ -120,8 +119,8 @@ export class Hanger extends Polyline {
 };
 
 export class Slider extends Polyline {
-    constructor(x, y, rotation, group, [x1, y1], [x2, y2], max, min) {
-        super(x, y, rotation, group, [x1, y1], [x2, y2]);
+    constructor(x, y, rotation, group, pos = [], max, min) {
+        super(x, y, rotation, group, pos);
         this.max = max;
         this.min = min;
     };

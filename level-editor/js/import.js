@@ -127,15 +127,24 @@ function importLevelFile(LEVELSJON) {
 
             // Check if the object is a platform, silder or hanger
             if (!object.gid) {
+                let pos = [];
                 switch(object.type) {
                     case 'platform':
                         levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group ? object.properties.group : 0, object.properties.dx ? object.properties.dx : 0, object.properties.dy ? object.properties.dy : 0);
                         break;
                     case 'slider':
-                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties ? object.properties.max ? object.properties.max : 1 : 1, object.properties ? object.properties.min ? object.properties.min : -1 : -1);
+                        for (let i = 0; i < object.polyline.length; i ++) {
+                            console.log(object.polyline[i], object.polyline[i].x, object.polyline[i].y);
+                            pos[i] = [object.polyline[i].x, object.polyline[i].y];
+                        };
+                        levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos, object.properties ? object.properties.max ? object.properties.max : 1 : 1, object.properties ? object.properties.min ? object.properties.min : -1 : -1);
                         break;
                     case 'hanging':
-                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation ? object.properties.fullRotation : 0);
+                        for (let i = 0; i < object.polyline.length; i ++) {
+                            console.log(object.polyline[i], object.polyline[i].x, object.polyline[i].y);
+                            pos[i] = [object.polyline[i].x, object.polyline[i].y];
+                        };
+                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos , object.properties.barWidth, object.properties.density, object.properties.fullRotation ? object.properties.fullRotation : 0);
                         break;
                     case 'window':
                         levelObjects[i] = new Objects.Window(object.x, object.y, object.width, object.height);
