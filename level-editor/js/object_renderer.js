@@ -528,7 +528,7 @@ export function render_object(object, ctx) {
             };
             ctx.fill();
 
-            if (object.initialState == 1 || SESSION.WIND_PREVEIWS) { draw_wind(object, rotation, ctx); };
+            if (object.initialState == 1 || SESSION.WIND_PREVIEWS) { draw_wind(object, rotation, ctx); };
             break;
         case 'Window':
             ctx.beginPath();
@@ -536,6 +536,14 @@ export function render_object(object, ctx) {
             else { ctx.rect(object.x + 2, object.y, object.width - 4, object.heigth); };
             ctx.fillStyle = '#ADD8E6AA';
             ctx.fill();
+            break;
+        case 'Cover':
+            if (SESSION.COVER_PREVIEWS) {
+                ctx.beginPath();
+                ctx.rect(object.x, object.y, object.width, object.heigth);
+                ctx.fillStyle = 'black';
+                ctx.fill();
+            };
             break;
     };  
 };

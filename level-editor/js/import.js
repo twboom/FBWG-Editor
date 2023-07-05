@@ -134,7 +134,6 @@ function importLevelFile(LEVELSJON) {
                         break;
                     case 'slider':
                         for (let i = 0; i < object.polyline.length; i ++) {
-                            console.log(object.polyline[i], object.polyline[i].x, object.polyline[i].y);
                             pos[i] = [object.polyline[i].x, object.polyline[i].y];
                         };
                         levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos, object.properties ? object.properties.max ? object.properties.max : 1 : 1, object.properties ? object.properties.min ? object.properties.min : -1 : -1);
@@ -148,6 +147,10 @@ function importLevelFile(LEVELSJON) {
                         break;
                     case 'window':
                         levelObjects[i] = new Objects.Window(object.x, object.y, object.width, object.height);
+                        break;
+                    case 'cover':
+                        levelObjects[i] = new Objects.Cover(object.x, object.y, object.width, object.height);
+                        break;
                 };
             } else {
                 if (object.gid >= firstObj && (

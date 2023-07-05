@@ -167,6 +167,16 @@ export function initEditor(){
                 };
                 render(false, true);
             };
+            if (el.dataset.action == 'cover-previews') {
+                if(SESSION.COVER_PREVIEWS) {
+                    SESSION.COVER_PREVIEWS = false;
+                    el.classList.remove('active');
+                } else {
+                    SESSION.COVER_PREVIEWS = true;
+                    el.classList.add('active');
+                };
+                render(false, true);
+            };
         });
     });
 

@@ -227,3 +227,12 @@ export class Window {
         this.heigth = heigth;
     };
 };
+
+export class Cover {
+    constructor(x, y, width, heigth) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.heigth = heigth;
+    };
+};
