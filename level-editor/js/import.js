@@ -137,6 +137,8 @@ function importLevelFile(LEVELSJON) {
                     case 'hanging':
                         levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, [object.polyline[0].x, object.polyline[0].y], [object.polyline[1].x, object.polyline[1].y], object.properties.barWidth, object.properties.density, object.properties.fullRotation ? object.properties.fullRotation : 0);
                         break;
+                    case 'window':
+                        levelObjects[i] = new Objects.Window(object.x, object.y, object.width, object.height);
                 };
             } else {
                 if (object.gid >= firstObj && (

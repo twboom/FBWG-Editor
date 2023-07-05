@@ -218,3 +218,13 @@ export class Fan extends WindObjects {
         super(x, y, rotation, group, initialState, length);
     };
 };
+
+/* Other objects */
+export class Window {
+    constructor(x, y, width, heigth) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.heigth = heigth;
+    };
+};

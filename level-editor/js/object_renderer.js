@@ -3,6 +3,7 @@ import { BLOCK_SIZE, GROUP_COLOR, GROUP_HIGHLIGHTS } from "./lookup.js";
 import { SESSION } from "./session.js";
 
 function rotationFix(object) {
+    if (!object.rotation) { return 0; }
     let rotation = object.rotation;
     if (rotation > 360) {
         while (rotation > 360) {
@@ -73,7 +74,7 @@ function draw_platform_preview(object, ctx) {
 
 export function render_object(object, ctx) {
     // Get the object's type
-    let type = object == 'pulley' ? ' pulley' : object.constructor.name;
+    let type = object.constructor.name;
     let rotation = rotationFix(object);
     
     switch(type) {
@@ -111,7 +112,6 @@ export function render_object(object, ctx) {
             };
             break;
         case 'Button':
-            console.log(object.group);
             drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, ctx);
             ctx.beginPath();
             ctx.rect(object.x + 0.7 * BLOCK_SIZE, object.y - 1.75 * BLOCK_SIZE, 0.6 * BLOCK_SIZE, 0.5 * BLOCK_SIZE );
@@ -511,5 +511,11 @@ export function render_object(object, ctx) {
 
             if (object.initialState == 1 || SESSION.WIND_PREVEIWS) { draw_wind(object, rotation, ctx); };
             break;
+        case 'Window':
+            ctx.beginPath();
+            if (object.width > object.heigth) { ctx.rect(object.x, object.y + 2, object.width, object.heigth - 4); }
+            else { ctx.rect(object.x + 2, object.y, object.width - 4, object.heigth); };
+            ctx.fillStyle = '#ADD8E6AA';
+            ctx.fill();
     };  
 };
