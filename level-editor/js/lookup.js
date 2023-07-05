@@ -26,4 +26,15 @@ export const GROUP_COLOR = [
     '#8F00FF',
     '#FFFFFF',
 ]
+
+export const GROUP_HIGHLIGHTS = [
+    '#CC0000',
+    '#005000',
+    '#0000CC',
+    '#CCCC00',
+    '#CC00CC',
+    '#002C4D',
+    '#5C00CC',
+    '#CCCCCC',
+]
 export const BLOCK_SIZE = 32;

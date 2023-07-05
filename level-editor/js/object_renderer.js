@@ -1,5 +1,5 @@
 import { drawImage, objectCtx, tileCanvas, tileCtx } from "./canvas.js";
-import { BLOCK_SIZE, GROUP_COLOR } from "./lookup.js";
+import { BLOCK_SIZE, GROUP_COLOR, GROUP_HIGHLIGHTS } from "./lookup.js";
 import { SESSION } from "./session.js";
 
 function rotationFix(object) {
@@ -111,13 +111,25 @@ export function render_object(object, ctx) {
             };
             break;
         case 'Button':
-            drawImage(`assets/objects/button_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+            console.log(object.group);
+            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, ctx);
+            ctx.beginPath();
+            ctx.rect(object.x + 0.7 * BLOCK_SIZE, object.y - 1.75 * BLOCK_SIZE, 0.6 * BLOCK_SIZE, 0.5 * BLOCK_SIZE );
+            ctx.fillStyle = object.group == 0 ? 'white' : object.group > 8 ? 'yellow' : GROUP_COLOR[object.group - 1];
+            ctx.strokeStyle = object.group == 0 ? '#CCCCCC' : object.group > 8 ? '#CCCC00' : GROUP_HIGHLIGHTS[object.group - 1];
+            ctx.lineWidth = 2;
+            ctx.fill();
+            ctx.stroke();
             break;
         case 'TimerButton':
+            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, ctx);
             ctx.beginPath();
-            ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            ctx.fillStyle = '#FF00FF';
+            ctx.arc(object.x + BLOCK_SIZE, object.y - 1.5 * BLOCK_SIZE, 0.4 * BLOCK_SIZE, 0, 2 * Math.PI);
+            ctx.fillStyle = GROUP_COLOR[object.group - 1];
+            ctx.strokeStyle = GROUP_HIGHLIGHTS[object.group - 1];
+            ctx.lineWidth = 2;
             ctx.fill();
+            ctx.stroke();
             break;
         case 'Lever':
             if (object.direction == 1) {
@@ -285,7 +297,7 @@ export function render_object(object, ctx) {
         case 'Ball':
             ctx.beginPath();
             ctx.arc(object.x + 0.5 * BLOCK_SIZE, object.y - 0.5 * BLOCK_SIZE, 0.5 * BLOCK_SIZE, 0, 360);
-            ctx.fillStyle = '#FF00FF';
+            ctx.fillStyle = '#777777';
             ctx.fill();
             break;
         case 'Box':
@@ -340,8 +352,9 @@ export function render_object(object, ctx) {
             ctx.rotate((rotation * Math.PI) / 180);
             ctx.translate(-object.x, -object.y);
 
-            ctx.beginPath(); ctx.rect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#FFFFFF'; ctx.fill();
-            ctx.beginPath(); ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#000000'; ctx.fill();
+            ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            ctx.beginPath(); ctx.strokeStyle = GROUP_COLOR[object.group]; ctx.lineWidth = 4; ctx.strokeRect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
             // drawImage('assets/objects/portal_left.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, ctx);
 
             ctx.translate(object.x, object.y);
@@ -353,8 +366,9 @@ export function render_object(object, ctx) {
             ctx.rotate((rotation * Math.PI) / 180);
             ctx.translate(-object.x, -object.y);
 
-            ctx.beginPath(); ctx.rect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#FFFFFF'; ctx.fill();
-            ctx.beginPath(); ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); ctx.fillStyle = '#000000'; ctx.fill();
+            ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            ctx.beginPath(); ctx.strokeStyle = GROUP_COLOR[object.group]; ctx.lineWidth = 4; ctx.strokeRect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
             // drawImage('assets/objects/portal_right.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, ctx);
 
             ctx.translate(object.x, object.y);
