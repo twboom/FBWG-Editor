@@ -558,5 +558,35 @@ export function render_object(object, ctx) {
                 ctx.fill();
             };
             break;
+        case 'Pulley':
+            ctx.beginPath();
+            ctx.moveTo(object.x + object.pos[0][0], object.y + object.pos[0][1]);
+
+            for (let i = 1; i < object.pos.length; i ++) {
+                ctx.lineTo(object.x + object.pos[i][0], object.y + object.pos[i][1]);
+            };
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(object.x + object.pos[0][0] - 1.5 * BLOCK_SIZE, object.y + object.pos[0][1]);
+            ctx.lineTo(object.x + object.pos[0][0] + 1.5 * BLOCK_SIZE, object.y + object.pos[0][1]);
+            ctx.strokeStyle = 'gray';
+            ctx.lineWidth = 8;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(object.x + object.pos[object.pos.length - 1][0] - 1.5 * BLOCK_SIZE, object.y + object.pos[object.pos.length - 1][1]);
+            ctx.lineTo(object.x + object.pos[object.pos.length - 1][0] + 1.5 * BLOCK_SIZE, object.y + object.pos[object.pos.length - 1][1]);
+            ctx.stroke();
+
+            ctx.fillStyle = '#333333';
+            for (let i = 1; i + 1 < object.pos.length; i ++) {
+                ctx.beginPath();
+                ctx.arc(object.x + object.pos[i][0], object.y + object.pos[i][1], 0.25 * BLOCK_SIZE, 0, 2 * Math.PI);
+                ctx.fill();
+            };
+            break;
     };  
 };

@@ -150,6 +150,12 @@ function importLevelFile(LEVELSJON) {
                     case 'cover':
                         levelObjects[i] = new Objects.Cover(object.x, object.y, object.width, object.height);
                         break;
+                    case 'pulley':
+                        for (let i = 0; i < object.polyline.length; i++) {
+                            pos[i] = [object.polyline[i].x, object.polyline[i].y];
+                        };
+                        levelObjects[i] = new Objects.Pulley(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos, object.properties.prismatic);
+                        break;
                 };
             } else {
                 if (object.gid >= firstObj && (

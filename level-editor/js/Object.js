@@ -126,6 +126,13 @@ export class Slider extends Polyline {
     };
 };
 
+export class Pulley extends Polyline {
+    constructor(x, y, rotation, group, pos = [], prismatic) {
+        super(x, y, rotation, group, pos);
+        this.prismatic = prismatic;
+    };
+};
+ 
 /* Moveable objects */
 export class MoveableObject extends Object {
     constructor(x, y, rotation) {
