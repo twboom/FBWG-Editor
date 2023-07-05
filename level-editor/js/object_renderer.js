@@ -291,6 +291,19 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'Hanger':
+            ctx.beginPath();
+            ctx.moveTo(object.x + object.pos[0][0], object.y + object.pos[0][1]);
+            ctx.lineTo(object.x + object.pos[1][0], object.y + object.pos[1][1]);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#333333';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(object.x + object.pos[1][0] - BLOCK_SIZE * (object.barWidth / 2), object.y + object.pos[1][1]);
+            ctx.lineTo(object.x + object.pos[1][0] + BLOCK_SIZE * (object.barWidth / 2), object.y + object.pos[1][1]);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#999999';
+            ctx.stroke();
             break;
         case 'Slider':
             ctx.beginPath();

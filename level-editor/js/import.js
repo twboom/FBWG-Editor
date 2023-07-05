@@ -140,10 +140,9 @@ function importLevelFile(LEVELSJON) {
                         break;
                     case 'hanging':
                         for (let i = 0; i < object.polyline.length; i ++) {
-                            console.log(object.polyline[i], object.polyline[i].x, object.polyline[i].y);
                             pos[i] = [object.polyline[i].x, object.polyline[i].y];
                         };
-                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos , object.properties.barWidth, object.properties.density, object.properties.fullRotation ? object.properties.fullRotation : 0);
+                        levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos , object.properties.barWidth, object.properties.density ? object.properties.density : 'dense', object.properties.fullRotation ? object.properties.fullRotation : 0);
                         break;
                     case 'window':
                         levelObjects[i] = new Objects.Window(object.x, object.y, object.width, object.height);
