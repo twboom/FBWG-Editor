@@ -1,4 +1,3 @@
-import { objectCanvas, objectCtx, tileCanvas, tileCtx } from './canvas.js';
 import { render_object } from './object_renderer.js';
 import { SESSION } from './session.js';
 import { drawTile, drawFluid, drawSlope, drawSnow } from './tile_renderer.js'
@@ -45,7 +44,7 @@ export class TileRenderer {
 export function render({do_tiles = true, do_objects = true}) {
     // Render the correct layer
     if (do_tiles) {
-        tileCtx.clearRect(0, 0, tileCanvas.width, tileCanvas.height);
+        SESSION.TILE_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
         const tiles = SESSION.LEVEL.tiles;
         let later = []
         for (let y = 0; y < tiles.length; y++) {
@@ -53,21 +52,21 @@ export function render({do_tiles = true, do_objects = true}) {
                 if (tiles[y][x] == 12 || tiles[y][x] == 13 || tiles[y][x] == 14) {
                     later.push([x, y]);
                 };
-                SESSION.TILE_RENDERER.render(x, y, tiles[y][x], tileCtx);
+                SESSION.TILE_RENDERER.render(x, y, tiles[y][x], SESSION.TILE_CTX);
             };
         };
         
         // Render snow last
         for (let i = 0; i < later.length; i++) {
-            SESSION.TILE_RENDERER.render(later[i][0], later[i][1], tiles[later[i][1]][later[i][0]], tileCtx);
+            SESSION.TILE_RENDERER.render(later[i][0], later[i][1], tiles[later[i][1]][later[i][0]], SESSION.TILE_CTX);
         };
     };
     if (do_objects) {
-        objectCtx.clearRect(0, 0, objectCanvas.width, objectCanvas.height);
+        SESSION.OBJECT_CTX.clearRect(0, 0, SESSION.OBJECT_CANVAS.width, SESSION.OBJECT_CANVAS.height);
         const objects = SESSION.LEVEL.objects;
         for (let i = 0; i < objects.length; i++) {
             if (objects[i]) {
-                render_object(objects[i], objectCtx);
+                render_object(objects[i], SESSION.OBJECT_CTX);
             };
         };
     };

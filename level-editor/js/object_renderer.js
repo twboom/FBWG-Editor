@@ -1,4 +1,4 @@
-import { drawImage, objectCtx, tileCanvas, tileCtx } from "./canvas.js";
+import { drawImage } from "./canvas.js";
 import { BLOCK_SIZE, GROUP_COLOR, GROUP_HIGHLIGHTS } from "./lookup.js";
 import { SESSION } from "./session.js";
 

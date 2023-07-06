@@ -1,10 +1,6 @@
 import { BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 
-export const tileCanvas = document.getElementById('tiles');
-export const tileCtx = tileCanvas.getContext('2d');
-export const objectCanvas = document.getElementById('objects');
-export const objectCtx = objectCanvas.getContext('2d');
 export const highlightCanvas = document.getElementById('highlight');
 export const highlightCtx = highlightCanvas.getContext('2s');
 
@@ -14,11 +10,11 @@ export function resizeCanvas(blockSize = 32) {
     let height = SESSION.LEVEL.height * blockSize;
     
     // Set the correct width and heigth
-    tileCanvas.width = width;
-    tileCanvas.height = height;
+    SESSION.TILE_CANVAS.width = width;
+    SESSION.TILE_CANVAS.height = height;
 
-    objectCanvas.width = width;
-    objectCanvas.height = height;
+    SESSION.OBJECT_CANVAS.width = width;
+    SESSION.OBJECT_CANVAS.height = height;
 
     highlightCanvas.width = width;
     highlightCanvas.height = height;
