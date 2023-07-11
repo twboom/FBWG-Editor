@@ -81,7 +81,7 @@ export function resizeCanvas(blockSize = 32) {
 
 
 const CACHE = {};
-export function drawImage(src, sizeX, sizeY, x, y, ctx) {
+export function drawImage(src, sizeX, sizeY, x, y, rotation, ctx) {
     let img = new Image(sizeX, sizeY);
     if (src in CACHE) {
         img = CACHE[src].cloneNode(true)
@@ -93,3 +93,26 @@ export function drawImage(src, sizeX, sizeY, x, y, ctx) {
         ctx.drawImage(img, x, y);
     };
 };
+
+/*
+
+
+export function drawImage(src, width, height, x, y, deg, ctx) {
+    // Create the image
+    let img = new Image(width, height);
+    img.src = src;
+    console.log(src, width, height, x, y, deg, ctx);
+
+    // Save the translation
+    ctx.save();
+    // Move the centre of the canvas to the image
+  	ctx.translate(x, y);
+    // Rotate around the new centre
+    ctx.rotate((Math.PI / 180) * deg);
+    // Draw the image on the rotated canvas
+    ctx.drawImage(img, x, y);
+    // Restore the canvas translation
+    ctx.restore();
+}
+
+*/

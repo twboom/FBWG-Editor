@@ -1,55 +1,43 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="96">
     <style>
-        polygon#base {
+        .base {
             fill: orange;
             stroke: #a25900;
             stroke-width: 4px;
         }
 
-        polygon#base1 {
-            fill: orange;
-            stroke: #a25900;
-            stroke-width: 4px;
-        }
-
-        polygon#highlight {
+        .highlight {
             fill: white;
             stroke: gray;
             stroke-width: 2px;
         }
 
-        polygon#highlight1 {
-            fill: white;
-            stroke: gray;
-            stroke-width: 2px;
-        }
-
-        polygon#portalpart1 {
-            fill: white;
-            stroke: white;
-            stroke-width: 4px;
-        }
-
-        polygon#portalpart2 {
+        .portalpart1 {
             fill: black;
             stroke: black;
             stroke-width: 4px;
         }
 
+        .portalpart2 {
+            fill: white;
+            stroke: white;
+            stroke-width: 4px;
+        }
+
     </style>
-    <polygon id="base" points="
+    <polygon class="base" points="
         0,16
         16,0
         48,0
         64,16
     " />
-    <polygon id="base1" points="
+    <polygon class="base" points="
         0,80
         16,96
         48,96
         64,80
     " />
-    <polygon id="highlight" points="
+    <polygon class="highlight" points="
         20,16
         22,12
         42,12
@@ -57,7 +45,7 @@
         38,24
         26,24
     " />
-    <polygon id="highlight1" points="
+    <polygon class="highlight" points="
         20, 80
         22, 84
         42, 84
@@ -65,11 +53,11 @@
         38, 72
         26, 72
     " />
-    <polygon id="portalpart1" points="
+    <polygon class="portalpart2" points="
         30,26
         30,70
     " />
-    <polygon id="portalpart2" points="
+    <polygon class="portalpart1" points="
         34,26
         34,70
     " />

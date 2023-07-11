@@ -76,43 +76,45 @@ export function render_object(object, ctx) {
     // Get the object's type
     let type = object.constructor.name;
     let rotation = rotationFix(object);
+    console.log(rotation, object);
     
     switch(type) {
         case 'SpawnFB':
-            drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, ctx);
+            drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
             break;
         case 'SpawnWG':
-            drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, ctx);
+            drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
             break;
         case 'DoorFB':
-            drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, ctx);
+            drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
             break;
         case 'DoorWG':
-            drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, ctx);
+            drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
             break;
         case 'Diamond':
             ctx.beginPath();
             switch(object.type) {
                 case 0:
                     // FB diamond
-                    drawImage('assets/objects/diamond_fb.svg', 64, 64, object.x, object.y - 64, ctx);
+                    drawImage('assets/objects/diamond_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     break;
                 case 1:
                     // WG diamond
-                    drawImage('assets/objects/diamond_wg.svg', 64, 64, object.x, object.y - 64, ctx);
+                    drawImage('assets/objects/diamond_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     break;
                 case 2:
                     // Silver diamond
-                    drawImage('assets/objects/diamond_silver.svg', 64, 64, object.x, object.y - 64, ctx);
+                    drawImage('assets/objects/diamond_silver.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     break;
                 case 3:
                     // FBWG diamond
-                    drawImage('assets/objects/diamond_fbwg.svg', 64, 64, object.x, object.y - 64, ctx);
+                    drawImage('assets/objects/diamond_fbwg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     break;
             };
             break;
         case 'Button':
-            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, ctx);
+            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, rotation, ctx);
+
             ctx.beginPath();
             ctx.rect(object.x + 0.7 * BLOCK_SIZE, object.y - 1.75 * BLOCK_SIZE, 0.6 * BLOCK_SIZE, 0.5 * BLOCK_SIZE );
             ctx.fillStyle = object.group == 0 ? 'white' : object.group > 8 ? 'yellow' : GROUP_COLOR[object.group - 1];
@@ -122,7 +124,8 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'TimerButton':
-            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, ctx);
+            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, rotation, ctx);
+
             ctx.beginPath();
             ctx.arc(object.x + BLOCK_SIZE, object.y - 1.5 * BLOCK_SIZE, 0.4 * BLOCK_SIZE, 0, 2 * Math.PI);
             ctx.fillStyle = GROUP_COLOR[object.group - 1];
@@ -133,9 +136,9 @@ export function render_object(object, ctx) {
             break;
         case 'Lever':
             if (object.direction == 1) {
-                drawImage(`assets/objects/lever_left_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+                drawImage(`assets/objects/lever_left_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, rotation, ctx);
             } else {
-                drawImage(`assets/objects/lever_right_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, ctx);
+                drawImage(`assets/objects/lever_right_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, rotation, ctx);
             };
             break;
         case 'Platform':
@@ -333,10 +336,10 @@ export function render_object(object, ctx) {
             ctx.fill();
             break;
         case 'Box':
-            drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, ctx);
+            drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
             break;
         case 'HeavyBox':
-            drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, ctx);
+            drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
             break;
         case 'MirrorBox':
             ctx.beginPath();
@@ -380,87 +383,23 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'PortalLeft':
-            ctx.translate(object.x, object.y);
-            ctx.rotate((rotation * Math.PI) / 180);
-            ctx.translate(-object.x, -object.y);
-
-            ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
-            ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
-            ctx.beginPath(); ctx.strokeStyle = GROUP_COLOR[object.group]; ctx.lineWidth = 4; ctx.strokeRect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
-            // drawImage('assets/objects/portal_left.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, ctx);
-
-            ctx.translate(object.x, object.y);
-            ctx.rotate((-rotation * Math.PI) / 180);
-            ctx.translate(-object.x, -object.y);
+            // ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            // ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            // ctx.beginPath(); ctx.strokeStyle = GROUP_COLOR[object.group]; ctx.lineWidth = 4; ctx.strokeRect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
+            drawImage('assets/objects/portal_left.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, rotation, ctx);
             break;
         case 'PortalRight':
-            ctx.translate(object.x, object.y);
-            ctx.rotate((rotation * Math.PI) / 180);
-            ctx.translate(-object.x, -object.y);
-
-            ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
-            ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
-            ctx.beginPath(); ctx.strokeStyle = GROUP_COLOR[object.group]; ctx.lineWidth = 4; ctx.strokeRect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
-            // drawImage('assets/objects/portal_right.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, ctx);
-
-            ctx.translate(object.x, object.y);
-            ctx.rotate((-rotation * Math.PI) / 180);
-            ctx.translate(-object.x, -object.y);
+            // ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            // ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
+            // ctx.beginPath(); ctx.strokeStyle = GROUP_COLOR[object.group]; ctx.lineWidth = 4; ctx.strokeRect(object.x, object.y, 2 * BLOCK_SIZE, -3 * BLOCK_SIZE);
+            drawImage('assets/objects/portal_right.svg' ,2 * BLOCK_SIZE, 3 * BLOCK_SIZE, object.x, object.y -3 * BLOCK_SIZE, rotation, ctx);
             break;
         case 'LightEmitter':
+            drawImage("assets/objects/light_emitter.svg", 2 * BLOCK_SIZE, 2 * BLOCK_SIZE, object.x, object.y - 2 * BLOCK_SIZE, rotation,  rotation, ctx);
+
             ctx.beginPath();
             ctx.fillStyle = object.color == 'blue' || 'red' ? object.color : '#AAAA00';
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x + BLOCK_SIZE, object.y, BLOCK_SIZE, -2 * BLOCK_SIZE);
-                    ctx.fill();
-                    
-                    ctx.beginPath();
-                    ctx.rect(object.x, object.y, BLOCK_SIZE, -2 * BLOCK_SIZE);
-                    ctx.fillStyle = '#FF00FF';
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(object.x + BLOCK_SIZE, object.y - BLOCK_SIZE, 0.5 * BLOCK_SIZE, 0, 360);
-                    break;
-                case 90: /* untested */
-                    ctx.rect(object.x, object.y + 2 * BLOCK_SIZE, 2 * BLOCK_SIZE, -1 * BLOCK_SIZE);
-                    ctx.fill();
-                    
-                    ctx.beginPath();
-                    ctx.rect(object.x, object.y + BLOCK_SIZE, 2 * BLOCK_SIZE, -1 * BLOCK_SIZE);
-                    ctx.fillStyle = '#FF00FF';
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(object.x + BLOCK_SIZE, object.y + BLOCK_SIZE, 0.5 * BLOCK_SIZE, 0, 360);
-                    break;
-                case 180:
-                    ctx.rect(object.x - BLOCK_SIZE, object.y, -1 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.rect(object.x, object.y, -1 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-                    ctx.fillStyle = '#FF00FF';
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(object.x - BLOCK_SIZE, object.y + BLOCK_SIZE, 0.5 * BLOCK_SIZE, 0 , 360);
-                    break;
-                case -90: /* untested */
-                    ctx.rect(object.x, object.y - 2 * BLOCK_SIZE, -2 * BLOCK_SIZE, BLOCK_SIZE);
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, -BLOCK_SIZE);
-                    ctx.fillStyle = '#FF00FF';
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(object.x - BLOCK_SIZE, object.y - BLOCK_SIZE, 0.5 * BLOCK_SIZE, 0, 360);
-                    break;
-            };
-            ctx.fillStyle = object.group > 8 ? '#FFFF00' : GROUP_COLOR[object.group - 1];
+            ctx.arc(object.x + BLOCK_SIZE, object.y - 1.5 * BLOCK_SIZE, 0.5 * BLOCK_SIZE, Math.PI, 2 * Math.PI);
             ctx.fill();
             break;
         case 'LightReceiver':
