@@ -33,14 +33,17 @@ export function initEditor(){
                     case 'slopeBL':
                         tile = 5
                         break;
-                    case 'lava':
+                    case 'water':
                         tile = 6
                         break;
-                    case 'water':
+                    case 'lava':
                         tile = 7
                         break;
                     case 'acid':
                         tile = 8
+                        break;
+                    case 'ice':
+                        tile = 15
                         break;
                 };
                 SESSION.LEVEL.tiles[tileY][tileX] = tile;
@@ -89,10 +92,10 @@ export function initEditor(){
                     case 'slopeBL':
                         tile = 5;
                         break;
-                    case 'lava':
+                    case 'water':
                         tile = 6;
                         break;
-                    case 'water':
+                    case 'lava':
                         tile = 7;
                         break;
                     case 'acid':
