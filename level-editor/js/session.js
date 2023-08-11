@@ -17,4 +17,5 @@ export const SESSION = {
     PLATFROM_PREVIEWS: false,
     WIND_PREVIEWS: false,
     COVER_PREVIEWS: false,
+    SHOW_CONSOLE_DEBUG: true,
 };

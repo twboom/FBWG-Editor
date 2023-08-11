@@ -47,7 +47,7 @@ export function initEditor(){
                         break;
                 };
                 SESSION.LEVEL.tiles[tileY][tileX] = tile;
-                render(true, false);
+                render({do_tiles: true, do_objects: false}, 'click')
                 break;
             case 'objects':
                 // set objects
@@ -59,7 +59,7 @@ export function initEditor(){
     highlightCanvas.addEventListener('contextmenu', evt => {
         if (SESSION.SELECTED_TOOL_TYPE == 'tiles') {
             SESSION.LEVEL.tiles[Math.floor(evt.offsetY / BLOCK_SIZE)][Math.floor(evt.offsetX / BLOCK_SIZE)] = 0
-            render(true, false);
+            render({do_tiles: true, do_objects: false}, 'contextmenu')
         };
     });
 
@@ -114,13 +114,19 @@ export function initEditor(){
     highlightCanvas.addEventListener('mousedown', evt => {
         if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
         else if (evt.button == 2) { 
-            SESSION.RIGHT_MOUSE_DOWN = true; };
+            SESSION.RIGHT_MOUSE_DOWN = true;
+        };
+        if (SESSION.SELECTED_TOOL_TYPE === 'tiles') {
+            SESSION.DO_RENDER = true;
+            render({do_tiles: true, do_objects: false}, 'mousedown')
+        }
     });
 
     // Add the eventlistener for releasing your mouse
     highlightCanvas.addEventListener('mouseup', evt => {
         SESSION.MOUSE_DOWN = false;
         SESSION.RIGHT_MOUSE_DOWN = false;
+        SESSION.DO_RENDER = false;
     });
 
 

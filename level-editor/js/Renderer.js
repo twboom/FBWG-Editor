@@ -41,7 +41,11 @@ export class TileRenderer {
     };
 };
 
-export function render({do_tiles = true, do_objects = true}) {
+export function render(options, tracer) {
+    const {do_tiles = true, do_objects = true} = options;
+    if (SESSION.SHOW_CONSOLE_DEBUG) {
+        console.log('RENDER:', options, 'tracer:', tracer);
+    };
     // Render the correct layer
     if (do_tiles) {
         SESSION.TILE_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
@@ -73,6 +77,11 @@ export function render({do_tiles = true, do_objects = true}) {
     
     // Only render next frame if it is needed
     if (SESSION.DO_RENDER) {
-        requestAnimationFrame(render);
+        requestAnimationFrame(_ => {
+            // ID tracer
+            tracer = tracer.toString();
+            if (!tracer.includes('AnimationFrame')) { tracer += ' AnimationFrame' };
+            render(options, tracer);
+        });
     };
 };
