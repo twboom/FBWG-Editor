@@ -85,6 +85,30 @@ export function initEditor(){
                     case 'rotation_boxmirror':
                         new Objects.RotationBoxMirror(mouseX, mouseY, 0, 1);
                         break;
+                    case 'hanger': // Idk man
+                        new Objects.Hanger();
+                        break;
+                    case 'slider': // Idk
+                        new Objects.Slider();
+                        break;
+                    case 'light_emitter': // Idk
+                        new Objects.LightEmitter();
+                        break;
+                    case 'light_receiver': // Idk
+                        new Objects.LightReceiver();
+                        break;
+                    case 'portal': // Idk
+                        new Objects.Portal();
+                        break;
+                    case 'fan': // Idk, but i'm a huge fan
+                        new Objects.Fan();
+                        break;
+                    case 'window':
+                        new Objects.Window(mouseX, mouseY, BLOCK_SIZE, BLOCK_SIZE);
+                        break;
+                    case 'Cover':
+                        new Objects.Cover(mouseX, mouseY, BLOCK_SIZE, BLOCK_SIZE);
+                        break;
                 };
                 render({do_tiles: false, do_objects: true}, 'click')
                 break;
