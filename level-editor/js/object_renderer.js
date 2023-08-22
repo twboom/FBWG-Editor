@@ -82,48 +82,56 @@ export function render_object(object, ctx) {
     switch(type) {
         case 'SpawnFB':
             // drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('spawn', 'fb', object.x, object.y - 64, ctx)
+            drawObject('spawn', 'fb', object.x, object.y - 64, ctx);
             break;
         case 'SpawnWG':
-            drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            drawObject('spawn', 'wg', object.x, object.y - 64, ctx);
             break;
         case 'DoorFB':
-            drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            drawObject('door', 'fb', object.x, object.y - 64, ctx);
             break;
         case 'DoorWG':
-            drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            drawObject('door', 'wg', object.x, object.y - 64, ctx);
             break;
         case 'Diamond':
             ctx.beginPath();
             switch(object.type) {
                 case 0:
                     // FB diamond
-                    drawImage('assets/objects/diamond_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    // drawImage('assets/objects/diamond_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('diamond', 'fb', object.x, object.y - 64, ctx);
                     break;
                 case 1:
                     // WG diamond
-                    drawImage('assets/objects/diamond_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    // drawImage('assets/objects/diamond_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('diamond', 'wg', object.x, object.y - 64, ctx);
                     break;
                 case 2:
                     // Silver diamond
-                    drawImage('assets/objects/diamond_silver.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    // drawImage('assets/objects/diamond_silver.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('diamond', 'silver', object.x, object.y - 64, ctx);
                     break;
                 case 3:
                     // FBWG diamond
-                    drawImage('assets/objects/diamond_fbwg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    // drawImage('assets/objects/diamond_fbwg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('diamond', 'fbwg', object.x, object.y - 64, ctx);
                     break;
             };
             break;
         case 'Button':
-            drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, rotation, ctx);
 
-            ctx.beginPath();
-            ctx.rect(object.x + 0.7 * BLOCK_SIZE, object.y - 1.75 * BLOCK_SIZE, 0.6 * BLOCK_SIZE, 0.5 * BLOCK_SIZE );
-            ctx.fillStyle = object.group == 0 ? 'white' : object.group > 8 ? 'yellow' : GROUP_COLOR[object.group - 1];
-            ctx.strokeStyle = object.group == 0 ? '#CCCCCC' : object.group > 8 ? '#CCCC00' : GROUP_HIGHLIGHTS[object.group - 1];
-            ctx.lineWidth = 2;
-            ctx.fill();
-            ctx.stroke();
+            // ctx.beginPath();
+            // ctx.rect(object.x + 0.7 * BLOCK_SIZE, object.y - 1.75 * BLOCK_SIZE, 0.6 * BLOCK_SIZE, 0.5 * BLOCK_SIZE );
+            // ctx.fillStyle = object.group == 0 ? 'white' : object.group > 8 ? 'yellow' : GROUP_COLOR[object.group - 1];
+            // ctx.strokeStyle = object.group == 0 ? '#CCCCCC' : object.group > 8 ? '#CCCC00' : GROUP_HIGHLIGHTS[object.group - 1];
+            // ctx.lineWidth = 2;
+            // ctx.fill();
+            // ctx.stroke();
+            drawObject('button', object.group > 8 ? 4 : object.group, object.x, object.y - 64, ctx);
             break;
         case 'TimerButton':
             drawImage("assets/objects/button.svg", 64, 64, object.x, object.y - 64, rotation, ctx);
@@ -137,11 +145,16 @@ export function render_object(object, ctx) {
             ctx.stroke();
             break;
         case 'Lever':
+            // if (object.direction == 1) {
+            //     drawImage(`assets/objects/lever_left_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, rotation, ctx);
+            // } else {
+            //     drawImage(`assets/objects/lever_right_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, rotation, ctx);
+            // };
+            let direction = 'right';
             if (object.direction == 1) {
-                drawImage(`assets/objects/lever_left_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, rotation, ctx);
-            } else {
-                drawImage(`assets/objects/lever_right_${object.group > 8 ? 4 : object.group}.svg`, 64, 64, object.x, object.y - 64, rotation, ctx);
+                direction = 'left';
             };
+            drawObject('lever_' + direction, object.group > 8 ? 4 : object.group, object.x, object.y - 64, ctx);
             break;
         case 'Platform':
             // Draw the colored part
