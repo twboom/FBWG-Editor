@@ -1,11 +1,11 @@
 import { Level } from './Level.js';
 import { TileRenderer } from './Renderer.js';
 import { initEditor } from './editor.js';
-import { initImport } from './import.js';
+import { initImport, importURL } from './import.js';
 import { SESSION } from './session.js';
 
 window.onbeforeunload = evt => {
-    evt.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+    // evt.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
 };
 
 function init() {
@@ -17,6 +17,7 @@ function init() {
     SESSION.LEVEL = new Level();
     initImport();
     initEditor();
+    importURL('example_level.json');
 };
 
 init();

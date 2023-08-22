@@ -10,8 +10,8 @@ export const IMPORT_CONFIG = {
 };
 
 function importJSON(json) {
-    const proceed = confirm('Are you sure?\nThis will delete your current progress!');
-    if (!proceed) { alert('Alright, nothing happend!'); return; };
+    // const proceed = confirm('Are you sure?\nThis will delete your current progress!');
+    // if (!proceed) { alert('Alright, nothing happend!'); return; };
     // Potential for file checks
 
     // Init app
