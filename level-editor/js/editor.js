@@ -4,6 +4,11 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 
+function handleEdit(evt) {
+    
+};
+
+function handleMoveClick(evt) {};
 
 export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
@@ -106,8 +111,11 @@ export function initEditor(){
                     case 'window':
                         new Objects.Window(mouseX, mouseY, BLOCK_SIZE, BLOCK_SIZE);
                         break;
-                    case 'Cover':
+                    case 'cover':
                         new Objects.Cover(mouseX, mouseY, BLOCK_SIZE, BLOCK_SIZE);
+                        break;
+                    case 'edit':
+                        handleEdit(evt);
                         break;
                 };
                 render({do_tiles: false, do_objects: true}, 'click')
