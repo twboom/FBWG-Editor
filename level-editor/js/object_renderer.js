@@ -1,6 +1,7 @@
 import { drawImage } from "./canvas.js";
 import { BLOCK_SIZE, GROUP_COLOR, GROUP_HIGHLIGHTS } from "./lookup.js";
 import { SESSION } from "./session.js";
+import { drawObject } from "./render_objects.js";
 
 function rotationFix(object) {
     if (!object.rotation) { return 0; }
@@ -80,7 +81,8 @@ export function render_object(object, ctx) {
     
     switch(type) {
         case 'SpawnFB':
-            drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            drawObject('spawn', 'fb', object.x, object.y - 64, ctx)
             break;
         case 'SpawnWG':
             drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
