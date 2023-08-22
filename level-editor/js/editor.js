@@ -1,7 +1,8 @@
 import { render } from "./Renderer.js";
 import { highlightCanvas, resizeCanvas } from "./canvas.js";
-import { BLOCK_SIZE } from "./lookup.js";
-import { SESSION } from "./session.js"
+import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
+import { SESSION } from "./session.js";
+import * as Objects from './Object.js';
 
 
 export function initEditor(){
@@ -51,6 +52,41 @@ export function initEditor(){
                 break;
             case 'objects':
                 // set objects
+                const mouseX = evt.offsetX;
+                const mouseY = evt.offsetY             
+                switch(SESSION.SELECTED_OBJECT_TYPE) {
+                    case 'button':
+                        new Objects.Button(mouseX, mouseY, 0, 1);
+                        break;
+                    case 'timer_button':
+                        new Objects.TimerButton(mouseX, mouseY, 0, 1, 100);
+                        break;
+                    case 'lever':
+                        new Objects.Lever(mouseX, mouseY, 0, 1, 1);
+                        break;
+                    case 'platform':
+                        new Objects.Platform(mouseX, mouseY, 0, 3*BLOCK_SIZE, BLOCK_SIZE, 1, 0, 3);
+                        break;
+                    case 'box_normal':
+                        new Objects.Box(mouseX, mouseY, 0);
+                        break;
+                    case 'box_heavy':
+                        new Objects.HeavyBox(mouseX, mouseY, 0);
+                        break;
+                    case 'ball':
+                        new Objects.Ball(mouseX, mouseY, 0);
+                        break;
+                    case 'box_mirror':
+                        new Objects.MirrorBox(mouseX, mouseY, 0);
+                        break;
+                    case 'rotation_mirror':
+                        new Objects.RotationMirror(mouseX, mouseY, 0, 1);
+                        break;
+                    case 'rotation_boxmirror':
+                        new Objects.RotationBoxMirror(mouseX, mouseY, 0, 1);
+                        break;
+                };
+                render({do_tiles: false, do_objects: true}, 'click')
                 break;
         };
     });
@@ -119,6 +155,9 @@ export function initEditor(){
         if (SESSION.SELECTED_TOOL_TYPE === 'tiles') {
             SESSION.DO_RENDER = true;
             render({do_tiles: true, do_objects: false}, 'mousedown')
+        };
+        if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
+            render({do_tiles: false, do_objects: true}, 'mousedown')
         }
     });
 
@@ -141,7 +180,7 @@ export function initEditor(){
 
         // Re-render the canvas
         resizeCanvas();
-        render(true, true);
+        render({do_tiles: true, do_objects: true}, 'resize')
     });
 
     // Add the eventlistener for the editor settings
