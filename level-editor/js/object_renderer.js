@@ -351,10 +351,12 @@ export function render_object(object, ctx) {
             ctx.fill();
             break;
         case 'Box':
-            drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            drawObject('box', 'normal', object.x, object.y - 64, ctx);
             break;
         case 'HeavyBox':
-            drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            // drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+            drawObject('box', 'heavy', object.x, object.y - 64, ctx);
             break;
         case 'MirrorBox':
             ctx.beginPath();
