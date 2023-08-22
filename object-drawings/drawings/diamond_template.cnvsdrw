@@ -1,0 +1,13 @@
+PATH;
+M 16,24;
+L 24,16;
+L 40,16;
+L 48,24;
+L 32,44;
+L 16,24;
+L 24,16;
+SET:FILL {{color_fill}};
+SET:STROKE {{color_stroke}};
+SET:WIDTH 4;
+FILL;
+STROKE;
