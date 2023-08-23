@@ -306,5 +306,7 @@ function importLevelFile(LEVELSJON) {
 
 
     SESSION.LEVEL = new Level(width, height, tiles, levelObjects);
+    document.getElementById('level-width').value = SESSION.LEVEL.width;
+    document.getElementById('level-height').value = SESSION.LEVEL.height;
     console.log(SESSION.LEVEL);
 };
