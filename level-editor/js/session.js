@@ -21,8 +21,8 @@ export const SESSION = {
     MOUSE_POS_X: 0,
     MOUSE_POS_Y: 0,
     SELECTED_OBJECT_ID: undefined,
-    SNAP_X: 32,
-    SNAP_Y: 32,
+    SNAP_X: 16,
+    SNAP_Y: 16,
     MOVE_HANDLE_OFFSET_X: 0,
     MOVE_HANDLE_OFFSET_Y: 0,
 };
