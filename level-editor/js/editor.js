@@ -4,6 +4,7 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
+import { BasicModal } from "./modal.js";
 
 function mouseIntersectsObject(object) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -31,6 +32,8 @@ function handleEdit(evt) {
     const int = objects.find(mouseIntersectsObject);
     if (int) {
         objectHighlight(int, 'handleEdit');
+        const popup = new BasicModal(int.x, int.y);
+        popup.showOnly();
     } else {
         SESSION.SELECTED_OBJECT_ID = undefined;
         clearHighlight();
