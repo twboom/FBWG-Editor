@@ -39,6 +39,7 @@ function handleEdit(evt) {
 
 function handleMove(evt) {
     let obj = SESSION.LEVEL.objects.find(({ id }) => id === SESSION.SELECTED_OBJECT_ID);
+    if (!obj) { return };
     let newX = SESSION.MOUSE_POS_X + SESSION.MOVE_HANDLE_OFFSET_X;
     let newY = SESSION.MOUSE_POS_Y + SESSION.MOVE_HANDLE_OFFSET_Y;
     if (SESSION.SNAP_X > 0) {
@@ -360,5 +361,15 @@ export function initEditor(){
                 SESSION.SELECTED_OBJECT_TYPE = el.dataset.action;
             };
         });
+    });
+
+    // Snap
+    document.getElementById('snap-x').value = SESSION.SNAP_X;
+    document.getElementById('snap-x').addEventListener('change', evt => {
+        SESSION.SNAP_X = parseInt(evt.target.value);
+    });
+    document.getElementById('snap-y').value = SESSION.SNAP_Y;
+    document.getElementById('snap-y').addEventListener('change', evt => {
+        SESSION.SNAP_Y = parseInt(evt.target.value);
     });
 };
