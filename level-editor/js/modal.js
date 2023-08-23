@@ -34,11 +34,23 @@ export class Modal {
             const label = document.createElement('label');
             label.innerText = field.name;
             container.appendChild(label);
-            let input = document.createElement('input');
-            input.type = field.type;
-            field.attributes.forEach(attr => {
-                input.setAttribute(attr.type, attr.value);
-            });
+            let input;
+            if (field.type === 'select') {
+                input = document.createElement('select');
+                field.attributes.forEach(opt => {
+                    const option = document.createElement('option');
+                    option.innerText = opt.name;
+                    option.value = opt.value;
+                    if (opt.selected) { option.selected = 'selected'; };
+                    input.appendChild(option);
+                });
+            } else {
+                input = document.createElement('input');
+                input.type = field.type;
+                field.attributes.forEach(attr => {
+                    input.setAttribute(attr.type, attr.value);
+                });
+            }
             input.addEventListener(field.evtType, field.evtCallback);
             container.appendChild(input);
             popup.appendChild(container);
@@ -68,6 +80,23 @@ class ModalFieldAttribute {
     };
 };
 
+class SelectField extends ModalField {
+    constructor(name, options, selected, evtType, evtCallback) {
+        options.forEach(opt => {
+            if (opt.value === selected) { opt.selected = true };
+        });
+        super(name, 'select', options, evtType, evtCallback)
+    };
+};
+
+class SelectFieldOption {
+    constructor(name, value, selected=false) {
+        this.name = name;
+        this.value = value;
+        this.selected = selected;
+    };
+};
+
 
 // Modals
 export class BasicModal extends Modal {
@@ -76,6 +105,24 @@ export class BasicModal extends Modal {
         newFields.push(new DeleteField(objectId));
         newFields.push(new CloseField());
         super(x, y, newFields);
+    };
+};
+
+export class DiamondModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const typeSelectOptions = [
+            new SelectFieldOption('Fireboy', 0),
+            new SelectFieldOption('Watergirl', 1),
+            new SelectFieldOption('Silver', 2),
+            new SelectFieldOption('Both', 3),
+        ];
+        const callback = evt => { obj.type = parseInt(evt.target.value); console.log(obj); render({do_tiles: false, do_objects: true}, 'DiamondModal change type') };
+
+        const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, 'change', callback);
+
+        super(x, y, objectId, [typeSelect]);
     };
 };
 

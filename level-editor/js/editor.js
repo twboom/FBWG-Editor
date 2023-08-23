@@ -4,7 +4,7 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { BasicModal } from "./modal.js";
+import { BasicModal, DiamondModal } from "./modal.js";
 
 function mouseIntersectsObject(object) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -27,12 +27,20 @@ function mouseIntersectsObject(object) {
     ) { return true } else { return false };
 };
 
+function getModal(object) {
+    switch(object.constructor.name) {
+        case 'Diamond': return DiamondModal;
+        default: return BasicModal;
+    };
+};
+
 function handleEdit(evt) {
     const objects = SESSION.LEVEL.objects;
     const int = objects.find(mouseIntersectsObject);
     if (int) {
         objectHighlight(int, 'handleEdit');
-        const popup = new BasicModal(int.x, int.y, int.id);
+        const CorrectModal = getModal(int);
+        const popup = new CorrectModal(int.x, int.y, int.id);
         popup.showOnly();
     } else {
         SESSION.SELECTED_OBJECT_ID = undefined;
