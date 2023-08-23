@@ -258,6 +258,9 @@ export function initEditor(){
                 };
             };
         };
+        if (document.getElementsByClassName('modal-container')) {
+            [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
+        };
     });
 
     // Add the eventlistener for releasing your mouse
