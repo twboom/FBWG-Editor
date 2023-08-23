@@ -38,14 +38,18 @@ function handleEdit(evt) {
 };
 
 function handleMove(evt) {
-    const objects = SESSION.LEVEL.objects;
-    const int = objects.find(mouseIntersectsObject);
-    if (int.id === SESSION.SELECTED_OBJECT_ID) {
-        objectHighlight(int, 'handleMove');
-        let obj = SESSION.LEVEL.objects.find(({ id }) => id === int.id);
-        obj.x += evt.movementX;
-        obj.y += evt.movementY;
+    let obj = SESSION.LEVEL.objects.find(({ id }) => id === SESSION.SELECTED_OBJECT_ID);
+    let newX = SESSION.MOUSE_POS_X + SESSION.MOVE_HANDLE_OFFSET_X;
+    let newY = SESSION.MOUSE_POS_Y + SESSION.MOVE_HANDLE_OFFSET_Y;
+    if (SESSION.SNAP_X > 0) {
+        newX = Math.round((newX / SESSION.SNAP_X)) * SESSION.SNAP_X;
     };
+    if (SESSION.SNAP_Y > 0) {
+        newY = Math.round((newY / SESSION.SNAP_Y)) * SESSION.SNAP_Y;
+    };
+    obj.x = newX;
+    obj.y = newY;
+    objectHighlight(obj, 'handleMove');
 };
 
 export function initEditor(){
@@ -239,6 +243,8 @@ export function initEditor(){
                 const int = objects.find(mouseIntersectsObject);
                 if (int) {
                     SESSION.SELECTED_OBJECT_ID = int.id;
+                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - evt.offsetX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - evt.offsetY;
                     objectHighlight(int, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: true}, 'mousedown objects move');
