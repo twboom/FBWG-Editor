@@ -268,7 +268,10 @@ export function initEditor(){
     // Add the resize function
     document.getElementById('resize').addEventListener('click', _ => {
         // Confirm the action
-        if (!confirm('This may result in a loss of contend.\nAnything outside the new level border will be removed.\nThis action in irreverisble.'));
+        if (!confirm('This action may result in a loss of content.\nAnything outside the new level border will be removed. This action is irreversible.')) {
+            alert('Resizing is cancelled!')
+            return
+        };
 
         // Get the width and heigth
         SESSION.LEVEL.width = parseInt(document.getElementById('level-width').value);
