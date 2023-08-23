@@ -20,4 +20,5 @@ export const SESSION = {
     SHOW_CONSOLE_DEBUG: true,
     MOUSE_POS_X: 0,
     MOUSE_POS_Y: 0,
+    SELECTED_OBJECT_ID: undefined,
 };

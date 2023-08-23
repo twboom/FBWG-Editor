@@ -3,7 +3,7 @@ import { highlightCanvas, highlightCtx, resizeCanvas } from "./canvas.js";
 import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
-import { objectHighlight } from "./highlight_renderer.js";
+import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
 
 function mouseIntersectsObject(object) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -31,10 +31,22 @@ function handleEdit(evt) {
     const int = objects.find(mouseIntersectsObject);
     if (int) {
         objectHighlight(int, 'handleEdit');
+    } else {
+        SESSION.SELECTED_OBJECT_ID = undefined;
+        clearHighlight();
     };
 };
 
-function handleMoveClick(evt) {};
+function handleMove(evt) {
+    const objects = SESSION.LEVEL.objects;
+    const int = objects.find(mouseIntersectsObject);
+    if (int.id === SESSION.SELECTED_OBJECT_ID) {
+        objectHighlight(int, 'handleMove');
+        let obj = SESSION.LEVEL.objects.find(({ id }) => id === int.id);
+        obj.x += evt.movementX;
+        obj.y += evt.movementY;
+    };
+};
 
 export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
@@ -144,7 +156,9 @@ export function initEditor(){
                         handleEdit(evt);
                         break;
                 };
-                // render({do_tiles: false, do_objects: true}, 'click')
+                if (!['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
+                    render({do_tiles: false, do_objects: true}, 'click')
+                };
                 break;
         };
     });
@@ -204,6 +218,9 @@ export function initEditor(){
                 SESSION.LEVEL.tiles[tileY][tileX] = tile;
             };
         };
+        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
+            handleMove(evt);
+        };
     });
 
     // Add the eventlistener for pressing your mouse
@@ -214,11 +231,23 @@ export function initEditor(){
         };
         if (SESSION.SELECTED_TOOL_TYPE === 'tiles') {
             SESSION.DO_RENDER = true;
-            render({do_tiles: true, do_objects: false}, 'mousedown')
+            render({do_tiles: true, do_objects: false}, 'mousedown tiles')
         };
         if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
-            // render({do_tiles: false, do_objects: true}, 'mousedown')
-        }
+            if (SESSION.SELECTED_OBJECT_TYPE === 'move') {
+                const objects = SESSION.LEVEL.objects;
+                const int = objects.find(mouseIntersectsObject);
+                if (int) {
+                    SESSION.SELECTED_OBJECT_ID = int.id;
+                    objectHighlight(int, 'mousedown objects move');
+                    SESSION.DO_RENDER = true;
+                    render({do_tiles: false, do_objects: true}, 'mousedown objects move');
+                } else {
+                    SESSION.SELECTED_OBJECT_ID = undefined;
+                    clearHighlight();
+                };
+            };
+        };
     });
 
     // Add the eventlistener for releasing your mouse

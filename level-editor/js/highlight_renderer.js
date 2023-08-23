@@ -5,7 +5,7 @@ import * as Objects from './Object.js';
 export function objectHighlight(object, tracer, color='cyan', clearCtx=true) {
     console.log('Render Object Highlight, tracer', tracer);
     if (clearCtx) {
-        highlightCtx.clearRect(0, 0, highlightCanvas.width, highlightCanvas.height);
+        clearHighlight();
     };
     let posX = object.x;
     let posY = object.y;
@@ -21,4 +21,8 @@ export function objectHighlight(object, tracer, color='cyan', clearCtx=true) {
     highlightCtx.strokeStyle = color;
     highlightCtx.lineWidth = 8;
     highlightCtx.stroke();
+};
+
+export function clearHighlight() {
+    highlightCtx.clearRect(0, 0, highlightCanvas.width, highlightCanvas.height);
 };
