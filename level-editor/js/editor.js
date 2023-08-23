@@ -32,7 +32,7 @@ function handleEdit(evt) {
     const int = objects.find(mouseIntersectsObject);
     if (int) {
         objectHighlight(int, 'handleEdit');
-        const popup = new BasicModal(int.x, int.y);
+        const popup = new BasicModal(int.x, int.y, int.id);
         popup.showOnly();
     } else {
         SESSION.SELECTED_OBJECT_ID = undefined;

@@ -1,3 +1,7 @@
+import { SESSION } from "./session.js";
+import { render } from "./Renderer.js";
+import { clearHighlight } from "./highlight_renderer.js";
+
 // Base classes
 export class Modal {
     constructor(x, y, fields=[]) {
@@ -67,8 +71,9 @@ class ModalFieldAttribute {
 
 // Modals
 export class BasicModal extends Modal {
-    constructor(x, y, fields=[]) {
+    constructor(x, y, objectId, fields=[]) {
         let newFields = fields;
+        newFields.push(new DeleteField(objectId));
         newFields.push(new CloseField());
         super(x, y, newFields);
     };
@@ -80,10 +85,24 @@ class CloseField extends ModalField {
     constructor() {
         const CloseValueAttribute = new ValueAttribute('Close');
         const callback = evt => {
-            let el = evt.target.closest('.modal-container').remove();
+            evt.target.closest('.modal-container').remove();
         };
 
         super('', 'button', [CloseValueAttribute], 'click', callback);
+    };
+};
+
+class DeleteField extends ModalField {
+    constructor(objectId) {
+        const DeleteValueAttribute = new ValueAttribute('Delete');
+        const callback = _ => {
+            SESSION.LEVEL.objects = SESSION.LEVEL.objects.filter(obj => obj.id !== objectId);
+            Modal.prototype.removeAll();
+            clearHighlight();
+            render({}, 'DeleteField Popup')
+        };
+
+        super('', 'button', [DeleteValueAttribute], 'click', callback)
     };
 };
 
