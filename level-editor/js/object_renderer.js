@@ -49,13 +49,13 @@ function draw_platform_preview(object, ctx) {
 
     // Draw the colored part
     ctx.beginPath();
-    ctx.rect(previewX, previewY, object.width, object.heigth);
+    ctx.rect(previewX, previewY, object.width, object.height);
     ctx.fillStyle = object.group > 8 ? '#FFFF00' : GROUP_COLOR[object.group - 1];
     ctx.fill();
 
     // Draw the edges
     ctx.beginPath();
-    ctx.rect(previewX + 4, previewY + 4, object.width - 8, object.heigth - 8);
+    ctx.rect(previewX + 4, previewY + 4, object.width - 8, object.height - 8);
     ctx.strokeStyle = 'gray';
     ctx.lineWidth = 8;
     ctx.stroke();
@@ -65,8 +65,8 @@ function draw_platform_preview(object, ctx) {
     ctx.setLineDash([5, 15]);
     ctx.lineWidth = 4;
     ctx.strokeStyle = '#404040';
-    ctx.moveTo(object.x + 0.5 * object.width, object.y + 0.5 * object.heigth);
-    ctx.lineTo(previewX + 0.5 * object.width, previewY + 0.5 * object.heigth);
+    ctx.moveTo(object.x + 0.5 * object.width, object.y + 0.5 * object.height);
+    ctx.lineTo(previewX + 0.5 * object.width, previewY + 0.5 * object.height);
     ctx.stroke();
 
     // Reset the linedash
@@ -159,14 +159,14 @@ export function render_object(object, ctx) {
         case 'Platform':
             // Draw the colored part
             ctx.beginPath();
-            ctx.rect(object.x, object.y, object.width, object.heigth);
+            ctx.rect(object.x, object.y, object.width, object.height);
             ctx.fillStyle = object.group > 8 ? '#FFFF00' : GROUP_COLOR[object.group - 1];
             ctx.fillStyle = object.group == 0 ? '#FFFFFF' : ctx.fillStyle;
             ctx.fill();
 
             // Draw the edges
             ctx.beginPath();
-            ctx.rect(object.x + 4, object.y + 4, object.width - 8, object.heigth - 8);
+            ctx.rect(object.x + 4, object.y + 4, object.width - 8, object.height - 8);
             ctx.strokeStyle = 'gray';
             ctx.lineWidth = 8;
             ctx.stroke();
@@ -501,15 +501,15 @@ export function render_object(object, ctx) {
             break;
         case 'Window':
             ctx.beginPath();
-            if (object.width > object.heigth) { ctx.rect(object.x, object.y + 2, object.width, object.heigth - 4); }
-            else { ctx.rect(object.x + 2, object.y, object.width - 4, object.heigth); };
+            if (object.width > object.height) { ctx.rect(object.x, object.y + 2, object.width, object.height - 4); }
+            else { ctx.rect(object.x + 2, object.y, object.width - 4, object.height); };
             ctx.fillStyle = '#ADD8E6AA';
             ctx.fill();
             break;
         case 'Cover':
             if (SESSION.COVER_PREVIEWS) {
                 ctx.beginPath();
-                ctx.rect(object.x, object.y, object.width, object.heigth);
+                ctx.rect(object.x, object.y, object.width, object.height);
                 ctx.fillStyle = 'black';
                 ctx.fill();
             };

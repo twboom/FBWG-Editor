@@ -1,11 +1,37 @@
 import { render } from "./Renderer.js";
-import { highlightCanvas, resizeCanvas } from "./canvas.js";
+import { highlightCanvas, highlightCtx, resizeCanvas } from "./canvas.js";
 import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
+import { objectHighlight } from "./highlight_renderer.js";
+
+function mouseIntersectsObject(object) {
+    const mouseX = SESSION.MOUSE_POS_X;
+    const mouseY = SESSION.MOUSE_POS_Y;
+    let posX = object.x;
+    let posY = object.y;
+    let width = 64;
+    let height = 64;
+    if (object instanceof Objects.Platform) {
+        width = object.width;
+        height = object.height;
+        posY = posY + height;
+    };
+
+    if (
+        (mouseX > posX) &&
+        (mouseX < posX + width) &&
+        (mouseY < posY) &&
+        (mouseY > posY - height)
+    ) { return true } else { return false };
+};
 
 function handleEdit(evt) {
-    
+    const objects = SESSION.LEVEL.objects;
+    const int = objects.find(mouseIntersectsObject);
+    if (int) {
+        objectHighlight(int, 'handleEdit');
+    };
 };
 
 function handleMoveClick(evt) {};
@@ -118,7 +144,7 @@ export function initEditor(){
                         handleEdit(evt);
                         break;
                 };
-                render({do_tiles: false, do_objects: true}, 'click')
+                // render({do_tiles: false, do_objects: true}, 'click')
                 break;
         };
     });
@@ -133,6 +159,8 @@ export function initEditor(){
 
     // Add the eventlistener for dragging
     highlightCanvas.addEventListener('mousemove', evt => {
+        SESSION.MOUSE_POS_X = evt.offsetX;
+        SESSION.MOUSE_POS_Y = evt.offsetY;
         let tileX = Math.floor(evt.offsetX / BLOCK_SIZE);
         let tileY = Math.floor(evt.offsetY / BLOCK_SIZE);
 
@@ -189,7 +217,7 @@ export function initEditor(){
             render({do_tiles: true, do_objects: false}, 'mousedown')
         };
         if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
-            render({do_tiles: false, do_objects: true}, 'mousedown')
+            // render({do_tiles: false, do_objects: true}, 'mousedown')
         }
     });
 

@@ -2,7 +2,7 @@ import { BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 
 export const highlightCanvas = document.getElementById('highlight');
-export const highlightCtx = highlightCanvas.getContext('2s');
+export const highlightCtx = highlightCanvas.getContext('2d');
 
 export function resizeCanvas(blockSize = 32) {
     // Get the correct width and height

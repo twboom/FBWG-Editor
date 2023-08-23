@@ -18,4 +18,6 @@ export const SESSION = {
     WIND_PREVIEWS: false,
     COVER_PREVIEWS: false,
     SHOW_CONSOLE_DEBUG: true,
+    MOUSE_POS_X: 0,
+    MOUSE_POS_Y: 0,
 };
