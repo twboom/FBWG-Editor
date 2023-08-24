@@ -127,13 +127,33 @@ export class DiamondModal extends BasicModal {
 };
 
 export class GroupedObjectModal extends BasicModal {
-    constructor(x, y, objectId) {
+    constructor(x, y, objectId, fields=[]) {
         const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
 
         const callback = evt => { obj.group = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'GroupedObjectModal change group')};
-        const groupIdField = new NumberField('Group', 1, null, 1, obj.group, callback);
+        const GroupIdField = new NumberField('Group', 1, null, 1, obj.group, callback);
 
-        super(x, y, objectId, [groupIdField])
+        fields.push(GroupIdField)
+
+        super(x, y, objectId, fields)
+    };
+};
+
+export class LeverModal extends GroupedObjectModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const rotationCallback = evt => { obj.rotation = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'LeverModal change rotation'); };
+        const RotationField = new NumberField('Rotation', 0, 360, 1, obj.rotation, rotationCallback);
+
+        const directionCallback = evt => { obj.direction = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'LeverModal change direction'); };
+        const directionSelectOptions = [
+            new SelectFieldOption('Left', 0),
+            new SelectFieldOption('Right', 1),
+        ];
+        const DirectionSelectField = new SelectField('Direction', directionSelectOptions, obj.direction, directionCallback);
+
+        super(x, y, objectId, [RotationField, DirectionSelectField])
     };
 };
 
@@ -175,7 +195,7 @@ class NumberField extends ModalField {
 
         super(name, 'number', attributes, 'change', evtCallback)
     };
-}
+};
 
 
 // Attributes
