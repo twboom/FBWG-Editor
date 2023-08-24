@@ -241,6 +241,16 @@ export function initEditor(){
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
             handleMove(evt);
         };
+
+        if (SESSION.SELECTED_TOOL_TYPE === 'objects' && ['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
+            const objects = SESSION.LEVEL.objects;
+            const int = objects.find(mouseIntersectsObject);
+            if (int) {
+                objectHighlight(int, 'mousemove highlight');
+            } else {
+                clearHighlight();
+            };
+        };
     });
 
     // Add the eventlistener for pressing your mouse
