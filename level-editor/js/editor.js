@@ -245,6 +245,8 @@ export function initEditor(){
 
     // Add the eventlistener for pressing your mouse
     highlightCanvas.addEventListener('mousedown', evt => {
+        SESSION.SELECTED_OBJECT_ID = undefined;
+        clearHighlight();
         if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
         else if (evt.button == 2) { 
             SESSION.RIGHT_MOUSE_DOWN = true;
