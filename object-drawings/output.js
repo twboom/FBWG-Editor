@@ -1,5 +1,9 @@
-export function drawObject(object, variant, posX, posY, ctx) {
+export function drawObject(object, variant, posX, posY, ctx, rotation) {
     ctx.translate(posX, posY);
+
+    if (rotation) {
+        ctx.rotate(rotation * Math.PI / 180);
+    };
 
     const functionName = object + '_' + variant;
     switch(functionName) {
