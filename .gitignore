@@ -1,2 +1,4 @@
 .DS_STORE
 __pycache__/
+object-drawings/output.js
+object-drawings/output/
