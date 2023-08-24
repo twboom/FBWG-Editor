@@ -77,7 +77,7 @@ export function render_object(object, ctx) {
     // Get the object's type
     let type = object.constructor.name;
     let rotation = rotationFix(object);
-    console.log(rotation, object);
+    // console.log(rotation, object);
     
     switch(type) {
         case 'SpawnFB':
