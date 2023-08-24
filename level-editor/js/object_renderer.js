@@ -154,7 +154,7 @@ export function render_object(object, ctx) {
             if (object.direction == 1) {
                 direction = 'left';
             };
-            drawObject('lever_' + direction, object.group > 8 ? 4 : object.group, object.x, object.y - 64, ctx, {degrees: rotation, centerOffsetX: 32, centerOffsetY: 32});
+            drawObject('lever_' + direction, object.group > 8 ? 4 : object.group, object.x, object.y - 64, ctx, object.rotationObject);
             break;
         case 'Platform':
             // Draw the colored part

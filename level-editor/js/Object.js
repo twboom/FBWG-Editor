@@ -1,13 +1,23 @@
 import { SESSION } from './session.js';
 
 export class Object {
-    constructor(x, y, rotation) {
+    constructor(x, y, rotation, width, height) {
         this.x = x;
         this.y = y;
-        this.rotation = rotation
+        this.rotation = rotation;
+        this.width = width ? width: 64;
+        this.height = height ? height: 64;
         this.id = SESSION.FIRST_FREE_ID;
         SESSION.FIRST_FREE_ID++;
         SESSION.LEVEL.objects.push(this);
+    };
+
+    get rotationObject() {
+        return {
+            degrees: this.rotation,
+            centerOffsetX: this.width / 2,
+            centerOffsetY: this.height / 2,
+        };
     };
 };
 
