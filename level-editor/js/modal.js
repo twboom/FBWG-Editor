@@ -81,11 +81,11 @@ class ModalFieldAttribute {
 };
 
 class SelectField extends ModalField {
-    constructor(name, options, selected, evtType, evtCallback) {
+    constructor(name, options, selected, evtCallback) {
         options.forEach(opt => {
             if (opt.value === selected) { opt.selected = true };
         });
-        super(name, 'select', options, evtType, evtCallback)
+        super(name, 'select', options, 'change', evtCallback)
     };
 };
 
@@ -118,11 +118,22 @@ export class DiamondModal extends BasicModal {
             new SelectFieldOption('Silver', 2),
             new SelectFieldOption('Both', 3),
         ];
-        const callback = evt => { obj.type = parseInt(evt.target.value); console.log(obj); render({do_tiles: false, do_objects: true}, 'DiamondModal change type') };
+        const callback = evt => { obj.type = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'DiamondModal change type') };
 
-        const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, 'change', callback);
+        const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, callback);
 
         super(x, y, objectId, [typeSelect]);
+    };
+};
+
+export class GroupedObjectModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const callback = evt => { obj.group = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'GroupedObjectModal change group')};
+        const groupIdField = new NumberField('Group', 0, null, 1, obj.group, callback);
+
+        super(x, y, objectId, [groupIdField])
     };
 };
 
@@ -153,20 +164,21 @@ class DeleteField extends ModalField {
     };
 };
 
+class NumberField extends ModalField {
+    constructor(name, min, max, step, value, evtCallback) {
+        const attributes = []
+
+        if (min !== null) { attributes.push(new ModalFieldAttribute('min', min)) };
+        if (max !== null) { attributes.push(new ModalFieldAttribute('step', step)) };
+        if (step !== null) { attributes.push(new ModalFieldAttribute('step', step)) };
+        if (value !== null) { attributes.push(new ValueAttribute(value)) };
+
+        super(name, 'number', attributes, 'change', evtCallback)
+    };
+}
+
 
 // Attributes
-class MinAttribute extends ModalFieldAttribute {
-    constructor(value) {
-        super('min', value);
-    };
-};
-
-class MaxAttribute extends ModalFieldAttribute {
-    constructor(value) {
-        super('max', value);
-    };
-};
-
 class ValueAttribute extends ModalFieldAttribute {
     constructor(value) {
         super('value', value);
