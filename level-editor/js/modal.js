@@ -196,6 +196,17 @@ export class PlatformModal extends GroupedObjectModal {
     };
 };
 
+export class RotationMirrorModal extends GroupedObjectModal {
+    constructor(x, y , objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const rotationCallback = evt => { obj.rotation = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'LeverModal change rotation'); };
+        const RotationField = new NumberField('Rotation', 0, 360, 1, obj.rotation, rotationCallback);
+
+        super(x, y, objectId, [RotationField]);
+    };
+}
+
 
 // Fields
 class CloseField extends ModalField {
