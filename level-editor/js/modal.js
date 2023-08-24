@@ -27,6 +27,7 @@ export class Modal {
     get html() {
         const popup = document.createElement('div');
         popup.classList.add('modal-container');
+        popup.dataset.constructor = this.constructor.name;
 
         this.fields.forEach(field => {
             const container = document.createElement('div');
