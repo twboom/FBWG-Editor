@@ -15,8 +15,8 @@ export class Object {
     get rotationObject() {
         return {
             degrees: this.rotation,
-            centerOffsetX: this.width / 2,
-            centerOffsetY: this.height / 2,
+            centerOffsetX: 0,
+            centerOffsetY: this.height * 2,
         };
     };
 };
