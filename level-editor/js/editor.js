@@ -4,7 +4,7 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { BasicModal, DiamondModal, GroupedObjectModal, LeverModal } from "./modal.js";
+import { BasicModal, DiamondModal, GroupedObjectModal, LeverModal, PlatformModal } from "./modal.js";
 
 function mouseIntersectsObject(object) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -31,7 +31,7 @@ function getModal(object) {
     switch(object.constructor.name) {
         case 'Diamond': return DiamondModal;
         case 'Lever': return LeverModal;
-        case 'Platform':
+        case 'Platform': return PlatformModal;
         case 'TimerButton':
         case 'Button': return GroupedObjectModal;
         default: return BasicModal;

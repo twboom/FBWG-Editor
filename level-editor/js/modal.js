@@ -158,6 +158,24 @@ export class LeverModal extends GroupedObjectModal {
     };
 };
 
+export class PlatformModal extends GroupedObjectModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const widthCallback = evt => { obj.width = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'PlatformModal change width'); };
+        const heightCallback = evt => { obj.height = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'PlatformModal change width'); };
+        const dxCallback = evt => { obj.dx = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'PlatformModal change width'); };
+        const dyCallback = evt => { obj.dy = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'PlatformModal change width'); };
+
+        const WidthField = new NumberField('Width', 0, null, 32, obj.width, widthCallback);
+        const HeightField = new NumberField('Height', 0, null, 32, obj.height, heightCallback);
+        const DxField = new NumberField('dx', null, null, null, obj.dx, dxCallback);
+        const DyField = new NumberField('dy', null, null, null, obj.dy, dyCallback);
+
+        super(x, y, objectId, [WidthField, HeightField, DxField, DyField])
+    };
+};
+
 
 // Fields
 class CloseField extends ModalField {
