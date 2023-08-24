@@ -1,6 +1,6 @@
 import { SESSION } from "./session.js";
 import { render } from "./Renderer.js";
-import { clearHighlight } from "./highlight_renderer.js";
+import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
 
 // Base classes
 export class Modal {
@@ -100,6 +100,26 @@ class SelectFieldOption {
 
 
 // Modals
+export class MoveModal extends Modal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const fields = [];
+
+        const xCallback = evt => { obj.x = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'MoveModal change x'); objectHighlight(obj, 'MoveModal change x'); };
+        const yCallback = evt => { obj.y = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'MoveModal change y'); objectHighlight(obj, 'MoveModal change x'); };
+
+        const xField = new NumberField('Pos X', 0, SESSION.LEVEL.width - obj.width, null, obj.x, xCallback);
+        const yField = new NumberField('Pos Y', 0, SESSION.LEVEL.height, null, obj.y, yCallback);
+
+        fields.push(xField);
+        fields.push(yField);
+        fields.push(new CloseField);
+
+        super(x, y, fields)
+    };
+}
+
 export class BasicModal extends Modal {
     constructor(x, y, objectId, fields=[]) {
         let newFields = fields;
@@ -119,7 +139,7 @@ export class DiamondModal extends BasicModal {
             new SelectFieldOption('Silver', 2),
             new SelectFieldOption('Both', 3),
         ];
-        const callback = evt => { obj.type = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'DiamondModal change type') };
+        const callback = evt => { obj.type = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'DiamondModal change type'); };
 
         const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, callback);
 

@@ -4,7 +4,7 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { BasicModal, DiamondModal, GroupedObjectModal, LeverModal, PlatformModal } from "./modal.js";
+import { BasicModal, DiamondModal, GroupedObjectModal, LeverModal, MoveModal, PlatformModal } from "./modal.js";
 
 function mouseIntersectsObject(object) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -289,6 +289,15 @@ export function initEditor(){
 
     // Add the eventlistener for releasing your mouse
     highlightCanvas.addEventListener('mouseup', evt => {
+        if (SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
+            const objects = SESSION.LEVEL.objects;
+            const int = objects.find(mouseIntersectsObject);
+            if (int) {
+                const popup = new MoveModal(int.x, int.y, int.id);
+                popup.showOnly();
+            };
+        };
+
         SESSION.MOUSE_DOWN = false;
         SESSION.RIGHT_MOUSE_DOWN = false;
         SESSION.DO_RENDER = false;
