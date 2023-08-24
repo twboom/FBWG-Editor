@@ -131,7 +131,7 @@ export class GroupedObjectModal extends BasicModal {
         const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
 
         const callback = evt => { obj.group = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'GroupedObjectModal change group')};
-        const groupIdField = new NumberField('Group', 0, null, 1, obj.group, callback);
+        const groupIdField = new NumberField('Group', 1, null, 1, obj.group, callback);
 
         super(x, y, objectId, [groupIdField])
     };
