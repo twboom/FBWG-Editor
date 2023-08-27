@@ -242,7 +242,7 @@ export class Window extends Object {
     };
 };
 
-export class Cover extends objects {
+export class Cover extends Object {
     constructor(x, y, width, heigth) {
         super(x, y, 0, width, heigth);
     };
