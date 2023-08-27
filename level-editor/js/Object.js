@@ -236,20 +236,14 @@ export class Fan extends WindObjects {
 };
 
 /* Other objects */
-export class Window {
+export class Window extends Object {
     constructor(x, y, width, heigth) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.heigth = heigth;
+        super(x, y, 0, width, heigth);
     };
 };
 
-export class Cover {
+export class Cover extends objects {
     constructor(x, y, width, heigth) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.heigth = heigth;
+        super(x, y, 0, width, heigth);
     };
 };

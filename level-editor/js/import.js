@@ -127,21 +127,18 @@ function importLevelFile(LEVELSJON) {
 
             // Check if the object is a platform, silder or hanger
             if (!object.gid) {
+
+                // Get polyline coordinates if there are any
                 let pos = [];
+                if (object.polyline) { pos = object.polyline.map(pl => [pl.x, pl.y]); };
                 switch(object.type) {
                     case 'platform':
                         levelObjects[i] = new Objects.Platform(object.x, object.y, object.rotation, object.width, object.height, object.properties.group ? object.properties.group : 0, object.properties.dx ? object.properties.dx : 0, object.properties.dy ? object.properties.dy : 0);
                         break;
                     case 'slider':
-                        for (let i = 0; i < object.polyline.length; i ++) {
-                            pos[i] = [object.polyline[i].x, object.polyline[i].y];
-                        };
                         levelObjects[i] = new Objects.Slider(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos, object.properties ? object.properties.max ? object.properties.max : 1 : 1, object.properties ? object.properties.min ? object.properties.min : -1 : -1);
                         break;
                     case 'hanging':
-                        for (let i = 0; i < object.polyline.length; i ++) {
-                            pos[i] = [object.polyline[i].x, object.polyline[i].y];
-                        };
                         levelObjects[i] = new Objects.Hanger(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos , object.properties.barWidth, object.properties.density ? object.properties.density : 'dense', object.properties.fullRotation ? object.properties.fullRotation : 0);
                         break;
                     case 'window':
@@ -151,9 +148,6 @@ function importLevelFile(LEVELSJON) {
                         levelObjects[i] = new Objects.Cover(object.x, object.y, object.width, object.height);
                         break;
                     case 'pulley':
-                        for (let i = 0; i < object.polyline.length; i++) {
-                            pos[i] = [object.polyline[i].x, object.polyline[i].y];
-                        };
                         levelObjects[i] = new Objects.Pulley(object.x, object.y, object.rotation, object.properties ? object.properties.group ? object.properties.group : 0 : 0, pos, object.properties.prismatic);
                         break;
                 };
