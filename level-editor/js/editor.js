@@ -121,6 +121,21 @@ export function initEditor(){
                 const mouseX = evt.offsetX;
                 const mouseY = evt.offsetY             
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
+                    case 'diamond':
+                        new Objects.Diamond(mouseX, mouseY, 0, 0);
+                        break;
+                    case 'spawnFB' :
+                        new Objects.SpawnFB(mouseX, mouseY, 0);
+                        break;
+                    case 'spawnWG' :
+                        new Objects.SpawnWG(mouseX, mouseY, 0);
+                        break;
+                    case 'doorFB' :
+                        new Objects.DoorFB(mouseX, mouseY, 0);
+                        break;
+                    case 'doorWG' :
+                        new Objects.DoorWG(mouseX, mouseY, 0);
+                        break;
                     case 'button':
                         new Objects.Button(mouseX, mouseY, 0, 1);
                         break;
