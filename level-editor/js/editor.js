@@ -5,6 +5,7 @@ import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
 import { BasicModal, DiamondModal, GroupedObjectModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal } from "./modal.js";
+import { exportTEXT, exportJSON } from "./export.js";
 
 function mouseIntersectsObject(object) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -388,6 +389,7 @@ export function initEditor(){
         });
     });
 
+    // Add the evenlistener for the object buttons
     Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
         el.addEventListener('click', _ => {
             // Deselect other selected buttons
@@ -406,6 +408,22 @@ export function initEditor(){
             };
         });
     });
+
+    // Add the eventlistener for the export buttons
+    Array.from(document.getElementsByClassName('export')).forEach(el => {
+        el.addEventListener('click', _ => {
+            if (el.id == "save") {
+                alert("This function does not exist yet");
+            } else if (el.id == "share") {
+                alert("This function does not exist yet");
+            } else if (el.id == "export") {
+                exportJSON();
+            } else if (el.id == "export-text") {
+                exportTEXT();
+            };
+        });
+    });
+
 
     // Snap
     document.getElementById('snap-x').value = SESSION.SNAP_X;
