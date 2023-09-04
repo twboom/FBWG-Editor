@@ -205,7 +205,24 @@ export class RotationMirrorModal extends GroupedObjectModal {
 
         super(x, y, objectId, [RotationField]);
     };
-}
+};
+
+export class BoxModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const typeSelectOptions = [
+            new SelectFieldOption('Normal', 'normal'),
+            new SelectFieldOption('Heavy', 'heavy'),
+            new SelectFieldOption('Mirror', 'mirror'),
+        ];
+        const callback = evt => { obj.type = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'BoxModal change type'); };
+
+        const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, callback);
+
+        super(x, y, objectId, [typeSelect]);
+    };
+};
 
 
 // Fields
