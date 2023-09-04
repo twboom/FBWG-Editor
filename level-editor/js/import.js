@@ -246,19 +246,19 @@ function importLevelFile(LEVELSJON) {
             switch(char.gid - firstChar) {
                 case 0:
                     // Spawn FB
-                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'spawnFB');
+                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'spawn_fb');
                     break;
                 case 1:
                     // Spawn WG
-                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'spawnWG');
+                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'spawn_wg');
                     break;
                 case 2:
                     // Door FB
-                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'doorFB');
+                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'door_fb');
                     break;
                 case 3:
                     // Door WG
-                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'doorWG');
+                    levelObjects[i + add] =new Objects.LevelPoints(char.x, char.y, char.rotation, 'door_wg');
                     break;
                 case 4:
                     // Diamond FB

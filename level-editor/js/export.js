@@ -245,16 +245,16 @@ function formatObjectsLayer() {
         switch (IObject.constructor.name) {
             case 'LevelPoints':
                 switch(IObject.type) {
-                    case 'spawnFB':
+                    case 'spawn_fb':
                         charslayer.push(formatChar(IObject, 0));
                         break;
-                    case 'spawnWG':
+                    case 'spawn_wg':
                         charslayer.push(formatChar(IObject, 1));
                         break;
-                    case 'doorFB':
+                    case 'door_fb':
                         charslayer.push(formatChar(IObject, 2));
                         break;
-                    case 'doorWG':
+                    case 'door_wg':
                         charslayer.push(formatChar(IObject, 3));
                         break;
                 };

@@ -82,23 +82,24 @@ export function render_object(object, ctx) {
     switch(type) {
         case 'LevelPoints' :
             switch(object.type) {
-                case 'spawnFB' :
+                case 'spawn_fb' :
                     // drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     drawObject('spawn', 'fb', object.x, object.y - 64, ctx);
                     break;
-                case 'spawnWG' :
+                case 'spawn_wg' :
                     // drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     drawObject('spawn', 'wg', object.x, object.y - 64, ctx);
                     break;
-                case 'doorFB' :
+                case 'door_fb' :
                     // drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     drawObject('door', 'fb', object.x, object.y - 64, ctx);
                     break;
-                case 'doorWG' :
+                case 'door_wg' :
                     // drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
                     drawObject('door', 'wg', object.x, object.y - 64, ctx);
                     break;
             };
+            // drawObject(object.type, '', object.x, object.y - 64, ctx);
             break;
         case 'Diamond':
             ctx.beginPath();
