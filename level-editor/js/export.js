@@ -146,7 +146,7 @@ function formatObjectsLayer() {
 
          // Properties all objects have
          if (Box) {
-            objectsformat.gid = objectId ==  'normal' ? 8 : objectId == 'heavy' ? 37 : 36; 
+            objectsformat.gid = objectId ==  'normal' ? 28 : objectId == 'heavy' ? 37 : 36; 
          } else {
              typeof objectId == "number" ? objectsformat.gid = objectId + 24 : delete objectsformat.gid;
          };
@@ -244,17 +244,21 @@ function formatObjectsLayer() {
     for(let i = 0; i < SESSION.LEVEL.objects.length; i++) {
         let IObject = SESSION.LEVEL.objects[i];
         switch (IObject.constructor.name) {
-            case 'SpawnFB':
-                charslayer.push(formatChar(IObject, 0));
-                break;
-            case 'SpawnWG' :
-                charslayer.push(formatChar(IObject, 1));
-                break;
-            case 'DoorFB' :
-                charslayer.push(formatChar(IObject, 2));
-                break;
-            case 'DoorWG' :
-                charslayer.push(formatChar(IObject, 3));
+            case 'LevelPoints':
+                switch(IObject.type) {
+                    case 'spawnFB':
+                        charslayer.push(formatChar(IObject, 0));
+                        break;
+                    case 'spawnWG':
+                        charslayer.push(formatChar(IObject, 1));
+                        break;
+                    case 'doorFB':
+                        charslayer.push(formatChar(IObject, 2));
+                        break;
+                    case 'doorWG':
+                        charslayer.push(formatChar(IObject, 3));
+                        break;
+                };
                 break;
             case 'Diamond' :
                 charslayer.push(formatChar(IObject));
@@ -290,7 +294,7 @@ function formatObjectsLayer() {
                 objectslayer.push(formatObject(IObject, 10));
                 break;
             case 'Box' :
-                objectslayer.push(formatObject(IObject, IObject, true));
+                objectslayer.push(formatObject(IObject, IObject.type, true));
                 break;
             case 'PortalLeft' :
                 objectslayer.push(formatObject(IObject, 16));
