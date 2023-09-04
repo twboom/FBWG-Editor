@@ -125,15 +125,43 @@ export function initEditor(){
                         new Objects.Diamond(mouseX, mouseY, 0, 0);
                         break;
                     case 'spawnFB' :
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                                if (SESSION.LEVEL.objects[i].constructor.name == 'SpawnFB') {
+                                    SESSION.LEVEL.objects.splice(i, 1);
+                                };
+                            };
+                        };
                         new Objects.SpawnFB(mouseX, mouseY, 0);
                         break;
                     case 'spawnWG' :
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                                if (SESSION.LEVEL.objects[i].constructor.name == 'SpawnWG') {
+                                    SESSION.LEVEL.objects.splice(i, 1);
+                                };
+                            };
+                        };
                         new Objects.SpawnWG(mouseX, mouseY, 0);
                         break;
                     case 'doorFB' :
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                                if (SESSION.LEVEL.objects[i].constructor.name == 'DoorFB') {
+                                    SESSION.LEVEL.objects.splice(i, 1);
+                                };
+                            };
+                        };
                         new Objects.DoorFB(mouseX, mouseY, 0);
                         break;
                     case 'doorWG' :
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                                if (SESSION.LEVEL.objects[i].constructor.name == 'DoorWG') {
+                                    SESSION.LEVEL.objects.splice(i, 1);
+                                };
+                            };
+                        };
                         new Objects.DoorWG(mouseX, mouseY, 0);
                         break;
                     case 'button':
