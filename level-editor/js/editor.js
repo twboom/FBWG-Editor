@@ -4,7 +4,7 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { BasicModal, BoxModal, DiamondModal, GroupedObjectModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal } from "./modal.js";
+import { BasicModal, BoxModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal } from "./modal.js";
 import { exportTEXT, exportJSON } from "./export.js";
 
 function mouseIntersectsObject(object) {
@@ -38,6 +38,7 @@ function getModal(object) {
         case 'TimerButton':
         case 'Button': return GroupedObjectModal;
         case 'Box': return BoxModal;
+        case 'LevelPoints': return LevelPointModal;
         default: return BasicModal;
     };
 };

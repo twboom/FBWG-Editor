@@ -235,6 +235,24 @@ export class BoxModal extends BasicModal {
     };
 };
 
+export class LevelPointModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const typeSelectOptions = [
+            new SelectFieldOption('Spawn FB', 'spawn_fb'),
+            new SelectFieldOption('Spawn WG', 'spawn_wg'),
+            new SelectFieldOption('Door FB', 'door_fb'),
+            new SelectFieldOption('Door WG', 'door_wg'),
+        ];
+        const callback = evt => { obj.type = evt.target.value; render({do_tiles: false, do_objects: true}, 'LevelPointModal change type'); };
+
+        const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, callback);
+
+        super(x, y, objectId, [typeSelect]);
+    };
+};
+
 
 // Fields
 class CloseField extends ModalField {
