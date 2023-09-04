@@ -173,7 +173,7 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 4:
                             // Box
-                            levelObjects[i] =new Objects.Box(object.x, object.y, object.rotation);
+                            levelObjects[i] =new Objects.Box(object.x, object.y, object.rotation, 'normal');
                             break;
                         case 5:
                             // Light emitter
@@ -197,11 +197,11 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 12:
                             // Boxmirror
-                            levelObjects[i] =new Objects.MirrorBox(object.x, object.y, object.rotation);
+                            levelObjects[i] =new Objects.Box(object.x, object.y, object.rotation, 'mirror');
                             break;
                         case 13:
                             // Heavy box
-                            levelObjects[i] =new Objects.HeavyBox(object.x, object.y, object.rotation);
+                            levelObjects[i] =new Objects.HeavyBox(object.x, object.y, object.rotation, 'heavy');
                             break;
                         case 14:
                             // Timed button

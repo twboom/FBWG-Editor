@@ -95,7 +95,7 @@ function formatObjectsLayer() {
     let charslayer = [];
     
     // Format object object
-    function formatObject(object, objectId) {
+    function formatObject(object, objectId, Box) {
         // Standard object format
         let objectsformat = {
             "gid": 0,
@@ -145,7 +145,11 @@ function formatObjectsLayer() {
          };
 
          // Properties all objects have
-         typeof objectId == "number" ? objectsformat.gid = objectId + 24 : delete objectsformat.gid;
+         if (Box) {
+            objectsformat.gid = objectId ==  'normal' ? 8 : objectId == 'heavy' ? 37 : 36; 
+         } else {
+             typeof objectId == "number" ? objectsformat.gid = objectId + 24 : delete objectsformat.gid;
+         };
          objectsformat.height = object.height;
          objectsformat.id = id; id++;
          objectsformat.rotation = object.rotation;
@@ -286,13 +290,7 @@ function formatObjectsLayer() {
                 objectslayer.push(formatObject(IObject, 10));
                 break;
             case 'Box' :
-                objectslayer.push(formatObject(IObject, 4));
-                break;
-            case 'HeavyBox' :
-                objectslayer.push(formatObject(IObject, 13));
-                break;
-            case 'MirroBox' :
-                objectslayer.push(formatObject(IObject, 12));
+                objectslayer.push(formatObject(IObject, IObject, true));
                 break;
             case 'PortalLeft' :
                 objectslayer.push(formatObject(IObject, 16));
