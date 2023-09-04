@@ -80,21 +80,25 @@ export function render_object(object, ctx) {
     // console.log(rotation, object);
     
     switch(type) {
-        case 'SpawnFB':
-            // drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('spawn', 'fb', object.x, object.y - 64, ctx);
-            break;
-        case 'SpawnWG':
-            // drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('spawn', 'wg', object.x, object.y - 64, ctx);
-            break;
-        case 'DoorFB':
-            // drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('door', 'fb', object.x, object.y - 64, ctx);
-            break;
-        case 'DoorWG':
-            // drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('door', 'wg', object.x, object.y - 64, ctx);
+        case 'LevelPoints' :
+            switch(object.type) {
+                case 'spawnFB' :
+                    // drawImage('assets/objects/spawn_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('spawn', 'fb', object.x, object.y - 64, ctx);
+                    break;
+                case 'spawnWG' :
+                    // drawImage('assets/objects/spawn_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('spawn', 'wg', object.x, object.y - 64, ctx);
+                    break;
+                case 'doorFB' :
+                    // drawImage('assets/objects/door_fb.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('door', 'fb', object.x, object.y - 64, ctx);
+                    break;
+                case 'doorWG' :
+                    // drawImage('assets/objects/door_wg.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+                    drawObject('door', 'wg', object.x, object.y - 64, ctx);
+                    break;
+            };
             break;
         case 'Diamond':
             ctx.beginPath();
