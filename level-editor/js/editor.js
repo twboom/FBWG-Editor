@@ -172,26 +172,26 @@ export function initEditor(){
                     //     };
                     //     new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnWG');
                     //     break;
-                    case 'doorFB' :
-                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorFB') {
-                                    SESSION.LEVEL.objects.splice(i, 1);
-                                };
-                            };
-                        };
-                        new Objects.LevelPoints(mouseX, mouseY, 0, 'doorFB');
-                        break;
-                    case 'doorWG' :
-                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorWG') {
-                                    SESSION.LEVEL.objects.splice(i, 1);
-                                };
-                            };
-                        };
-                        new Objects.LevelPoints(mouseX, mouseY, 0, 'doorWG');
-                        break;
+                    // case 'doorFB' :
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorFB') {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };
+                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'doorFB');
+                    //     break;
+                    // case 'doorWG' :
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorWG') {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };
+                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'doorWG');
+                    //     break;
                     case 'button':
                         new Objects.Button(mouseX, mouseY, 0, 1);
                         break;
