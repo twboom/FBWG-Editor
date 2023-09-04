@@ -179,14 +179,8 @@ export function initEditor(){
                     case 'box_normal':
                         new Objects.Box(mouseX, mouseY, 0);
                         break;
-                    case 'box_heavy':
-                        new Objects.HeavyBox(mouseX, mouseY, 0);
-                        break;
                     case 'ball':
                         new Objects.Ball(mouseX, mouseY, 0);
-                        break;
-                    case 'box_mirror':
-                        new Objects.MirrorBox(mouseX, mouseY, 0);
                         break;
                     case 'rotation_mirror':
                         new Objects.RotationMirror(mouseX, mouseY, 0, 1);

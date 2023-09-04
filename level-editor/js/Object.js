@@ -157,20 +157,9 @@ export class Ball extends MoveableObject {
 };
 
 export class Box extends MoveableObject {
-    constructor(x, y, rotation) {
+    constructor(x, y, rotation, type) {
         super(x, y, rotation);
-    };
-};
-
-export class HeavyBox extends MoveableObject {
-    constructor(x, y, rotation) {
-        super(x, y, rotation);
-    };
-};
-
-export class MirrorBox extends MoveableObject {
-    constructor(x, y, rotation) {
-        super(x, y, rotation);
+        this.type = type;
     };
 };
 
