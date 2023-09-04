@@ -118,7 +118,7 @@ export class MoveModal extends Modal {
 
         super(x, y, fields)
     };
-}
+};
 
 export class BasicModal extends Modal {
     constructor(x, y, objectId, fields=[]) {
@@ -139,7 +139,18 @@ export class DiamondModal extends BasicModal {
             new SelectFieldOption('Silver', 2),
             new SelectFieldOption('Both', 3),
         ];
-        const callback = evt => { obj.type = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'DiamondModal change type'); };
+        const callback = evt => { 
+            SESSION.LAST_PLACED_DIAMOND = parseInt(evt.target.value);
+            if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && parseInt(evt.target.value) == 2) {
+                for( let i = SESSION.LEVEL.objects.length - 1; i >= 0; i-- ) {
+                    if (SESSION.LEVEL.objects[i].type == 2 && SESSION.LEVEL.objects[i].id != objectId) {
+                        SESSION.LEVEL.objects.splice(i, 1);
+                    };
+                };
+            };
+            obj.type = parseInt(evt.target.value); 
+            render({do_tiles: false, do_objects: true}, 'DiamondModal change type'); 
+        };
 
         const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, callback);
 

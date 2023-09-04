@@ -1,4 +1,3 @@
-import { LightEmitter, LightReceiver, PortalLeft, PortalRight } from "./Object.js";
 import { SESSION } from "./session.js";
 
 // Format the JSON file function

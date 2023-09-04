@@ -123,7 +123,14 @@ export function initEditor(){
                 const mouseY = evt.offsetY             
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
                     case 'diamond':
-                        new Objects.Diamond(mouseX, mouseY, 0, 0);
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
+                            for (let i = SESSION.LEVEL.objects.length -  1; i >= 0; i-- ) {
+                                if (SESSION.LEVEL.objects[i].type == 2) {
+                                    SESSION.LEVEL.objects.splice(i, 1);
+                                };
+                            };
+                        };  
+                        new Objects.Diamond(mouseX, mouseY, 0, SESSION.LAST_PLACED_DIAMOND);
                         break;
                     case 'spawnFB' :
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
