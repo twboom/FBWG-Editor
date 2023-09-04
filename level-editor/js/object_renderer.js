@@ -356,53 +356,53 @@ export function render_object(object, ctx) {
             break;
         case 'Box':
             // drawImage('assets/objects/box_normal.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('box', 'normal', object.x, object.y - 64, ctx);
+            drawObject('box', object.type, object.x, object.y - 64, ctx);
             break;
-        case 'HeavyBox':
-            // drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
-            drawObject('box', 'heavy', object.x, object.y - 64, ctx);
-            break;
-        case 'MirrorBox':
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-                    break;
-                case 180:
-                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
-                    break;
-                case -90:
-                    ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
-            };
-            ctx.fillStyle = '#FF00FF';
-            ctx.fill();
+        // case 'HeavyBox':
+        //     // drawImage('assets/objects/box_heavy.svg', 64, 64, object.x, object.y - 64, rotation, ctx);
+        //     drawObject('box', 'heavy', object.x, object.y - 64, ctx);
+        //     break;
+        // case 'MirrorBox':
+        //     ctx.beginPath();
+        //     switch(rotation) {
+        //         case 0:
+        //             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
+        //             break;
+        //         case 90:
+        //             ctx.rect(object.x, object.y, 2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
+        //             break;
+        //         case 180:
+        //             ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, 2 * BLOCK_SIZE);
+        //             break;
+        //         case -90:
+        //             ctx.rect(object.x, object.y, -2 * BLOCK_SIZE, -2 * BLOCK_SIZE);
+        //     };
+        //     ctx.fillStyle = '#FF00FF';
+        //     ctx.fill();
 
-            ctx.beginPath();
-            switch(rotation) {
-                case 0:
-                    ctx.moveTo(object.x, object.y - 2 * BLOCK_SIZE);
-                    ctx.lineTo(object.x + 2 * BLOCK_SIZE, object.y);
-                    break;
-                case 180:
-                    ctx.moveTo(object.x, object.y);
-                    ctx.lineTo(object.x - 2 * BLOCK_SIZE, object.y + 2 * BLOCK_SIZE);
-                    break;
-                case 90:
-                    ctx.moveTo(object.x, object.y + 2 * BLOCK_SIZE);
-                    ctx.lineTo(object.x + 2 * BLOCK_SIZE, object.y);
-                    break;
-                case -90:
-                    ctx.moveTo(object.x, object.y - 2 * BLOCK_SIZE);
-                    ctx.lineTo(object.x - 2 * BLOCK_SIZE, object.y);
-                    break;
-            };
-            ctx.lineWidth = 8;
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.stroke();
-            break;
+        //     ctx.beginPath();
+        //     switch(rotation) {
+        //         case 0:
+        //             ctx.moveTo(object.x, object.y - 2 * BLOCK_SIZE);
+        //             ctx.lineTo(object.x + 2 * BLOCK_SIZE, object.y);
+        //             break;
+        //         case 180:
+        //             ctx.moveTo(object.x, object.y);
+        //             ctx.lineTo(object.x - 2 * BLOCK_SIZE, object.y + 2 * BLOCK_SIZE);
+        //             break;
+        //         case 90:
+        //             ctx.moveTo(object.x, object.y + 2 * BLOCK_SIZE);
+        //             ctx.lineTo(object.x + 2 * BLOCK_SIZE, object.y);
+        //             break;
+        //         case -90:
+        //             ctx.moveTo(object.x, object.y - 2 * BLOCK_SIZE);
+        //             ctx.lineTo(object.x - 2 * BLOCK_SIZE, object.y);
+        //             break;
+        //     };
+        //     ctx.lineWidth = 8;
+        //     ctx.strokeStyle = '#FFFFFF';
+        //     ctx.stroke();
+        //     break;
         case 'PortalLeft':
             // ctx.beginPath(); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(object.x, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
             // ctx.beginPath(); ctx.fillStyle = '#000000'; ctx.rect(object.x + BLOCK_SIZE, object.y -3 * BLOCK_SIZE, BLOCK_SIZE, 3 * BLOCK_SIZE); 
