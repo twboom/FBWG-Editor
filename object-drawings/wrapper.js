@@ -9,7 +9,10 @@ export function drawObject(object, variant, posX, posY, ctx, rotation) {
 		ctx.translate(-centerOffsetX, -centerOffsetY);
     };
 
-    const functionName = object + '_' + variant;
+    let functionName = object;
+    if (variant !== '') {
+        functionName += '_' + variant
+    };
     switch(functionName) {
         case 'switch_content': break;
     };
