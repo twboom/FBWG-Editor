@@ -113,6 +113,9 @@ export function drawObject(object, variant, posX, posY, ctx, rotation) {
 		case "diamond_silver":
 			diamond_silver(ctx);
 			break;
+		case "box_mirror":
+			box_mirror(ctx);
+			break;
 		
     };
 
@@ -1014,6 +1017,39 @@ function diamond_silver (ctx) {
 	ctx.lineTo(24,12);
 	ctx.fillStyle="lightgray";
 	ctx.strokeStyle="gray";
+	ctx.lineWidth="4";
+	ctx.fill();
+	ctx.stroke();
+};
+function box_mirror (ctx) {
+	ctx.beginPath();
+	ctx.rect(0,0,64,64);
+	ctx.fillStyle="lightgray";
+	ctx.strokeStyle="gray";
+	ctx.lineWidth="4";
+	ctx.fill();
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.moveTo(20,0);
+	ctx.lineTo(44,0);
+	ctx.lineTo(64,20);
+	ctx.lineTo(64,44);
+	ctx.lineTo(44,64);
+	ctx.lineTo(20,64);
+	ctx.lineTo(0,44);
+	ctx.lineTo(0,20);
+	ctx.lineTo(20,0);
+	ctx.lineTo(44,0);
+	ctx.fillStyle="white";
+	ctx.strokeStyle="gray";
+	ctx.lineWidth="2";
+	ctx.fill();
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.moveTo(8,8);
+	ctx.lineTo(56,56);
+	ctx.fillStyle="silver";
+	ctx.strokeStyle="silver";
 	ctx.lineWidth="4";
 	ctx.fill();
 	ctx.stroke();

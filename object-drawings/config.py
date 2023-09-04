@@ -39,5 +39,6 @@ fills = [
 
 copy = [
     'drawings/diamond_fbwg.cnvsdrw',
-    'drawings/diamond_silver.cnvsdrw'
+    'drawings/diamond_silver.cnvsdrw',
+    'drawings/box_mirror.cnvsdrw',
 ]
