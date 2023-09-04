@@ -29,30 +29,6 @@ export class LevelPoints extends Object {
     };
 };
 
-// export class SpawnFB extends LevelPoints {
-//     constructor(x, y, rotation) {
-//         super(x, y, rotation);
-//     };
-// };
-
-// export class SpawnWG extends LevelPoints {
-//     constructor(x, y, rotation) {
-//         super(x, y, rotation);
-//     };
-// };
-
-// export class DoorFB extends LevelPoints {
-//     constructor(x, y, rotation) {
-//         super(x, y, rotation);
-//     };
-// };
-
-// export class DoorWG extends LevelPoints {
-//     constructor(x, y, rotation) {
-//         super(x, y, rotation);
-//     };
-// };
-
 /* Diamonds */
 export class Diamond extends Object {
     constructor(x, y, rotation, type) {

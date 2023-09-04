@@ -178,7 +178,7 @@ export function initEditor(){
                         new Objects.Platform(mouseX, mouseY, 0, 3*BLOCK_SIZE, BLOCK_SIZE, 1, 0, 3);
                         break;
                     case 'box_normal':
-                        new Objects.Box(mouseX, mouseY, 0);
+                        new Objects.Box(mouseX, mouseY, 0, 'normal');
                         break;
                     case 'ball':
                         new Objects.Ball(mouseX, mouseY, 0);
