@@ -133,46 +133,66 @@ export function initEditor(){
                         };  
                         new Objects.Diamond(mouseX, mouseY, 0, SESSION.LAST_PLACED_DIAMOND);
                         break;
-                    case 'spawnFB' :
+                    case 'spawns' :
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
                             for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'spawnFB') {
+                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == (SESSION.LAST_PLACED_SPAWN == 0 ? 'spawnFB' : 'spawnWG')) {
                                     SESSION.LEVEL.objects.splice(i, 1);
                                 };
                             };
                         };
-                        new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnFB');
+                        new Objects.LevelPoints(mouseX, mouseY, 0, SESSION.LAST_PLACED_SPAWN == 0 ? 'spawnFB' : 'spawnWG');
                         break;
-                    case 'spawnWG' :
+                    case 'doors' :
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
                             for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints'&& SESSION.LEVEL.objects[i].type == 'spawnWG') {
+                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == (SESSION.LAST_PLACED_SPAWN == 0 ? 'doorFB' : 'doorWG')) {
                                     SESSION.LEVEL.objects.splice(i, 1);
                                 };
                             };
                         };
-                        new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnWG');
+                        new Objects.LevelPoints(mouseX, mouseY, 0, SESSION.LAST_PLACED_SPAWN == 0 ? 'doorFB' : 'doorWG');
                         break;
-                    case 'doorFB' :
-                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorFB') {
-                                    SESSION.LEVEL.objects.splice(i, 1);
-                                };
-                            };
-                        };
-                        new Objects.LevelPoints(mouseX, mouseY, 0, 'doorFB');
-                        break;
-                    case 'doorWG' :
-                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                            for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                                if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorWG') {
-                                    SESSION.LEVEL.objects.splice(i, 1);
-                                };
-                            };
-                        };
-                        new Objects.LevelPoints(mouseX, mouseY, 0, 'doorWG');
-                        break;
+                    // case 'spawnFB' :
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'spawnFB') {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };
+                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnFB');
+                    //     break;
+                    // case 'spawnWG' :
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints'&& SESSION.LEVEL.objects[i].type == 'spawnWG') {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };
+                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnWG');
+                    //     break;
+                    // case 'doorFB' :
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorFB') {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };
+                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'doorFB');
+                    //     break;
+                    // case 'doorWG' :
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
+                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorWG') {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };
+                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'doorWG');
+                    //     break;
                     case 'button':
                         new Objects.Button(mouseX, mouseY, 0, 1);
                         break;

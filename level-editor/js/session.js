@@ -25,4 +25,6 @@ export const SESSION = {
     SNAP_Y: 16,
     MOVE_HANDLE_OFFSET_X: 0,
     MOVE_HANDLE_OFFSET_Y: 0,
+    LAST_PALCED_DOOR: 0,
+    LAST_PLACED_SPAWN: 0,
 };
