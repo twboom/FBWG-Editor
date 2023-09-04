@@ -216,7 +216,7 @@ export class BoxModal extends BasicModal {
             new SelectFieldOption('Heavy', 'heavy'),
             new SelectFieldOption('Mirror', 'mirror'),
         ];
-        const callback = evt => { obj.type = parseInt(evt.target.value); render({do_tiles: false, do_objects: true}, 'BoxModal change type'); };
+        const callback = evt => { obj.type = evt.target.value; render({do_tiles: false, do_objects: true}, 'BoxModal change type'); };
 
         const typeSelect = new SelectField('Type', typeSelectOptions, obj.type, callback);
 
