@@ -201,7 +201,7 @@ function importLevelFile(LEVELSJON) {
                             break;
                         case 13:
                             // Heavy box
-                            levelObjects[i] =new Objects.HeavyBox(object.x, object.y, object.rotation, 'heavy');
+                            levelObjects[i] =new Objects.Box(object.x, object.y, object.rotation, 'heavy');
                             break;
                         case 14:
                             // Timed button
