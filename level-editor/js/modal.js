@@ -118,7 +118,7 @@ export class MoveModal extends Modal {
 
         super(x, y, fields)
     };
-}
+};
 
 export class BasicModal extends Modal {
     constructor(x, y, objectId, fields=[]) {
