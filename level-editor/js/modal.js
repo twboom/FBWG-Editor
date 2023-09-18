@@ -116,6 +116,12 @@ export class MoveModal extends Modal {
         fields.push(yField);
         fields.push(new CloseField);
 
+        console.log(obj);
+        if (obj.constructor.name == "Platform") {
+            SESSION.PLATFROM_PREVIEWS = true;
+            render(false, true);
+        };
+
         super(x, y, fields)
     };
 };
@@ -203,6 +209,9 @@ export class PlatformModal extends GroupedObjectModal {
         const DxField = new NumberField('dx', null, null, null, obj.dx, dxCallback);
         const DyField = new NumberField('dy', null, null, null, obj.dy, dyCallback);
 
+        SESSION.PLATFROM_PREVIEWS = true;
+        render(false, true);
+
         super(x, y, objectId, [WidthField, HeightField, DxField, DyField])
     };
 };
@@ -259,6 +268,9 @@ class CloseField extends ModalField {
     constructor() {
         const CloseValueAttribute = new ValueAttribute('Close');
         const callback = evt => {
+            SESSION.PLATFROM_PREVIEWS = false;
+            render(false, true);
+
             evt.target.closest('.modal-container').remove();
         };
 
