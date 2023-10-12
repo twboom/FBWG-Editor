@@ -65,6 +65,7 @@ function importLevelFile(LEVELSJON) {
     let data;
     let objects;
     let chars;
+    let text;
     for (let i = 0; i < LEVELSJON.layers.length; i++) {
         if (LEVELSJON.layers[i].type === 'tilelayer') {
             data = LEVELSJON.layers[i].data;
@@ -72,6 +73,8 @@ function importLevelFile(LEVELSJON) {
             objects = LEVELSJON.layers[i].objects;
         } else if (LEVELSJON.layers[i].name === 'Chars') {
             chars = LEVELSJON.layers[i].objects;
+        } else if (LEVELSJON.layers[i].name === "Tutorial_keyboard") {
+            text = LEVELSJON.layers[i].objects
         };
     };
 
@@ -280,6 +283,26 @@ function importLevelFile(LEVELSJON) {
         };
     };
 
+    // Write existing text if there is any
+    let levelText = [];
+    if (text) {
+
+        for (let i = 0; i < text.length; i ++) {
+            let obj = text[i];
+
+            let objectText
+            if (obj.text) {
+                objectText = new Objects.TextObject(obj.text.bold, obj.text.fontfamily, obj.text.halign, obj.text.pixelsize, obj.text.text, obj.text.wrap);
+            };
+
+            if (objectText) {
+                levelText[i] = new Objects.Text(obj.x, obj.y, obj.width, obj.height, obj.properties.id, obj.rotation, objectText);
+            } else {
+                levelText[i] = new Objects.TextField(obj.x, obj.y, obj.width, obj.height, obj.properties.id, obj.rotation);
+            };
+        };
+    };
+
     // Check for undefined objects
     for (let i = 0; i < levelObjects.length; i++) {
         let stop = false;
@@ -299,7 +322,7 @@ function importLevelFile(LEVELSJON) {
 
 
 
-    SESSION.LEVEL = new Level(width, height, tiles, levelObjects);
+    SESSION.LEVEL = new Level(width, height, tiles, levelObjects, levelText);
     document.getElementById('level-width').value = SESSION.LEVEL.width;
     document.getElementById('level-height').value = SESSION.LEVEL.height;
     console.log(SESSION.LEVEL);

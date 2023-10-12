@@ -32,6 +32,16 @@
         "visible":true,
         "x":0,
         "y":0
+     },
+     {
+        "draworder":"topdown",
+        "name":"Tutorial_keyboard",
+        "objects":[],
+        "opacity":1,
+        "type":"objectgroup",
+        "visible":true,
+        "x":0,
+        "y":0
      }
   ],
   "nextobjectid":144,

@@ -213,3 +213,29 @@ export class Cover extends Object {
         super(x, y, 0, width, heigth);
     };
 };
+
+/*Text objects */
+export class TextField extends Object {
+    constructor(x, y, width, height, id, rotation) {
+        super(x, y, rotation, width, height);
+        this.id = id;
+    };
+};
+
+export class Text extends TextField {
+    constructor(x, y, width, height, id, rotation, text) {
+            super(x, y, rotation, width, height, id, rotation);
+        this.text = text;
+    };
+};
+
+export class TextObject {
+    constructor(bold, fontfamily, halign, pixelsize, text, wrap) {
+        this.bold = bold;
+        this.fontfamily = fontfamily;
+        this.halign = halign;
+        this.pixelsize = pixelsize;
+        this.text = text;
+        this.wrap = wrap;
+    };
+};
