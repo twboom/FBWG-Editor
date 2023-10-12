@@ -353,6 +353,10 @@ export function initEditor(){
         };
         if (document.getElementsByClassName('modal-container')) {
             [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
+            if (!(document.getElementById('previews').classList.contains('active'))) {
+                SESSION.PLATFROM_PREVIEWS = false;
+                render(false, true);
+            };
         };
     });
 
@@ -403,7 +407,7 @@ export function initEditor(){
                 };
             };
             if (el.dataset.action == 'previews') {
-                if (SESSION.PLATFROM_PREVIEWS) {
+                if (el.classList.contains('active')) {
                     SESSION.PLATFROM_PREVIEWS = false;
                     el.classList.remove('active');
                 } else {
