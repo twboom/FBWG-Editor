@@ -120,9 +120,11 @@ export class MoveModal extends Modal {
         if (obj.constructor.name == "Platform") {
             SESSION.PLATFROM_PREVIEWS = true;
             render(false, true);
-        };
+            super(x, (y + 64), fields)
+        } else {
+            super(x, y, fields)
+        }
 
-        super(x, y, fields)
     };
 };
 
@@ -212,7 +214,7 @@ export class PlatformModal extends GroupedObjectModal {
         SESSION.PLATFROM_PREVIEWS = true;
         render(false, true);
 
-        super(x, y, objectId, [WidthField, HeightField, DxField, DyField])
+        super(x, (y + 64), objectId, [WidthField, HeightField, DxField, DyField])
     };
 };
 
