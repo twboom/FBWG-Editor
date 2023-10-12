@@ -11,6 +11,8 @@ window.onbeforeunload = evt => {
 function init() {
     SESSION.TILE_CANVAS = document.getElementById('tiles');
     SESSION.TILE_CTX = SESSION.TILE_CANVAS.getContext('2d');
+    SESSION.TEXT_CANVAS = document.getElementById('text');
+    SESSION.TEXT_CTX = SESSION.TEXT_CANVAS.getContext('2d');
     SESSION.OBJECT_CANVAS = document.getElementById('objects');
     SESSION.OBJECT_CTX = SESSION.OBJECT_CANVAS.getContext('2d');
     SESSION.TILE_RENDERER = new TileRenderer();

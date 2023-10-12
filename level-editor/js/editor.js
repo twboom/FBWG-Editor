@@ -116,7 +116,7 @@ export function initEditor(){
                         break;
                 };
                 SESSION.LEVEL.tiles[tileY][tileX] = tile;
-                render({do_tiles: true, do_objects: false}, 'click')
+                render({do_tiles: true, do_objects: false, do_text: false}, 'click')
                 break;
             case 'objects':
                 // set objects
@@ -246,7 +246,7 @@ export function initEditor(){
                         break;
                 };
                 if (!['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
-                    render({do_tiles: false, do_objects: true}, 'click')
+                    render({do_tiles: false, do_objects: true, do_text: false}, 'click')
                 };
                 break;
         };
@@ -256,7 +256,7 @@ export function initEditor(){
     highlightCanvas.addEventListener('contextmenu', evt => {
         if (SESSION.SELECTED_TOOL_TYPE == 'tiles') {
             SESSION.LEVEL.tiles[Math.floor(evt.offsetY / BLOCK_SIZE)][Math.floor(evt.offsetX / BLOCK_SIZE)] = 0
-            render({do_tiles: true, do_objects: false}, 'contextmenu')
+            render({do_tiles: true, do_objects: false, do_text: false}, 'contextmenu')
         };
     });
 
@@ -332,7 +332,7 @@ export function initEditor(){
         };
         if (SESSION.SELECTED_TOOL_TYPE === 'tiles') {
             SESSION.DO_RENDER = true;
-            render({do_tiles: true, do_objects: false}, 'mousedown tiles')
+            render({do_tiles: true, do_objects: false, do_text: false}, 'mousedown tiles')
         };
         if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
             if (SESSION.SELECTED_OBJECT_TYPE === 'move') {
@@ -344,7 +344,7 @@ export function initEditor(){
                     SESSION.MOVE_HANDLE_OFFSET_Y = int.y - evt.offsetY;
                     objectHighlight(int, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
-                    render({do_tiles: false, do_objects: true}, 'mousedown objects move');
+                    render({do_tiles: false, do_objects: true, do_text: false}, 'mousedown objects move');
                 } else {
                     SESSION.SELECTED_OBJECT_ID = undefined;
                     clearHighlight();
@@ -355,7 +355,7 @@ export function initEditor(){
             [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
             if (!(document.getElementById('previews').classList.contains('active'))) {
                 SESSION.PLATFROM_PREVIEWS = false;
-                render(false, true);
+                render({do_tiles: false, do_objects: true, do_text: false});
             };
         };
     });
@@ -391,7 +391,7 @@ export function initEditor(){
 
         // Re-render the canvas
         resizeCanvas();
-        render({do_tiles: true, do_objects: true}, 'resize')
+        render({do_tiles: true, do_objects: true, do_text: true}, 'resize')
     });
 
     // Add the eventlistener for the editor settings
@@ -414,7 +414,7 @@ export function initEditor(){
                     SESSION.PLATFROM_PREVIEWS = true;
                     el.classList.add('active');
                 };
-                render(false, true);
+                render({do_tiles: false, do_objects: true, do_text: false});
             };
             if (el.dataset.action == 'wind-previews') {
                 if (SESSION.WIND_PREVEIWS) {
@@ -424,7 +424,7 @@ export function initEditor(){
                     SESSION.WIND_PREVEIWS = true;
                     el.classList.add('active');
                 };
-                render(false, true);
+                render({do_tiles: false, do_objects: true, do_text: false});
             };
             if (el.dataset.action == 'cover-previews') {
                 if(SESSION.COVER_PREVIEWS) {
@@ -434,7 +434,7 @@ export function initEditor(){
                     SESSION.COVER_PREVIEWS = true;
                     el.classList.add('active');
                 };
-                render(false, true);
+                render({do_tiles: false, do_objects: true, do_text: false});
             };
         });
     });

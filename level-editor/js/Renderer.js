@@ -1,5 +1,6 @@
 import { render_object } from './object_renderer.js';
 import { SESSION } from './session.js';
+import { render_text } from './text_renderer.js';
 import { drawTile, drawFluid, drawSlope, drawSnow } from './tile_renderer.js'
 
 export class SpriteRenderer {
@@ -42,7 +43,7 @@ export class TileRenderer {
 };
 
 export function render(options, tracer) {
-    const {do_tiles = true, do_objects = true} = options;
+    const {do_tiles = true, do_objects = true, do_text = true} = options;
     if (SESSION.SHOW_CONSOLE_DEBUG) {
         console.log('RENDER:', options, 'tracer:', tracer);
     };
@@ -71,6 +72,16 @@ export function render(options, tracer) {
         for (let i = 0; i < objects.length; i++) {
             if (objects[i]) {
                 render_object(objects[i], SESSION.OBJECT_CTX);
+            };
+        };
+    };
+
+    if (do_text) {
+        SESSION.TEXT_CTX.clearRect(0, 0, SESSION.TEXT_CANVAS.width, SESSION.TEXT_CANVAS.height);
+        const objects = SESSION.LEVEL.text;
+        for (let i = 0; i < objects.length; i++) {
+            if (objects[i]) {
+                render_text(objects[i], SESSION.TEXT_CTX);
             };
         };
     };

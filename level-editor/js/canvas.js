@@ -13,6 +13,9 @@ export function resizeCanvas(blockSize = 32) {
     SESSION.TILE_CANVAS.width = width;
     SESSION.TILE_CANVAS.height = height;
 
+    SESSION.TEXT_CANVAS.width = width;
+    SESSION.TEXT_CANVAS.height = height;
+
     SESSION.OBJECT_CANVAS.width = width;
     SESSION.OBJECT_CANVAS.height = height;
 
@@ -79,7 +82,6 @@ export function resizeCanvas(blockSize = 32) {
     document.getElementById('input-container').style.left = String((newWidth * 32 + 52)) + 'px';
 };
 
-
 const CACHE = {};
 export function drawImage(src, sizeX, sizeY, x, y, rotation, ctx) {
     let img = new Image(sizeX, sizeY);
@@ -93,26 +95,3 @@ export function drawImage(src, sizeX, sizeY, x, y, rotation, ctx) {
         ctx.drawImage(img, x, y);
     };
 };
-
-/*
-
-
-export function drawImage(src, width, height, x, y, deg, ctx) {
-    // Create the image
-    let img = new Image(width, height);
-    img.src = src;
-    console.log(src, width, height, x, y, deg, ctx);
-
-    // Save the translation
-    ctx.save();
-    // Move the centre of the canvas to the image
-  	ctx.translate(x, y);
-    // Rotate around the new centre
-    ctx.rotate((Math.PI / 180) * deg);
-    // Draw the image on the rotated canvas
-    ctx.drawImage(img, x, y);
-    // Restore the canvas translation
-    ctx.restore();
-}
-
-*/
