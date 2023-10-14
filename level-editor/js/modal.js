@@ -10,7 +10,7 @@ export class Modal {
         this.fields = fields;
     };
 
-    removeAll() {
+    static removeAll() {
         [...document.getElementsByClassName('modal-container')].forEach(el => el.remove());
     };
 
