@@ -512,6 +512,11 @@ export function initEditor(){
         });
     });
 
+    // Hide all tools
+    Array.from(document.getElementsByClassName('tool-layer')).forEach(el => {
+        el.style.display = 'none';
+    });
+
     // Add the eventlistener for the editor functions
     Array.from(document.getElementsByClassName('editor-function')).forEach(el => {
         el.addEventListener('click', _ => {
@@ -576,7 +581,7 @@ export function initEditor(){
                     };
                 // Show the correct buttons
                 Array.from(document.getElementsByClassName(type)).forEach(div => {
-                    div.style.display = 'flex';
+                    div.style.display = 'inital';
                 });
             };
             // Re-render the level

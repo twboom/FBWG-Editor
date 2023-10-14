@@ -71,86 +71,90 @@
         </div>
         <hr>
         <div class="function-category">
-            <button class="editor-function enabled" data-action="tile-editor">Tile Editor</button>
+            <button class="editor-function" data-action="tile-editor">Tile Editor</button>
             <button class="editor-function" data-action="object-editor">Object Editor</button>
             <button class="editor-function" data-action="text-editor">Text Editor</button>
-            <button class="editor-function" data-action="view-all">View All</button>
+            <button class="editor-function enabled" data-action="view-all">View All</button>
         </div>
         <hr>
-        <div class="tool-container tiles" style="display: flex;">
-            <div class="tool-category">
-                <button class="tool tile-option" data-action="air">Air</button>
-                <button class="tool tile-option" data-action="block">Block</button>
-            </div>
-            <div class="tool-category">
-                <button class="tool tile-option" data-action="slopeTR">Slope TR</button>
-                <button class="tool tile-option" data-action="slopeTL">Slope TL</button>
-                <button class="tool tile-option" data-action="slopeBR">Slope BR</button>
-                <button class="tool tile-option" data-action="slopeBL">Slope BL</button>
-            </div>
-            <div class="tool-category">
-                <button class="tool tile-option" data-action="water">Water</button>
-                <button class="tool tile-option" data-action="lava">Lava</button>
-                <button class="tool tile-option" data-action="acid">Acid</button>
-                <button class="tool tile-option" data-action="ice">Ice</button>
-            </div>
-        </div>
-        <hr class="tiles" style="display: flex;">
-        <div class="tool-container objects" style="display: none;">
-            <div class="tool-category">
-                <button class="tool obje-option" data-action="edit">Edit</button>
-                <button class="tool obje-option" data-action="move">Move</button>
-            </div>
-            <div class="tool-category">
-                <button class="tool obje-option" data-action="spawns">Spawns</button>
-                <button class="tool obje-option" data-action="doors">Doors</button>
-            </div>
-            <div class="tool-category">
-                <button class="tool obje-option" data-action="diamond">Diamond</button>
+        <div class="tool-layer tiles">
+            <div class="tool-container">
+                <div class="tool-category">
+                    <button class="tool tile-option" data-action="air">Air</button>
+                    <button class="tool tile-option" data-action="block">Block</button>
+                </div>
+                <div class="tool-category">
+                    <button class="tool tile-option" data-action="slopeTR">Slope TR</button>
+                    <button class="tool tile-option" data-action="slopeTL">Slope TL</button>
+                    <button class="tool tile-option" data-action="slopeBR">Slope BR</button>
+                    <button class="tool tile-option" data-action="slopeBL">Slope BL</button>
+                </div>
+                <div class="tool-category">
+                    <button class="tool tile-option" data-action="water">Water</button>
+                    <button class="tool tile-option" data-action="lava">Lava</button>
+                    <button class="tool tile-option" data-action="acid">Acid</button>
+                    <button class="tool tile-option" data-action="ice">Ice</button>
+                </div>
             </div>
         </div>
-        <hr class="objects" style="display: none;">
-        <div class="tool-container objects" style="display: none;">
-            <div class="tool-category objects">
-                <button class="tool obje-option" data-action="button">Button</button>
-                <button class="tool obje-option" data-action="timer_button">Timer button</button>
-                <button class="tool obje-option" data-action="lever">Lever</button>
-                <button class="tool obje-option" data-action="platform">Platform</button>
-                <button class="tool obje-option" data-action="box_normal">Box normal</button>
-                <button class="tool obje-option" data-action="box_heavy">Box heavy</button>
-                <button class="tool obje-option" data-action="ball">Ball</button>
-                <button class="tool obje-option" data-action="box_mirror">Box mirror</button>
-                <button class="tool obje-option" data-action="rotation_mirror">Rotation mirror</button>
-                <button class="tool obje-option" data-action="rotation_boxmirror">Rotation boxmirror</button>
+
+        <div class="tool-layer objects">
+            <div class="tool-container">
+                <div class="tool-category">
+                    <button class="tool obje-option" data-action="edit">Edit</button>
+                    <button class="tool obje-option" data-action="move">Move</button>
+                </div>
+                <div class="tool-category">
+                    <button class="tool obje-option" data-action="spawns">Spawns</button>
+                    <button class="tool obje-option" data-action="doors">Doors</button>
+                </div>
+                <div class="tool-category">
+                    <button class="tool obje-option" data-action="diamond">Diamond</button>
+                </div>
+            </div>
+            <hr>
+            <div class="tool-container">
+                <div class="tool-category">
+                    <button class="tool obje-option" data-action="button">Button</button>
+                    <button class="tool obje-option" data-action="timer_button">Timer button</button>
+                    <button class="tool obje-option" data-action="lever">Lever</button>
+                    <button class="tool obje-option" data-action="platform">Platform</button>
+                    <button class="tool obje-option" data-action="box_normal">Box normal</button>
+                    <button class="tool obje-option" data-action="box_heavy">Box heavy</button>
+                    <button class="tool obje-option" data-action="ball">Ball</button>
+                    <button class="tool obje-option" data-action="box_mirror">Box mirror</button>
+                    <button class="tool obje-option" data-action="rotation_mirror">Rotation mirror</button>
+                    <button class="tool obje-option" data-action="rotation_boxmirror">Rotation boxmirror</button>
+                </div>
+            </div>
+            <hr>
+            <div class="tool-container">
+                <div class="tool-category">
+                    <button class="tool obje-option" data-action="hanger">Hanger</button>
+                    <button class="tool obje-option" data-action="slider">Slider</button>
+                    <button class="tool obje-option" data-action="light_emitter">Light emitter</button>
+                    <button class="tool obje-option" data-action="light_receiver">Light receiver</button>
+                    <button class="tool obje-option" data-action="portal">Portal</button>
+                    <button class="tool obje-option" data-action="fan">Fan</button>
+                    <button class="tool obje-option" data-action="window">Window</button>
+                    <button class="tool obje-option" data-action="cover">Cover</button>
+                </div>
             </div>
         </div>
-        <hr class="objects" style="display: none;">
-        <div class="tool-container objects" style="display: none;">
-            <div class="tool-category">
-                <button class="tool obje-option" data-action="hanger">Hanger</button>
-                <button class="tool obje-option" data-action="slider">Slider</button>
-                <button class="tool obje-option" data-action="light_emitter">Light emitter</button>
-                <button class="tool obje-option" data-action="light_receiver">Light receiver</button>
-                <button class="tool obje-option" data-action="portal">Portal</button>
-                <button class="tool obje-option" data-action="fan">Fan</button>
-                <button class="tool obje-option" data-action="window">Window</button>
-                <button class="tool obje-option" data-action="cover">Cover</button>
+        <div class="tool-layer texts">
+            <div class="tool-container">
+                <div class="tool-category">
+                    <button class="tool text-option" data-action="text">Text</button>
+                    <button class="tool text-option" data-action="text-trigger">Text Trigger</button>
+                    <button class="tool text-option" data-action="edit-text">Edit</button>
+                    <button class="tool text-option" data-action="edit-text-trigger">Edit Trigger</button>
+                    <button class="tool text-option" data-action="move-text">Move</button>
+                    <button class="tool text-option" data-action="move-text-trigger">Move Trigger</button>
+                    <button class="tool text-option" data-action="delete-text">Delete</button>
+                    <button class="tool text-option" data-action="delete-text-trigger">Delete Trigger</button>
+                </div>
             </div>
         </div>
-        <hr class="objects" style="display: none;">
-        <div class="tool-container texts" style="display: none;">
-            <div class="tool-category">
-                <button class="tool text-option" data-action="text">Text</button>
-                <button class="tool text-option" data-action="text-trigger">Text Trigger</button>
-                <button class="tool text-option" data-action="edit-text">Edit</button>
-                <button class="tool text-option" data-action="edit-text-trigger">Edit Trigger</button>
-                <button class="tool text-option" data-action="move-text">Move</button>
-                <button class="tool text-option" data-action="move-text-trigger">Move Trigger</button>
-                <button class="tool text-option" data-action="delete-text">Delete</button>
-                <button class="tool text-option" data-action="delete-text-trigger">Delete Trigger</button>
-            </div>
-        </div>
-        <hr class="texts" style="display:  none;">
     </div>
 </body>
 </html>
