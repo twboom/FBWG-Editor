@@ -45,6 +45,16 @@ export class Modal {
                     if (opt.selected) { option.selected = 'selected'; };
                     input.appendChild(option);
                 });
+            } else if (field.type === 'textarea') {
+                input = document.createElement('textarea');
+                field.attributes.forEach(attr => {
+                    console.log(attr)
+                    if (attr instanceof ValueAttribute) {
+                        input.innerText = attr.value;
+                    } else {
+                        input.setAttribute(attr.type, attr.value);
+                    };
+                });
             } else {
                 input = document.createElement('input');
                 input.type = field.type;
@@ -289,7 +299,7 @@ export class TextFieldModal extends BasicModal {
         const textHeightCallback = evt => { obj.height = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change height')};
         const textSizeCallback = evt => { obj.text.pixelsize = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal textsize change')};
 
-        const textField = new TextField('Text', obj.text.text, textCallback);
+        const textField = new TextArea('Text', obj.text.text, textCallback);
         const widthField = new NumberField('Width', 0, null, 1, obj.width, textWidthCallback);
         const heigthField = new NumberField('Height', 0, null, 1, obj.height, textHeightCallback);
         const idField = new NumberField('Id', 0, null, 1, obj.txtId, idCallback);
@@ -364,6 +374,17 @@ class TextField extends ModalField {
 
         attributes.push(new ValueAttribute(value));
         super(name, 'text', attributes, 'change', evtCallback)
+    };
+};
+
+class TextArea extends ModalField {
+    constructor(name, value, evtCallback) {
+        const attributes = [];
+
+        attributes.push(new ValueAttribute(value));
+        attributes.push(new ModalFieldAttribute('rows', 1))
+
+        super(name, 'textarea', attributes, 'change', evtCallback);
     };
 };
 
