@@ -335,7 +335,7 @@ class DeleteField extends ModalField {
         const DeleteValueAttribute = new ValueAttribute('Delete');
         const callback = _ => {
             SESSION.LEVEL.objects = SESSION.LEVEL.objects.filter(obj => obj.id !== objectId);
-            Modal.prototype.removeAll();
+            Modal.removeAll();
             clearHighlight();
             render({}, 'DeleteField Popup')
         };
