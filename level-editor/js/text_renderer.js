@@ -7,13 +7,13 @@ export function render_text(obj, textmenu, ctx) {
         if (!obj.text) {
             ctx.strokeStyle = GROUP_COLOR[obj.txtId];
             ctx.lineWidth = 5;
-            ctx.strokeRect(obj.x, obj.y, obj.width, obj.height);
+            ctx.strokeRect(obj.x + 5, obj.y + 5, obj.width - 10, obj.height - 10);
             return;
         };
 
         ctx.strokeStyle = GROUP_COLOR[obj.txtId];
         ctx.lineWidth = 1;
-        ctx.strokeRect(obj.x, obj.y, obj.width, obj.height);
+        ctx.strokeRect(obj.x + 1, obj.y + 1, obj.width - 2, obj.height - 2);
     };
 
     if (!obj.text) { return; };

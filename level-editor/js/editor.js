@@ -542,13 +542,18 @@ export function initEditor(){
             // If we press the button twice
             if (el.dataset.action == SESSION.EDITOR_FUNCTION) {
                 // Set the current function to null
-                SESSION.EDITOR_FUNCTION = null;
+                SESSION.EDITOR_FUNCTION = 'all';
+                Array.from(document.getElementsByClassName('editor-function')).forEach(btn => {
+                    if (btn.dataset.action == 'view-all') {
+                        btn.classList.add('enabled');
+                    };
+                });
             // If we press another button
             } else {
                 // Set the editor function
                 SESSION.EDITOR_FUNCTION = el.dataset.action;
                 el.classList.add('enabled');
-                let type
+                let type;
                 switch (el.dataset.action){
                     case 'tile-editor':
                         type = 'tiles';
