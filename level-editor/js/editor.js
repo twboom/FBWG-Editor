@@ -4,7 +4,7 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
+import { Modal, BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
 import { exportTEXT, exportJSON } from "./export.js";
 
 function mouseIntersectsObject(object, text =  0) {
@@ -428,7 +428,7 @@ export function initEditor(){
     highlightCanvas.addEventListener('mouseup', evt => {
         if (SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
             const objects = SESSION.LEVEL.objects;
-            const int = objects.find(mouseIntersectsObject);
+            const int = objects.find((obj) => mouseIntersectsObject(obj));
             if (int) {
                 const popup = new MoveModal(int.x, int.y, int.id);
                 popup.showOnly();
@@ -515,6 +515,11 @@ export function initEditor(){
     // Add the eventlistener for the editor functions
     Array.from(document.getElementsByClassName('editor-function')).forEach(el => {
         el.addEventListener('click', _ => {
+            // Remove selected object
+            SESSION.SELECTED_OBJECT_ID = undefined;
+            clearHighlight();
+            Modal.removeAll();
+
             // Remove enabled from all editor functions
             Array.from(document.getElementsByClassName('editor-function')).forEach(button => {
                 button.classList.remove('enabled');
