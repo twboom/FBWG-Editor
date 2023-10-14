@@ -581,7 +581,7 @@ export function initEditor(){
                     };
                 // Show the correct buttons
                 Array.from(document.getElementsByClassName(type)).forEach(div => {
-                    div.style.display = 'inital';
+                    div.style.display = 'block';
                 });
             };
             // Re-render the level
