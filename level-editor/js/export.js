@@ -154,7 +154,7 @@ function formatObjectsLayer() {
          objectsformat.height = object.height;
          objectsformat.id = globalId; globalId++;
          objectsformat.rotation = object.rotation;
-         objectsformat.width = object.width;s
+         objectsformat.width = object.width;
          objectsformat.x = object.x;
          objectsformat.y = objectId == 'cover' ? object.y - object.width : object.y;
 
