@@ -29,7 +29,7 @@ export const SESSION = {
     MOVE_HANDLE_OFFSET_Y: 0,
     LAST_PALCED_DOOR: 0,
     LAST_PLACED_SPAWN: 0,
-    EDITOR_FUNCTION: 'tile-editor',
+    EDITOR_FUNCTION: 'all',
 
     SHOW_CONSOLE_DEBUG: false,
 };
