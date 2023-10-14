@@ -290,15 +290,11 @@ function importLevelFile(LEVELSJON) {
         for (let i = 0; i < text.length; i ++) {
             let obj = text[i];
 
-            let objectText
             if (obj.text) {
-                objectText = new Objects.TextObject(obj.text.bold, obj.text.fontfamily, obj.text.halign, obj.text.pixelsize, obj.text.text, obj.text.wrap);
-            };
-
-            if (objectText) {
-                levelText[i] = new Objects.Text(obj.x, obj.y, obj.width, obj.height, obj.properties.id, obj.rotation, objectText);
+                let objectText = new Objects.TextObject(obj.text.bold, obj.text.fontfamily, obj.text.halign, obj.text.pixelsize, obj.text.text, obj.text.wrap);
+                levelText[i] = new Objects.TextField(obj.x, obj.y, obj.width, obj.height, obj.properties.id, obj.rotation, objectText);
             } else {
-                levelText[i] = new Objects.TextField(obj.x, obj.y, obj.width, obj.height, obj.properties.id, obj.rotation);
+                levelText[i] = new Objects.TextTrigger(obj.x, obj.y, obj.width, obj.height, obj.properties.id, obj.rotation);
             };
         };
     };

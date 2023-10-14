@@ -47,6 +47,36 @@ export function render(options, tracer) {
     if (SESSION.SHOW_CONSOLE_DEBUG) {
         console.log('RENDER:', options, 'tracer:', tracer);
     };
+
+    let txt = false;
+    switch (SESSION.EDITOR_FUNCTION) {
+        case 'tile-editor':
+            SESSION.TILE_CTX.globalAlpha = 1;
+            SESSION.OBJECT_CTX.globalAlpha = 0.3;
+            SESSION.TEXT_CTX.globalAlpha = 0.3;
+            break;
+        case 'object-editor':
+            SESSION.TILE_CTX.globalAlpha = 0.3;
+            SESSION.OBJECT_CTX.globalAlpha = 1;
+            SESSION.TEXT_CTX.globalAlpha = 0.3;
+            break;
+        case 'text-editor':
+            SESSION.TILE_CTX.globalAlpha = 0.3;
+            SESSION.OBJECT_CTX.globalAlpha = 0.3;
+            SESSION.TEXT_CTX.globalAlpha = 1;
+            txt = true
+            break;
+        case 'all':
+            SESSION.TILE_CTX.globalAlpha = 1;
+            SESSION.OBJECT_CTX.globalAlpha = 1;
+            SESSION.TEXT_CTX.globalAlpha = 1;
+            break;
+        default:
+            SESSION.TILE_CTX.globalAlpha = 0.3;
+            SESSION.OBJECT_CTX.globalAlpha = 0.3;
+            SESSION.TEXT_CTX.globalAlpha = 0.3;
+    };
+
     // Render the correct layer
     if (do_tiles) {
         SESSION.TILE_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
@@ -81,7 +111,7 @@ export function render(options, tracer) {
         const objects = SESSION.LEVEL.text;
         for (let i = 0; i < objects.length; i++) {
             if (objects[i]) {
-                render_text(objects[i], SESSION.TEXT_CTX);
+                render_text(objects[i], txt, SESSION.TEXT_CTX);
             };
         };
     };
@@ -90,8 +120,8 @@ export function render(options, tracer) {
     if (SESSION.DO_RENDER) {
         requestAnimationFrame(_ => {
             // ID tracer
-            tracer = tracer.toString();
-            if (!tracer.includes('AnimationFrame')) { tracer += ' AnimationFrame' };
+            tracer = String(tracer);
+            if (!String(tracer).includes('AnimationFrame')) { tracer += ' AnimationFrame' };
             render(options, tracer);
         });
     };

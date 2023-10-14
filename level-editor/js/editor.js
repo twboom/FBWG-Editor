@@ -4,27 +4,36 @@ import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { BasicModal, BoxModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal } from "./modal.js";
+import { BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
 import { exportTEXT, exportJSON } from "./export.js";
 
-function mouseIntersectsObject(object) {
+function mouseIntersectsObject(object, text =  0) {
     const mouseX = SESSION.MOUSE_POS_X;
     const mouseY = SESSION.MOUSE_POS_Y;
     let posX = object.x;
     let posY = object.y;
-    let width = 64;
-    let height = 64;
+    let width = object.width;
+    let height = object.height;
     if (object instanceof Objects.Platform) {
         width = object.width;
         height = object.height;
         posY = posY + height;
     };
 
-    if (
-        (mouseX > posX) &&
+    if (((text == 2) && object.constructor.name == 'TextTrigger') || ((text == 1) && object.constructor.name == 'TextField')) {
+        if (
+            (mouseX > posX) &&
+            (mouseX < posX + width) &&
+            (mouseY > posY) &&
+            (mouseY < posY + height)
+        ) { return true } else { return false };
+    };
+
+    if ((text == 0) &&
+        ((mouseX > posX) &&
         (mouseX < posX + width) &&
         (mouseY < posY) &&
-        (mouseY > posY - height)
+        (mouseY > posY - height))
     ) { return true } else { return false };
 };
 
@@ -39,14 +48,18 @@ function getModal(object) {
         case 'Button': return GroupedObjectModal;
         case 'Box': return BoxModal;
         case 'LevelPoints': return LevelPointModal;
+        case 'TextField': return TextFieldModal;
+        case 'TextTrigger': return TextTriggerModal;
+        case 'Cover': return CoverModal;
         default: return BasicModal;
     };
 };
 
-function handleEdit(evt) {
-    const objects = SESSION.LEVEL.objects;
-    const int = objects.find(mouseIntersectsObject);
+function handleEdit(evt, text = 0) {
+    const objects = text != 0 ? SESSION.LEVEL.text : SESSION.LEVEL.objects;
+    const int = objects.find((obj) => mouseIntersectsObject(obj, text));
     if (int) {
+        console.log(int);
         objectHighlight(int, 'handleEdit');
         const CorrectModal = getModal(int);
         const popup = new CorrectModal(int.x, int.y, int.id);
@@ -57,8 +70,8 @@ function handleEdit(evt) {
     };
 };
 
-function handleMove(evt) {
-    let obj = SESSION.LEVEL.objects.find(({ id }) => id === SESSION.SELECTED_OBJECT_ID);
+function handleMove(evt, text = 0) {
+    let obj = text != 0 ? SESSION.LEVEL.text.find(({ id}) => id === SESSION.SELECTED_OBJECT_ID) : SESSION.LEVEL.objects.find(({ id }) => id === SESSION.SELECTED_OBJECT_ID);
     if (!obj) { return };
     let newX = SESSION.MOUSE_POS_X + SESSION.MOVE_HANDLE_OFFSET_X;
     let newY = SESSION.MOUSE_POS_Y + SESSION.MOVE_HANDLE_OFFSET_Y;
@@ -120,8 +133,8 @@ export function initEditor(){
                 break;
             case 'objects':
                 // set objects
-                const mouseX = evt.offsetX;
-                const mouseY = evt.offsetY             
+                let mouseX = evt.offsetX;
+                let mouseY = evt.offsetY;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
                     case 'diamond':
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
@@ -153,46 +166,6 @@ export function initEditor(){
                         };
                         new Objects.LevelPoints(mouseX, mouseY, 0, SESSION.LAST_PLACED_SPAWN == 0 ? 'doorFB' : 'doorWG');
                         break;
-                    // case 'spawnFB' :
-                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'spawnFB') {
-                    //                 SESSION.LEVEL.objects.splice(i, 1);
-                    //             };
-                    //         };
-                    //     };
-                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnFB');
-                    //     break;
-                    // case 'spawnWG' :
-                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints'&& SESSION.LEVEL.objects[i].type == 'spawnWG') {
-                    //                 SESSION.LEVEL.objects.splice(i, 1);
-                    //             };
-                    //         };
-                    //     };
-                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'spawnWG');
-                    //     break;
-                    // case 'doorFB' :
-                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorFB') {
-                    //                 SESSION.LEVEL.objects.splice(i, 1);
-                    //             };
-                    //         };
-                    //     };
-                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'doorFB');
-                    //     break;
-                    // case 'doorWG' :
-                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                    //         for (let i = SESSION.LEVEL.objects.length - 1; i >= 0 ; i-- ) {
-                    //             if (SESSION.LEVEL.objects[i].constructor.name == 'LevelPoints' && SESSION.LEVEL.objects[i].type == 'doorWG') {
-                    //                 SESSION.LEVEL.objects.splice(i, 1);
-                    //             };
-                    //         };
-                    //     };
-                    //     new Objects.LevelPoints(mouseX, mouseY, 0, 'doorWG');
-                    //     break;
                     case 'button':
                         new Objects.Button(mouseX, mouseY, 0, 1);
                         break;
@@ -242,6 +215,7 @@ export function initEditor(){
                         new Objects.Cover(mouseX, mouseY, BLOCK_SIZE, BLOCK_SIZE);
                         break;
                     case 'edit':
+                        console.log("edeting");
                         handleEdit(evt);
                         break;
                 };
@@ -249,6 +223,50 @@ export function initEditor(){
                     render({do_tiles: false, do_objects: true, do_text: false}, 'click')
                 };
                 break;
+            case 'text':
+                let mouse_x = evt.offsetX;
+                let mouse_y = evt.offsetY;
+                let texts = SESSION.LEVEL.text;
+                switch (SESSION.SELECTED_TEXT_TYPE){
+                    case 'text':
+                        let textobject = new Objects.TextObject(false, 'Trajan Pro', 'centre', 24, 'Placeholder Text', true)
+                        new Objects.TextField(mouse_x, mouse_y, 320, 32, 0, 0, textobject);
+                        break;
+                    case 'edit-text':
+                        handleEdit(evt, 1);
+                        break;
+                    // case 'move-text':
+                    //     let text__ = texts.find((obj) => mouseIntersectsObject(obj, 1));
+                    //     if (text__) {
+                    //         SESSION.SELECTED_OBJECT_ID = text__.id;
+                    //         handleMove(evt, 1);
+                    //     };
+                    //     break;
+                    case 'delete-text':
+                        let text = texts.find((obj) => mouseIntersectsObject(obj, 1));
+                        if (text) { SESSION.LEVEL.text = SESSION.LEVEL.text.filter(obj => obj.id !== text.id);};
+                        break;
+                    case 'text-trigger':
+                        new Objects.TextTrigger(mouse_x, mouse_y, 320, 64, 0, 0);
+                        break;
+                    case 'edit-text-trigger':
+                        handleEdit(evt, 2);
+                        break;
+                    // case 'move-text-trigger':
+                    //     let text___ = texts.find((obj) => mouseIntersectsObject(obj, 2));
+                    //     if (text_) { 
+                    //         SESSION.SELECTED_OBJECT_ID = text___.id;
+                    //         handleMove(evt, 2);
+                    //     };
+                        break;
+                    case 'delete-text-trigger':
+                        let text_ = texts.find((obj) => mouseIntersectsObject(obj, 2));
+                        if (text_) { 
+                            SESSION.LEVEL.text = SESSION.LEVEL.text.filter(obj => obj.id !== text_.id);
+                        };
+                        break;
+                };
+                render({do_tiles: false, do_objects: false, do_text: true}, 'text edit');
         };
     });
 
@@ -310,11 +328,30 @@ export function initEditor(){
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
             handleMove(evt);
         };
+        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'text' && SESSION.SELECTED_TEXT_TYPE === 'move-text') {
+            handleMove(evt, 1);
+        };
+        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'text' && SESSION.SELECTED_TEXT_TYPE === 'move-text-trigger') {
+            handleMove(evt, 2);
+        };
 
         if (SESSION.SELECTED_TOOL_TYPE === 'objects' && ['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
             const objects = SESSION.LEVEL.objects;
-            const int = objects.find(mouseIntersectsObject);
+            const int = objects.find((objet) => mouseIntersectsObject(objet));
             if (int) {
+                objectHighlight(int, 'mousemove highlight');
+            } else {
+                clearHighlight();
+            };
+        };
+
+        if (SESSION.SELECTED_TOOL_TYPE === 'text' && ['edit-text', 'move-text', 'edit-text-trigger', 'move-text-trigger'].includes(SESSION.SELECTED_TEXT_TYPE)) {
+            console.log('edeting or moving text', SESSION.SELECTED_TEXT_TYPE);
+            const objects = SESSION.LEVEL.text;
+            const txt = (SESSION.SELECTED_TEXT_TYPE == 'edit-text' || SESSION.SELECTED_TEXT_TYPE == 'move-text') ? 1 : 2;
+            const int = objects.find((objet) => mouseIntersectsObject(objet, txt));
+            if (int) {
+                console.log(int);
                 objectHighlight(int, 'mousemove highlight');
             } else {
                 clearHighlight();
@@ -337,8 +374,9 @@ export function initEditor(){
         if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
             if (SESSION.SELECTED_OBJECT_TYPE === 'move') {
                 const objects = SESSION.LEVEL.objects;
-                const int = objects.find(mouseIntersectsObject);
+                const int = objects.find((obj) => mouseIntersectsObject(obj));
                 if (int) {
+                    console.log(int);
                     SESSION.SELECTED_OBJECT_ID = int.id;
                     SESSION.MOVE_HANDLE_OFFSET_X = int.x - evt.offsetX;
                     SESSION.MOVE_HANDLE_OFFSET_Y = int.y - evt.offsetY;
@@ -351,6 +389,32 @@ export function initEditor(){
                 };
             };
         };
+        if (SESSION.SELECTED_TOOL_TYPE === 'text') {
+            if (SESSION.SELECTED_TEXT_TYPE === 'move-text') {
+                const texts = SESSION.LEVEL.text;
+                const txt = texts.find((text) => mouseIntersectsObject(text, 1));
+                if (txt) {
+                    SESSION.SELECTED_OBJECT_ID = txt.id;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    objectHighlight(txt, 'mousedown objects move');
+                    SESSION.DO_RENDER = true;
+                    render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
+                };
+            } else if (SESSION.SELECTED_TEXT_TYPE === 'move-text-trigger') {
+                const texts = SESSION.LEVEL.text;
+                const txt = texts.find((text) => mouseIntersectsObject(text, 2));
+                if (txt) {
+                    SESSION.SELECTED_OBJECT_ID = txt.id;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    objectHighlight(txt, 'mousedown objects move');
+                    SESSION.DO_RENDER = true;
+                    render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
+                };
+            };
+        };
+
         if (document.getElementsByClassName('modal-container')) {
             [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
             if (!(document.getElementById('previews').classList.contains('active'))) {
@@ -363,6 +427,15 @@ export function initEditor(){
     // Add the eventlistener for releasing your mouse
     highlightCanvas.addEventListener('mouseup', evt => {
         if (SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
+            const objects = SESSION.LEVEL.objects;
+            const int = objects.find(mouseIntersectsObject);
+            if (int) {
+                const popup = new MoveModal(int.x, int.y, int.id);
+                popup.showOnly();
+            };
+        };
+
+        if (SESSION.SELECTED_TOOL_TYPE === 'text' && SESSION.SELECTED_OBJECT_TYPE === 'move-text') {
             const objects = SESSION.LEVEL.objects;
             const int = objects.find(mouseIntersectsObject);
             if (int) {
@@ -439,6 +512,68 @@ export function initEditor(){
         });
     });
 
+    // Add the eventlistener for the editor functions
+    Array.from(document.getElementsByClassName('editor-function')).forEach(el => {
+        el.addEventListener('click', _ => {
+            // Remove enabled from all editor functions
+            Array.from(document.getElementsByClassName('editor-function')).forEach(button => {
+                button.classList.remove('enabled');
+            });
+            // Hide all tile buttons
+            Array.from(document.getElementsByClassName('tiles')).forEach(div => {
+                div.style.display = 'none';
+            });
+            SESSION.SELECTED_TYLE_TYPE = null;
+            // Hide all object buttons
+            Array.from(document.getElementsByClassName('objects')).forEach(div => {
+                div.style.display = 'none';
+            });
+            // Hide all text buttons
+            Array.from(document.getElementsByClassName('texts')).forEach(div => {
+                div.style.display = 'none';
+            });
+            // Disable all buttons
+            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            SESSION.SELECTED_TYLE_TYPE = undefined;
+            SESSION.SELECTED_OBJECT_TYPE = undefined;
+            SESSION.SELECTED_TOOL_TYPE = undefined;
+            // If we press the button twice
+            if (el.dataset.action == SESSION.EDITOR_FUNCTION) {
+                // Set the current function to null
+                SESSION.EDITOR_FUNCTION = null;
+            // If we press another button
+            } else {
+                // Set the editor function
+                SESSION.EDITOR_FUNCTION = el.dataset.action;
+                el.classList.add('enabled');
+                let type
+                switch (el.dataset.action){
+                    case 'tile-editor':
+                        type = 'tiles';
+                        break;
+                    case 'object-editor':
+                        type = 'objects';
+                        break;
+                    case 'text-editor':
+                        type = 'texts';
+                        break;
+                    case 'view-all':
+                        SESSION.EDITOR_FUNCTION = 'all';
+                        render({do_tiles: true, do_objects: true, do_text: true}, 'Editor view all');
+                        return;
+                    };
+                // Show the correct buttons
+                Array.from(document.getElementsByClassName(type)).forEach(div => {
+                    div.style.display = 'flex';
+                });
+            };
+            // Re-render the level
+            render({do_tiles: true, do_objects: true, do_text: true}, 'Editor function change');
+        });
+    });
+
     // Add the eventlistener for the tile buttons
     Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
         el.addEventListener('click', _ => {
@@ -490,6 +625,26 @@ export function initEditor(){
                 exportJSON();
             } else if (el.id == "export-text") {
                 exportTEXT();
+            };
+        });
+    });
+
+    // Add the eventlistener for the text buttons
+    Array.from(document.getElementsByClassName('text-option')).forEach(el => {
+        el.addEventListener('click', _ => {
+            // Deselect other selected buttons
+            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
+                btn.classList.remove('selected');
+            });
+
+            // Check if the button is pressed twice
+            if (SESSION.SELECTED_TEXT_TYPE ==  el.dataset.action) {
+                SESSION.SELECTED_TEXT_TYPE = undefined; 
+                SESSION.SELECTED_OBJECT_TYPE = undefined;
+            } else {
+                el.classList.add('selected');
+                SESSION.SELECTED_TOOL_TYPE = 'text';
+                SESSION.SELECTED_TEXT_TYPE = el.dataset.action;
             };
         });
     });

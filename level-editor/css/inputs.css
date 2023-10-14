@@ -8,7 +8,7 @@ button.tool, button.editor-option {
     height: 64px;
 }
 
-button.tool.selected, button.editor-option.active {
+button.tool.selected, button.editor-option.active, button.editor-function.enabled {
     background-color: cyan;
 }
 

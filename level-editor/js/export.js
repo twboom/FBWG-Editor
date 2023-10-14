@@ -11,8 +11,10 @@ function createJSON(LevelTemplate, callback) {
     LevelTemplate.layers[0].width = SESSION.LEVEL.width;
     LevelTemplate.layers[0].height = SESSION.LEVEL.height;
     let charAndObj = formatObjectsLayer();
+    let textlayer = formatTextLayer();
     LevelTemplate.layers[1].objects = charAndObj[0];
     LevelTemplate.layers[2].objects = charAndObj[1];
+    LevelTemplate.layers[3].objects = textlayer;
     
     // downloadObjectAsJson(LevelTemplate, 'level');
     return callback(LevelTemplate)
@@ -57,11 +59,11 @@ function formatTileLayer() {
     return tilelayer;
 };
 
+// Id for objects
+let globalId = 0;
+
 // Format objects function
 function formatObjectsLayer() {
-
-    // Id for objects
-    let id = 0;
 
     // Format char object
     function formatChar(char, charId) {
@@ -78,7 +80,7 @@ function formatObjectsLayer() {
             "x":0,
             "y":0
          };
-         charsformat.id = id; id++;
+         charsformat.id = globalId; globalId++;
          charsformat.x = char.x;
          charsformat.y = char.y;
 
@@ -150,11 +152,11 @@ function formatObjectsLayer() {
              typeof objectId == "number" ? objectsformat.gid = objectId + 24 : delete objectsformat.gid;
          };
          objectsformat.height = object.height;
-         objectsformat.id = id; id++;
+         objectsformat.id = globalId; globalId++;
          objectsformat.rotation = object.rotation;
          objectsformat.width = object.width;
          objectsformat.x = object.x;
-         objectsformat.y = object.y;
+         objectsformat.y = objectId == 'cover' ? object.y - object.width : object.y;
 
          // Properties not all objects have
 
@@ -232,7 +234,7 @@ function formatObjectsLayer() {
         };
 
         // Type
-        if (objectId == 'platform' || objectId == 'hanging' || objectId == 'pulley' || objectId == 'pusher') {
+        if (objectId == 'platform' || objectId == 'hanging' || objectId == 'pulley' || objectId == 'pusher'|| objectId == 'cover') {
             objectsformat.type = objectId;
         };
 
@@ -321,6 +323,81 @@ function formatObjectsLayer() {
 
     return [charslayer, objectslayer];
 };
+
+function formatTextLayer() {
+
+    const texts = SESSION.LEVEL.text;
+    let textlayer = []
+
+    for (let i = 0; i < texts.length; i ++) {
+        let txt = texts[i];
+        let txtformat = {
+            "height":0,
+            "id":0,
+            "name":"",
+            "properties":{
+               "id":0
+            },
+            "propertytypes":{
+               "id":"int"
+            },
+            "rotation":0,
+            "text":{
+               "bold":true,
+               "fontfamily":"",
+               "halign":"center",
+               "pixelsize":0,
+               "text":"",
+               "wrap":true
+            },
+            "type":"",
+            "visible":true,
+            "width":0,
+            "x":0,
+            "y":0
+         };
+
+        if (txt.constructor.name == 'TextTrigger') {
+            txtformat.height = txt.height;
+            txtformat.width = txt.width;
+            txtformat.x = txt.x;
+            txtformat.y = txt.y;
+            txtformat.rotation = txt.rotation;
+
+            txtformat.id = globalId;
+            globalId ++;
+
+            txtformat.properties.id = txt.txtId;
+
+            delete txtformat.text;
+
+        } else if (txt.constructor.name == 'TextField') {
+            txtformat.height = txt.height;
+            txtformat.width = txt.width;
+            txtformat.x = txt.x;
+            txtformat.y = txt.y;
+            txtformat.rotation = txt.rotation;
+
+            txtformat.id = globalId;
+            globalId ++;
+
+            txtformat.properties.id = txt.txtId;
+
+            txtformat.text.bold = txt.text.bold;
+            txtformat.text.fontfamily = txt.text.fontfamily;
+            txtformat.text.halign = txt.text.halign;
+            txtformat.text.pixelsize = txt.text.pixelsize;
+            txtformat.text.text = txt.text.text;
+            txtformat.text.wrap = txt.text.wrap;
+        };
+
+        textlayer.push(txtformat);
+    };
+
+    return textlayer;
+};
+
+
 
 // Export to text function
 export function exportTEXT() {

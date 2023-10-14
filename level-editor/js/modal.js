@@ -116,7 +116,6 @@ export class MoveModal extends Modal {
         fields.push(yField);
         fields.push(new CloseField);
 
-        console.log(obj);
         if (obj.constructor.name == "Platform") {
             SESSION.PLATFROM_PREVIEWS = true;
             render(false, true);
@@ -129,9 +128,9 @@ export class MoveModal extends Modal {
 };
 
 export class BasicModal extends Modal {
-    constructor(x, y, objectId, fields=[]) {
+    constructor(x, y, objectId, fields=[], txt = false) {
         let newFields = fields;
-        newFields.push(new DeleteField(objectId));
+        if (!txt) { newFields.push(new DeleteField(objectId));};
         newFields.push(new CloseField());
         super(x, y, newFields);
     };
@@ -264,13 +263,61 @@ export class LevelPointModal extends BasicModal {
     };
 };
 
+export class TextTriggerModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.text.find(({ id }) => id === objectId);
+
+        const idCallback = evt => { obj.txtId = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change id'); };
+        const textWidthCallback = evt => { obj.width = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change Widht')};
+        const textHeightCallback = evt => { obj.height = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change height')};
+
+        const widthField = new NumberField('Width', 0, null, 1, obj.width, textWidthCallback);
+        const heigthField = new NumberField('Height', 0, null, 1, obj.height, textHeightCallback);
+        const idField = new NumberField('Id', 0, null, 1, obj.txtId, idCallback);
+
+        super(x + obj.width, y, objectId, [idField, widthField, heigthField], true);
+    };
+};
+
+export class TextFieldModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.text.find(({ id }) => id === objectId);
+
+        const textCallback = evt => { obj.text.text = evt.target.value; render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change text')};
+        const idCallback = evt => { obj.txtId = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change id'); };
+        const textWidthCallback = evt => { obj.width = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change Widht')};
+        const textHeightCallback = evt => { obj.height = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal change height')};
+        const textSizeCallback = evt => { obj.text.pixelsize = parseInt(evt.target.value); render({do_tiles: false, do_objects: false, do_text: true}, 'TextModal textsize change')};
+
+        const textField = new TextField('Text', obj.text.text, textCallback);
+        const widthField = new NumberField('Width', 0, null, 1, obj.width, textWidthCallback);
+        const heigthField = new NumberField('Height', 0, null, 1, obj.height, textHeightCallback);
+        const idField = new NumberField('Id', 0, null, 1, obj.txtId, idCallback);
+        const pixelsizeField = new NumberField('Text Size', 1, null, 1, obj.text.pixelsize, textSizeCallback);
+
+        super(x + obj.width, y, objectId, [textField, idField, widthField, heigthField, pixelsizeField], true);
+    };
+};
+
+export class CoverModal extends BasicModal {
+    constructor(x, y, objectId) {
+        const obj = SESSION.LEVEL.objects.find(({ id }) => id === objectId);
+
+        const widthCallback = evt => { obj.width = parseInt(evt.target.value); render({do_tiles: false, do_objects: true, do_text: false}, 'CoverModal change width')};
+        const heightCallback = evt => { obj.height = parseInt(evt.target.value); render({do_tiles: false, do_objects: true, do_text: false}, 'CoverModal change height')};
+
+        const widthField = new NumberField('Width', 0, null, 1, obj.width, widthCallback);
+        const heigthField = new NumberField('Height', 0, null, 1, obj.width, heightCallback);
+
+        super(x + obj.width, y, objectId, [widthField, heigthField]);
+    };
+};
 
 // Fields
 class CloseField extends ModalField {
     constructor() {
         const CloseValueAttribute = new ValueAttribute('Close');
         const callback = evt => {
-            console.log(document.getElementById('previews'));
             if (!(document.getElementById('previews').classList.contains('active'))) {
                 SESSION.PLATFROM_PREVIEWS = false;
                 render(false, true);
@@ -299,17 +346,26 @@ class DeleteField extends ModalField {
 
 class NumberField extends ModalField {
     constructor(name, min, max, step, value, evtCallback) {
-        const attributes = []
+        const attributes = [];
 
         if (min !== null) { attributes.push(new ModalFieldAttribute('min', min)) };
         if (max !== null) { attributes.push(new ModalFieldAttribute('step', step)) };
         if (step !== null) { attributes.push(new ModalFieldAttribute('step', step)) };
         if (value !== null) { attributes.push(new ValueAttribute(value)) };
 
-        super(name, 'number', attributes, 'change', evtCallback)
+        super(name, 'number', attributes, 'change', evtCallback);
     };
 };
 
+
+class TextField extends ModalField {
+    constructor(name, value, evtCallback) {
+        const attributes = [];
+
+        attributes.push(new ValueAttribute(value));
+        super(name, 'text', attributes, 'change', evtCallback)
+    };
+};
 
 // Attributes
 class ValueAttribute extends ModalFieldAttribute {

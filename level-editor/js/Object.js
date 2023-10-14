@@ -215,16 +215,23 @@ export class Cover extends Object {
 };
 
 /*Text objects */
-export class TextField extends Object {
-    constructor(x, y, width, height, id, rotation) {
-        super(x, y, rotation, width, height);
-        this.id = id;
+export class TextTrigger {
+    constructor(x, y, width, height, txtId, rotation) {
+        this.x = x;
+        this.y = y;
+        this.rotation = rotation;
+        this.width = width;
+        this.height = height;
+        this.txtId = txtId;
+        this.id = SESSION.FIRST_FREE_ID;
+        SESSION.FIRST_FREE_ID++;
+        SESSION.LEVEL.text.push(this);
     };
 };
 
-export class Text extends TextField {
-    constructor(x, y, width, height, id, rotation, text) {
-            super(x, y, rotation, width, height, id, rotation);
+export class TextField extends TextTrigger {
+    constructor(x, y, width, height, txtId, rotation, text) {
+            super(x, y, width, height, txtId, rotation);
         this.text = text;
     };
 };

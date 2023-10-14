@@ -514,7 +514,7 @@ export function render_object(object, ctx) {
         case 'Cover':
             if (SESSION.COVER_PREVIEWS) {
                 ctx.beginPath();
-                ctx.rect(object.x, object.y, object.width, object.height);
+                ctx.rect(object.x, object.y, object.width, -object.height);
                 ctx.fillStyle = 'black';
                 ctx.fill();
             };
