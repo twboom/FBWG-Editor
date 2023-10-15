@@ -133,8 +133,8 @@ export function initEditor(){
                 break;
             case 'objects':
                 // set objects
-                let mouseX = evt.offsetX;
-                let mouseY = evt.offsetY;            
+                let mouseX = evt.offsetX - 32;
+                let mouseY = evt.offsetY + 32;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
                     case 'diamond':
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
@@ -176,13 +176,13 @@ export function initEditor(){
                         new Objects.Lever(mouseX, mouseY, 0, 1, 1);
                         break;
                     case 'platform':
-                        new Objects.Platform(mouseX, mouseY, 0, 3*BLOCK_SIZE, BLOCK_SIZE, 1, 0, 3);
+                        new Objects.Platform(mouseX - 16, mouseY - 48, 0, 3*BLOCK_SIZE, BLOCK_SIZE, 1, 0, 3);
                         break;
                     case 'box_normal':
                         new Objects.Box(mouseX, mouseY, 0, 'normal');
                         break;
                     case 'ball':
-                        new Objects.Ball(mouseX, mouseY, 0);
+                        new Objects.Ball(mouseX + 16, mouseY - 16, 0);
                         break;
                     case 'rotation_mirror':
                         new Objects.RotationMirror(mouseX, mouseY, 0, 1);
@@ -220,7 +220,8 @@ export function initEditor(){
                         break;
                 };
                 if (!['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
-                    render({do_tiles: false, do_objects: true, do_text: false}, 'click')
+                    handleEdit();
+                    render({do_tiles: false, do_objects: true, do_text: false}, 'click');
                 };
                 break;
             case 'text':
