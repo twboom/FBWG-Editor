@@ -231,7 +231,8 @@ export function initEditor(){
                 switch (SESSION.SELECTED_TEXT_TYPE){
                     case 'text':
                         let textobject = new Objects.TextObject(false, 'Trajan Pro', 'centre', 24, 'Placeholder Text', true)
-                        new Objects.TextField(mouse_x, mouse_y, 320, 32, 0, 0, textobject);
+                        new Objects.TextField(mouse_x - 160, mouse_y - 16, 320, 32, 0, 0, textobject);
+                        handleEdit(evt, 1)
                         break;
                     case 'edit-text':
                         handleEdit(evt, 1);
@@ -248,7 +249,8 @@ export function initEditor(){
                         if (text) { SESSION.LEVEL.text = SESSION.LEVEL.text.filter(obj => obj.id !== text.id);};
                         break;
                     case 'text-trigger':
-                        new Objects.TextTrigger(mouse_x, mouse_y, 320, 64, 0, 0);
+                        new Objects.TextTrigger(mouse_x - 160, mouse_y - 32, 320, 64, 0, 0);
+                        handleEdit(evt, 2);
                         break;
                     case 'edit-text-trigger':
                         handleEdit(evt, 2);
