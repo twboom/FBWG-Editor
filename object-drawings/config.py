@@ -35,10 +35,25 @@ fills = [
             'normal', 'heavy',
         ],
     },
+    {
+        'templates': [
+            'drawings/tile_fluid_edge_left_template.cnvsdrw',
+            'drawings/tile_fluid_edge_middle_template.cnvsdrw',
+            'drawings/tile_fluid_edge_right_template.cnvsdrw',
+        ],
+        'vars': {
+            'color': ['blue', 'red', 'green', '#AAAAFF'],
+        },
+        'output_names': [
+            'water', 'fire', 'acid', 'ice'
+        ],
+    },
 ]
 
 copy = [
     'drawings/diamond_fbwg.cnvsdrw',
     'drawings/diamond_silver.cnvsdrw',
     'drawings/box_mirror.cnvsdrw',
+    'drawings/tile_block.cnvsdrw',
+    'drawings/tile_slope.cnvsdrw',
 ]

@@ -1,0 +1,7 @@
+PATH;
+L 32,0;
+L 32,32;
+L 0,32;
+L 0,0;
+SET:FILL white;
+FILL;

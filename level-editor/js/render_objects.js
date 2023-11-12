@@ -110,6 +110,42 @@ export function drawObject(object, variant, posX, posY, ctx, rotation) {
 		case "box_heavy":
 			box_heavy(ctx);
 			break;
+		case "tile_fluid_edge_left_water":
+			tile_fluid_edge_left_water(ctx);
+			break;
+		case "tile_fluid_edge_left_fire":
+			tile_fluid_edge_left_fire(ctx);
+			break;
+		case "tile_fluid_edge_left_acid":
+			tile_fluid_edge_left_acid(ctx);
+			break;
+		case "tile_fluid_edge_left_ice":
+			tile_fluid_edge_left_ice(ctx);
+			break;
+		case "tile_fluid_edge_middle_water":
+			tile_fluid_edge_middle_water(ctx);
+			break;
+		case "tile_fluid_edge_middle_fire":
+			tile_fluid_edge_middle_fire(ctx);
+			break;
+		case "tile_fluid_edge_middle_acid":
+			tile_fluid_edge_middle_acid(ctx);
+			break;
+		case "tile_fluid_edge_middle_ice":
+			tile_fluid_edge_middle_ice(ctx);
+			break;
+		case "tile_fluid_edge_right_water":
+			tile_fluid_edge_right_water(ctx);
+			break;
+		case "tile_fluid_edge_right_fire":
+			tile_fluid_edge_right_fire(ctx);
+			break;
+		case "tile_fluid_edge_right_acid":
+			tile_fluid_edge_right_acid(ctx);
+			break;
+		case "tile_fluid_edge_right_ice":
+			tile_fluid_edge_right_ice(ctx);
+			break;
 		case "diamond_fbwg":
 			diamond_fbwg(ctx);
 			break;
@@ -118,6 +154,12 @@ export function drawObject(object, variant, posX, posY, ctx, rotation) {
 			break;
 		case "box_mirror":
 			box_mirror(ctx);
+			break;
+		case "tile_block":
+			tile_block(ctx);
+			break;
+		case "tile_slope":
+			tile_slope(ctx);
 			break;
 		
     };
@@ -986,6 +1028,198 @@ function box_heavy (ctx) {
 	ctx.fill();
 	ctx.stroke();
 };
+function tile_fluid_edge_left_water (ctx) {
+	ctx.beginPath();
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_left_fire (ctx) {
+	ctx.beginPath();
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_left_acid (ctx) {
+	ctx.beginPath();
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_left_ice (ctx) {
+	ctx.beginPath();
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_middle_water (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(0,16);
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_middle_fire (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(0,16);
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_middle_acid (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(0,16);
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_middle_ice (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(0,16);
+	ctx.lineTo(32,16);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,16);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_right_water (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(32,0);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.lineTo(32,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_right_fire (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(32,0);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.lineTo(32,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_right_acid (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(32,0);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.lineTo(32,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
+function tile_fluid_edge_right_ice (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(32,0);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,16);
+	ctx.lineTo(32,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(0,16);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="red";
+	ctx.fill();
+};
 function diamond_fbwg (ctx) {
 	ctx.beginPath();
 	ctx.moveTo(48,24);
@@ -1056,4 +1290,28 @@ function box_mirror (ctx) {
 	ctx.lineWidth="4";
 	ctx.fill();
 	ctx.stroke();
+};
+function tile_block (ctx) {
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+};
+function tile_slope (ctx) {
+	ctx.beginPath();
+	ctx.moveTo(32,0);
+	ctx.lineTo(32,32);
+	ctx.lineTo(0,32);
+	ctx.lineTo(32,0);
+	ctx.fillStyle="white";
+	ctx.fill();
+	ctx.beginPath();
+	ctx.lineTo(32,0);
+	ctx.lineTo(0,32);
+	ctx.lineTo(0,0);
+	ctx.fillStyle="black";
+	ctx.fill();
 };
