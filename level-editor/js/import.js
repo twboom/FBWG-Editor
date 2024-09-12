@@ -41,18 +41,18 @@ export function importURL(src) {
 
 export function initImport() {
     // Import the blank level
-    document.getElementById('create-empty').addEventListener('click', _ => {
-        importURL(IMPORT_CONFIG.BLANK_LEVEL);
-    });
+    // document.getElementById('create-empty').addEventListener('click', _ => {
+    //     importURL(IMPORT_CONFIG.BLANK_LEVEL);
+    // });
 
     // Import the tutorial level
-    document.getElementById('import-tutorial').addEventListener('click', _ => {
-        console.log('loading exmaple level');
-        importURL(IMPORT_CONFIG.EXAMPLE_LEVEL);
-    });
+    // document.getElementById('import-tutorial').addEventListener('click', _ => {
+    //     console.log('loading exmaple level');
+    //     importURL(IMPORT_CONFIG.EXAMPLE_LEVEL);
+    // });
 
     // Import a level file
-    document.getElementById('import-file').addEventListener('change', importLocal);
+    // document.getElementById('import-file').addEventListener('change', importLocal);
 };
 
 function importLevelFile(LEVELSJON) {
@@ -318,7 +318,7 @@ function importLevelFile(LEVELSJON) {
 
 
     SESSION.LEVEL = new Level(width, height, tiles, levelObjects, levelText);
-    document.getElementById('level-width').value = SESSION.LEVEL.width;
-    document.getElementById('level-height').value = SESSION.LEVEL.height;
+    // document.getElementById('level-width').value = SESSION.LEVEL.width;
+    // document.getElementById('level-height').value = SESSION.LEVEL.height;
     console.log(SESSION.LEVEL);
 };
