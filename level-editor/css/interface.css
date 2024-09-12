@@ -23,6 +23,7 @@ div#tool-bar {
     height: 100%;
     padding: 8px;
     background-color: var(--background-color-dark);
+    overflow-y: auto;
 }
 
 div#tool-bar > button {
