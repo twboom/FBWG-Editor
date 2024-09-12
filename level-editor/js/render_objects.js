@@ -1,4 +1,6 @@
 export function drawObject(object, variant, posX, posY, ctx, rotation) {
+    const ORIGINAL_TRANSFORM = ctx.getTransform()
+    
     ctx.translate(posX, posY);
 
 	
@@ -122,7 +124,7 @@ export function drawObject(object, variant, posX, posY, ctx, rotation) {
 		
     };
 
-    ctx.resetTransform();
+    ctx.setTransform(ORIGINAL_TRANSFORM);
 };
 function spawn_fb (ctx) {
 	ctx.beginPath();

@@ -30,6 +30,7 @@ export const SESSION = {
     LAST_PALCED_DOOR: 0,
     LAST_PLACED_SPAWN: 0,
     EDITOR_FUNCTION: 'all',
+    CAMERA_POSITION: [0,0],
 
     SHOW_CONSOLE_DEBUG: false,
 };

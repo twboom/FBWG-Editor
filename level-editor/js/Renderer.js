@@ -77,6 +77,13 @@ export function render(options, tracer) {
             SESSION.TEXT_CTX.globalAlpha = 0.3;
     };
 
+    SESSION.TILE_CTX.resetTransform();
+    SESSION.TILE_CTX.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
+    SESSION.OBJECT_CTX.resetTransform();
+    SESSION.OBJECT_CTX.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
+    SESSION.TEXT_CTX.resetTransform();
+    SESSION.TEXT_CTX.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
+
     // Render the correct layer
     if (do_tiles) {
         SESSION.TILE_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
