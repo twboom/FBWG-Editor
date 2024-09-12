@@ -10,17 +10,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FBWG Editor</title>
+    <link rel="stylesheet" href="css/palette.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/inputs.css">
+    <link rel="stylesheet" href="css/interface.css">
     <link rel="stylesheet" href="css/modal.css">
     <script defer type="module" src="js/main.js"></script>
 </head> 
 <body oncontextmenu="return false;">
-    <div id="canvas-container">
-        <canvas id="tiles"></canvas>
-        <canvas id="objects"></canvas>
-        <canvas id="text"></canvas>
-        <canvas id="highlight"></canvas>
+    <div id="menu-bar">
+        <div class="menu-group">
+            <button class="img-button">H</button>
+            <button class="menu-item">File</button>
+            <button class="menu-item">Level</button>
+        </div>
+        <div class="menu-group">
+            <label for="snap">Snap:</label>
+            <input type="number" name="snap" id="snap">
+        </div>
     </div>
+    <section id="horizontal">
+        <div id="tool-bar">
+            <button class="img-button">T</button>
+            <button class="img-button">
+                <img src="assets/objects/box_normal.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/button.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/lever_left_0.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                P
+            </button>
+        </div>
+        <div id="outer-canvas-container">
+            <div id="canvas-container">
+                <canvas id="tiles"></canvas>
+                <canvas id="objects"></canvas>
+                <canvas id="text"></canvas>
+                <canvas id="highlight"></canvas>
+            </div>
+        </div>
+    </section>
 </body>
 </html>

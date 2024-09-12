@@ -1,0 +1,46 @@
+div#menu-bar {
+    width: calc(100% - 16px);
+    height: var(--bar-button-size);
+    padding: 8px;
+    background-color: var(--background-color-dark);
+}
+
+div#menu-bar > div.menu-group {
+    display: inline;
+}
+
+section#horizontal {
+    height: calc(calc(100vh - var(--bar-button-size)) - 32px);
+}
+
+div#tool-bar {
+    width: var(--bar-button-size);
+    height: 100%;
+    padding: 8px;
+    background-color: var(--background-color-dark);
+}
+
+div#tool-bar > button {
+    display: block;
+}
+
+div#outer-canvas-container {
+    width: calc(calc(100% - var(--bar-button-size)) - 17px);
+    height: calc(100% + 16px);
+    margin-left: -4px;
+}
+
+button.img-button {
+    width: var(--bar-button-size);
+    height: var(--bar-button-size);
+    padding: 4px;
+    margin: 0;
+    outline: none;
+    border: none;
+}
+
+img.tool-img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}

@@ -4,7 +4,8 @@ body {
     /* justify-content: space-evenly; */
     /* width: 98%; */
     /* margin-left: 1%; */
-    overflow: auto;
+    overflow: hidden;
+    background-color: var(--background-color);
 }
 
 * {
@@ -12,20 +13,27 @@ body {
     /* font-family: 'Trajan Pro', sans-serif;    */
 }
 
+section#horizontal > * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+div
+
 div#canvas-container {
-    border: solid gray 16px;  
     display: grid;
-    position: absolute;
-    left: 0;
-    top: 0;
-    /* width: auto; */
+    /* position: absolute;
+    left: 0; */
+    /* top: 0; */
+    width: 100%;
+    height: 100%;
 }
 
 canvas {
     grid-column: 1;
     grid-row: 1;
-    width: 80vw;
-    height: 90vh;
+    width: 100%;
+    height: 100%;
 }
 
 canvas#highlight {
