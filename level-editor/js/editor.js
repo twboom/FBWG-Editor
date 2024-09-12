@@ -146,6 +146,9 @@ function resizeLevel() {
 function getCorrectedMousePosition(evt) {
     let mouseX = evt.offsetX;
     let mouseY = evt.offsetY;
+    
+    mouseX -= SESSION.CAMERA_POSITION[0]
+    mouseY -= SESSION.CAMERA_POSITION[1]
 
     mouseX /= SESSION.CAMERA_ZOOM;
     mouseY /= SESSION.CAMERA_ZOOM;
