@@ -16,7 +16,6 @@ function importJSON(json) {
 
     // Init app
     importLevelFile(json);
-    resizeCanvas();
     render({do_tiles: true, do_objects: true, do_text: true}, 'Importer');
 };
 

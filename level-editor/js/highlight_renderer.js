@@ -8,6 +8,11 @@ export function objectHighlight(object, tracer, color='cyan', clearCtx=true) {
     if (clearCtx) {
         clearHighlight();
     };
+
+    highlightCtx.resetTransform();
+    highlightCtx.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
+    highlightCtx.scale(SESSION.CAMERA_ZOOM, SESSION.CAMERA_ZOOM)
+
     let posX = object.x;
     let posY = object.y;
     let width = object.width;

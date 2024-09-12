@@ -62,7 +62,7 @@ function handleEdit(evt, text = 0) {
         console.log(int);
         objectHighlight(int, 'handleEdit');
         const CorrectModal = getModal(int);
-        const popup = new CorrectModal(int.x, int.y, int.id);
+        const popup = new CorrectModal(evt.clientX, evt.clientY, int.id);
         popup.showOnly();
     } else {
         SESSION.SELECTED_OBJECT_ID = undefined;
@@ -86,15 +86,84 @@ function handleMove(evt, text = 0) {
     objectHighlight(obj, 'handleMove');
 };
 
+function resizeLevel() {
+    // Correct the tiles and objects
+
+    // Get the new and old with and heigth
+    let oldWidth = SESSION.LEVEL.tiles[0] ? SESSION.LEVEL.tiles[0].length : 0;
+    let oldHeight = SESSION.LEVEL.tiles.length;
+
+    let newWidth = SESSION.LEVEL.width;
+    let newHeight = SESSION.LEVEL.height;
+
+    // Decreasing width
+    if (oldWidth > newWidth) {
+        for (let i = 0; i < oldHeight; i++) {
+            for (let j = newWidth; j <= oldWidth; j++) {
+                SESSION.LEVEL.tiles[i] = SESSION.LEVEL.tiles[i].splice(0, newWidth);
+            };
+        };
+
+        // Remove objects outside the level
+        let newObjects = [];
+        for (let i = 0; i < SESSION.LEVEL.objects.length; i++) {
+            if (SESSION.LEVEL.objects[i].x < newWidth * BLOCK_SIZE) {
+                newObjects.push(SESSION.LEVEL.objects[i]);
+            };
+        };
+        SESSION.LEVEL.objects = newObjects;
+
+    // Increasing width
+    } else if (oldWidth < newWidth) {
+        for (let i = 0; i < oldHeight; i++) {
+            for (let j = oldWidth; j <= newWidth; j++) {
+                SESSION.LEVEL.tiles[i][j] = 0;
+            };
+        };
+    };
+
+    // Decreasing heigth
+    if (oldHeight > newHeight) {
+        SESSION.LEVEL.tiles = SESSION.LEVEL.tiles.splice(0, newHeight);
+        
+        // Remove objects outside the level
+        let newObjects = [];
+        for (let i = 0; i < SESSION.LEVEL.objects.length; i++) {
+            if (SESSION.LEVEL.objects[i].y < newHeight * BLOCK_SIZE) {
+                newObjects.push(SESSION.LEVEL.objects[i]);
+            };
+        };
+        SESSION.LEVEL.objects = newObjects;
+        
+    // Increasing heigth 
+    } else if (oldHeight < newHeight) {
+        for (let i = oldHeight; i < newHeight; i++) {
+            SESSION.LEVEL.tiles[i] = new Array(newWidth).fill(0);
+        };
+    };
+};
+
+function getCorrectedMousePosition(evt) {
+    let mouseX = evt.offsetX;
+    let mouseY = evt.offsetY;
+
+    mouseX -= SESSION.CAMERA_POSITION[0]
+    mouseY -= SESSION.CAMERA_POSITION[1]
+
+    mouseX /= SESSION.CAMERA_ZOOM;
+    mouseY /= SESSION.CAMERA_ZOOM;
+
+    const tileX = Math.floor(mouseX / BLOCK_SIZE);
+    const tileY = Math.floor(mouseY / BLOCK_SIZE);
+
+    return { mouseX, mouseY, tileX, tileY };
+};
+
 export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
+        const mouse = getCorrectedMousePosition(evt)
         switch(SESSION.SELECTED_TOOL_TYPE) {
             case 'tiles':
-                // set tiles
-                let mousex = evt.offsetX;
-                let mousey = evt.offsetY;
-                let tileX = Math.floor(mousex / BLOCK_SIZE);
-                let tileY = Math.floor(mousey / BLOCK_SIZE);
                 let tile;
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
@@ -128,13 +197,13 @@ export function initEditor(){
                         tile = 15
                         break;
                 };
-                SESSION.LEVEL.tiles[tileY][tileX] = tile;
+                SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
                 render({do_tiles: true, do_objects: false, do_text: false}, 'click')
                 break;
             case 'objects':
                 // set objects
-                let mouseX = evt.offsetX - 32;
-                let mouseY = evt.offsetY + 32;            
+                let mouseX = mouse.mouseX - 32;
+                let mouseY = mouse.mouseY + 32;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
                     case 'diamond':
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
@@ -225,8 +294,8 @@ export function initEditor(){
                 };
                 break;
             case 'text':
-                let mouse_x = evt.offsetX;
-                let mouse_y = evt.offsetY;
+                let mouse_x = mouse.mouseX;
+                let mouse_y = mouse.mouseY;
                 let texts = SESSION.LEVEL.text;
                 switch (SESSION.SELECTED_TEXT_TYPE){
                     case 'text':
@@ -276,21 +345,21 @@ export function initEditor(){
     // Add the eventlistener for right click
     highlightCanvas.addEventListener('contextmenu', evt => {
         if (SESSION.SELECTED_TOOL_TYPE == 'tiles') {
-            SESSION.LEVEL.tiles[Math.floor(evt.offsetY / BLOCK_SIZE)][Math.floor(evt.offsetX / BLOCK_SIZE)] = 0
+            const mouse = getCorrectedMousePosition(evt);
+            SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = 0
             render({do_tiles: true, do_objects: false, do_text: false}, 'contextmenu')
         };
     });
 
     // Add the eventlistener for dragging
     highlightCanvas.addEventListener('mousemove', evt => {
-        SESSION.MOUSE_POS_X = evt.offsetX;
-        SESSION.MOUSE_POS_Y = evt.offsetY;
-        let tileX = Math.floor(evt.offsetX / BLOCK_SIZE);
-        let tileY = Math.floor(evt.offsetY / BLOCK_SIZE);
+        const mouse = getCorrectedMousePosition(evt);
+        SESSION.MOUSE_POS_X = mouse.mouseX;
+        SESSION.MOUSE_POS_Y = mouse.mouseY;
 
         if ((SESSION.MOUSE_DOWN || SESSION.RIGHT_MOUSE_DOWN) && SESSION.SELECTED_TOOL_TYPE == 'tiles') {
             if (SESSION.RIGHT_MOUSE_DOWN) {
-                SESSION.LEVEL.tiles[tileY][tileX] = 0;
+                SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = 0;
             } else {
                 let tile
                 switch(SESSION.SELECTED_TYLE_TYPE) {
@@ -325,7 +394,7 @@ export function initEditor(){
                         console.log('ice');
                         tile = 15;
                 };
-                SESSION.LEVEL.tiles[tileY][tileX] = tile;
+                SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
             };
         };
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
@@ -364,6 +433,7 @@ export function initEditor(){
 
     // Add the eventlistener for pressing your mouse
     highlightCanvas.addEventListener('mousedown', evt => {
+        const mouse = getCorrectedMousePosition(evt);
         SESSION.SELECTED_OBJECT_ID = undefined;
         clearHighlight();
         if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
@@ -381,8 +451,8 @@ export function initEditor(){
                 if (int) {
                     console.log(int);
                     SESSION.SELECTED_OBJECT_ID = int.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - mouse.mouseY;
                     objectHighlight(int, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: true, do_text: false}, 'mousedown objects move');
@@ -398,8 +468,8 @@ export function initEditor(){
                 const txt = texts.find((text) => mouseIntersectsObject(text, 1));
                 if (txt) {
                     SESSION.SELECTED_OBJECT_ID = txt.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - mouse.mouseY;
                     objectHighlight(txt, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
@@ -409,8 +479,8 @@ export function initEditor(){
                 const txt = texts.find((text) => mouseIntersectsObject(text, 2));
                 if (txt) {
                     SESSION.SELECTED_OBJECT_ID = txt.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - mouse.mouseY;
                     objectHighlight(txt, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
@@ -433,7 +503,7 @@ export function initEditor(){
             const objects = SESSION.LEVEL.objects;
             const int = objects.find((obj) => mouseIntersectsObject(obj));
             if (int) {
-                const popup = new MoveModal(int.x, int.y, int.id);
+                const popup = new MoveModal(evt.clientX, evt.clientY, int.id);
                 popup.showOnly();
             };
         };
@@ -442,7 +512,7 @@ export function initEditor(){
             const objects = SESSION.LEVEL.objects;
             const int = objects.find(mouseIntersectsObject);
             if (int) {
-                const popup = new MoveModal(int.x, int.y, int.id);
+                const popup = new MoveModal(evt.clientX, evt.clientY, int.id);
                 popup.showOnly();
             };
         };
@@ -466,7 +536,7 @@ export function initEditor(){
         SESSION.LEVEL.height = parseInt(document.getElementById('level-height').value);
 
         // Re-render the canvas
-        resizeCanvas();
+        resizeLevel();
         render({do_tiles: true, do_objects: true, do_text: true}, 'resize')
     });
 
