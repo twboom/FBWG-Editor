@@ -31,6 +31,7 @@ export const SESSION = {
     LAST_PLACED_SPAWN: 0,
     EDITOR_FUNCTION: 'all',
     CAMERA_POSITION: [0,0],
+    CAMERA_ZOOM: 1,
 
     SHOW_CONSOLE_DEBUG: false,
 };
