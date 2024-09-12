@@ -137,7 +137,7 @@ export function render_object(object, ctx) {
             ctx.stroke();
 
             // Draw the preview
-            if (SESSION.PLATFROM_PREVIEWS) {draw_platform_preview(object, ctx);};
+            if (SESSION.RENDER_PLATFROM_PREVIEWS) {draw_platform_preview(object, ctx);};
             break;
         case 'RotationMirror':
             ctx.beginPath();
@@ -410,7 +410,7 @@ export function render_object(object, ctx) {
             };
             ctx.fill();
 
-            if (object.initialState == 1 || SESSION.WIND_PREVIEWS) { draw_wind(object, rotation, ctx); };
+            if (object.initialState == 1 || SESSION.RENDER_WIND_PREVIEWS) { draw_wind(object, rotation, ctx); };
             break;
         case 'Window':
             ctx.beginPath();
@@ -420,7 +420,7 @@ export function render_object(object, ctx) {
             ctx.fill();
             break;
         case 'Cover':
-            if (SESSION.COVER_PREVIEWS) {
+            if (SESSION.RENDER_COVER_PREVIEWS) {
                 ctx.beginPath();
                 ctx.rect(object.x, object.y, object.width, -object.height);
                 ctx.fillStyle = 'black';

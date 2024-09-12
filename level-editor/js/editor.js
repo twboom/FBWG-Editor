@@ -428,6 +428,12 @@ export function initEditor(){
                 clearHighlight();
             };
         };
+
+        if (SESSION.MIDDLE_MOUSE_DOWN) {
+            SESSION.CAMERA_POSITION[0] += evt.movementX;
+            SESSION.CAMERA_POSITION[1] += evt.movementY;
+            render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas transform');
+        };
     });
 
     // Add the eventlistener for pressing your mouse
@@ -435,7 +441,10 @@ export function initEditor(){
         const mouse = getCorrectedMousePosition(evt);
         SESSION.SELECTED_OBJECT_ID = undefined;
         clearHighlight();
-        if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
+        if (evt.button == 0) { SESSION.MOUSE_DOWN = true; }
+        else if (evt.button == 1) {
+            SESSION.MIDDLE_MOUSE_DOWN = true;
+        }
         else if (evt.button == 2) { 
             SESSION.RIGHT_MOUSE_DOWN = true;
         };
@@ -489,8 +498,8 @@ export function initEditor(){
 
         if (document.getElementsByClassName('modal-container')) {
             [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
-            if (!(document.getElementById('previews').classList.contains('active'))) {
-                SESSION.PLATFROM_PREVIEWS = false;
+            if (!SESSION.SETTING_PLATFORM_PREVIEWS) {
+                SESSION.RENDER_PLATFROM_PREVIEWS = false;
                 render({do_tiles: false, do_objects: true, do_text: false});
             };
         };
@@ -518,6 +527,7 @@ export function initEditor(){
 
         SESSION.MOUSE_DOWN = false;
         SESSION.RIGHT_MOUSE_DOWN = false;
+        SESSION.MIDDLE_MOUSE_DOWN = false;
         SESSION.DO_RENDER = false;
     });
 };
