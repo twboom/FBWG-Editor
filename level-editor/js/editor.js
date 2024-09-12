@@ -1,11 +1,10 @@
 import { render } from "./Renderer.js";
-import { highlightCanvas, highlightCtx, resizeCanvas } from "./canvas.js";
-import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
+import { highlightCanvas } from "./canvas.js";
+import { BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { Modal, BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
-import { exportTEXT, exportJSON } from "./export.js";
+import { BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
 
 function mouseIntersectsObject(object, text =  0) {
     const mouseX = SESSION.MOUSE_POS_X;

@@ -1,4 +1,5 @@
 import { BLOCK_SIZE } from "./lookup.js";
+import { render } from "./Renderer.js";
 import { SESSION } from "./session.js";
 
 export const highlightCanvas = document.getElementById('highlight');
@@ -23,6 +24,8 @@ export function resizeCanvas() {
 
     highlightCanvas.width = width;
     highlightCanvas.height = height;
+
+    render({do_tiles: true, do_objects: true, do_text: true}, 'Window resize');
 
     // Move the toolbox
     // let newWidth = SESSION.LEVEL.width;
