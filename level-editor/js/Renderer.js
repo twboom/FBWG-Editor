@@ -78,18 +78,24 @@ export function render(options, tracer) {
     };
 
     SESSION.TILE_CTX.resetTransform();
+    SESSION.TILE_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
     SESSION.TILE_CTX.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
     SESSION.TILE_CTX.scale(SESSION.CAMERA_ZOOM, SESSION.CAMERA_ZOOM)
     SESSION.OBJECT_CTX.resetTransform();
+    SESSION.OBJECT_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
     SESSION.OBJECT_CTX.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
     SESSION.OBJECT_CTX.scale(SESSION.CAMERA_ZOOM, SESSION.CAMERA_ZOOM)
     SESSION.TEXT_CTX.resetTransform();
+    SESSION.TEXT_CTX.clearRect(0, 0, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
     SESSION.TEXT_CTX.translate(SESSION.CAMERA_POSITION[0], SESSION.CAMERA_POSITION[1]);
     SESSION.TEXT_CTX.scale(SESSION.CAMERA_ZOOM, SESSION.CAMERA_ZOOM)
 
+    const cameraCorrectedX = -(SESSION.CAMERA_POSITION[0])
+    const cameraCorrectedY = -(SESSION.CAMERA_POSITION[1])
+
     // Render the correct layer
     if (do_tiles) {
-        SESSION.TILE_CTX.clearRect(-SESSION.CAMERA_POSITION[0], -SESSION.CAMERA_POSITION[1], SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
+        SESSION.TILE_CTX.clearRect(cameraCorrectedX, cameraCorrectedY, SESSION.TILE_CANVAS.width, SESSION.TILE_CANVAS.height);
         const tiles = SESSION.LEVEL.tiles;
         let later = []
         for (let y = 0; y < tiles.length; y++) {
@@ -107,7 +113,7 @@ export function render(options, tracer) {
         };
     };
     if (do_objects) {
-        SESSION.OBJECT_CTX.clearRect(-SESSION.CAMERA_POSITION[0], -SESSION.CAMERA_POSITION[1], SESSION.OBJECT_CANVAS.width, SESSION.OBJECT_CANVAS.height);
+        SESSION.OBJECT_CTX.clearRect(cameraCorrectedX, cameraCorrectedY, SESSION.OBJECT_CANVAS.width, SESSION.OBJECT_CANVAS.height);
         const objects = SESSION.LEVEL.objects;
         for (let i = 0; i < objects.length; i++) {
             if (objects[i]) {
@@ -117,7 +123,7 @@ export function render(options, tracer) {
     };
 
     if (do_text) {
-        SESSION.TEXT_CTX.clearRect(-SESSION.CAMERA_POSITION[0], -SESSION.CAMERA_POSITION[1], SESSION.TEXT_CANVAS.width, SESSION.TEXT_CANVAS.height);
+        SESSION.TEXT_CTX.clearRect(cameraCorrectedX, cameraCorrectedY, SESSION.TEXT_CANVAS.width, SESSION.TEXT_CANVAS.height);
         const objects = SESSION.LEVEL.text;
         for (let i = 0; i < objects.length; i++) {
             if (objects[i]) {

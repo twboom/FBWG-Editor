@@ -432,7 +432,7 @@ export function initEditor(){
         if (SESSION.MIDDLE_MOUSE_DOWN) {
             SESSION.CAMERA_POSITION[0] += evt.movementX;
             SESSION.CAMERA_POSITION[1] += evt.movementY;
-            render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas transform');
+            render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas translate');
         };
     });
 
@@ -530,4 +530,14 @@ export function initEditor(){
         SESSION.MIDDLE_MOUSE_DOWN = false;
         SESSION.DO_RENDER = false;
     });
+
+    window.addEventListener('wheel', evt => {
+        if (evt.deltaY > 0) {
+            SESSION.CAMERA_ZOOM -= 0.01
+        } else if (evt.deltaY < 0) {
+            SESSION.CAMERA_ZOOM += 0.01
+        };
+
+        render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas scale');
+    })
 };
