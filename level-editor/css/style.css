@@ -10,6 +10,7 @@ body {
 
 * {
     font-family: sans-serif;
+    color: var(--text-color);
     /* font-family: 'Trajan Pro', sans-serif;    */
 }
 
@@ -17,8 +18,6 @@ section#horizontal > * {
     display: inline-block;
     vertical-align: top;
 }
-
-div
 
 div#canvas-container {
     display: grid;

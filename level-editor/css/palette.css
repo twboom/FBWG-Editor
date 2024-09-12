@@ -3,6 +3,8 @@
 :root {
     --background-color: #3f4055;
     --background-color-dark: #262739;
+    --text-color: white;
+    --border-color: #16171d;
 
     --bar-button-size: 48px;
 }

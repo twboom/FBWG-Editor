@@ -7,6 +7,11 @@ div#menu-bar {
 
 div#menu-bar > div.menu-group {
     display: inline;
+    height: fit-content
+}
+
+div.menu-group > * {
+    display: inline;
 }
 
 section#horizontal {
@@ -22,6 +27,11 @@ div#tool-bar {
 
 div#tool-bar > button {
     display: block;
+    margin: 8px 0;
+}
+
+div#tool-bar > button:first-child {
+    margin-top: -8px;
 }
 
 div#outer-canvas-container {
@@ -30,13 +40,24 @@ div#outer-canvas-container {
     margin-left: -4px;
 }
 
+button.img-button, button.menu-item {
+    outline: none;
+    border: 4px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--background-color);
+    cursor: pointer;
+}
+
+button.menu-item {
+    min-width: var(--bar-button-size);
+    height: var(--bar-button-size);
+}
+
 button.img-button {
     width: var(--bar-button-size);
     height: var(--bar-button-size);
-    padding: 4px;
+    padding: 8px;
     margin: 0;
-    outline: none;
-    border: none;
 }
 
 img.tool-img {
