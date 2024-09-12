@@ -62,7 +62,7 @@ function handleEdit(evt, text = 0) {
         console.log(int);
         objectHighlight(int, 'handleEdit');
         const CorrectModal = getModal(int);
-        const popup = new CorrectModal(int.x, int.y, int.id);
+        const popup = new CorrectModal(evt.clientX, evt.clientY, int.id);
         popup.showOnly();
     } else {
         SESSION.SELECTED_OBJECT_ID = undefined;
@@ -146,7 +146,7 @@ function resizeLevel() {
 function getCorrectedMousePosition(evt) {
     let mouseX = evt.offsetX;
     let mouseY = evt.offsetY;
-    
+
     mouseX -= SESSION.CAMERA_POSITION[0]
     mouseY -= SESSION.CAMERA_POSITION[1]
 
@@ -161,19 +161,9 @@ function getCorrectedMousePosition(evt) {
 
 export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
+        const mouse = getCorrectedMousePosition(evt)
         switch(SESSION.SELECTED_TOOL_TYPE) {
             case 'tiles':
-                // set tiles
-                // let mousex = evt.offsetX;
-                // let mousey = evt.offsetY;
-
-                const mouse = getCorrectedMousePosition(evt)
-
-                let mousex = mouse.mouseX;
-                let mousey = mouse.mouseY;
-
-                let tileX = Math.floor(mousex / BLOCK_SIZE);
-                let tileY = Math.floor(mousey / BLOCK_SIZE);
                 let tile;
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
@@ -212,8 +202,8 @@ export function initEditor(){
                 break;
             case 'objects':
                 // set objects
-                let mouseX = evt.offsetX - 32;
-                let mouseY = evt.offsetY + 32;            
+                let mouseX = mouse.mouseX - 32;
+                let mouseY = mouse.mouseY + 32;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
                     case 'diamond':
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
@@ -304,8 +294,8 @@ export function initEditor(){
                 };
                 break;
             case 'text':
-                let mouse_x = evt.offsetX;
-                let mouse_y = evt.offsetY;
+                let mouse_x = mouse.mouseX;
+                let mouse_y = mouse.mouseY;
                 let texts = SESSION.LEVEL.text;
                 switch (SESSION.SELECTED_TEXT_TYPE){
                     case 'text':
@@ -443,6 +433,7 @@ export function initEditor(){
 
     // Add the eventlistener for pressing your mouse
     highlightCanvas.addEventListener('mousedown', evt => {
+        const mouse = getCorrectedMousePosition(evt);
         SESSION.SELECTED_OBJECT_ID = undefined;
         clearHighlight();
         if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
@@ -460,8 +451,8 @@ export function initEditor(){
                 if (int) {
                     console.log(int);
                     SESSION.SELECTED_OBJECT_ID = int.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - mouse.mouseY;
                     objectHighlight(int, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: true, do_text: false}, 'mousedown objects move');
@@ -477,8 +468,8 @@ export function initEditor(){
                 const txt = texts.find((text) => mouseIntersectsObject(text, 1));
                 if (txt) {
                     SESSION.SELECTED_OBJECT_ID = txt.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - mouse.mouseY;
                     objectHighlight(txt, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
@@ -488,8 +479,8 @@ export function initEditor(){
                 const txt = texts.find((text) => mouseIntersectsObject(text, 2));
                 if (txt) {
                     SESSION.SELECTED_OBJECT_ID = txt.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - mouse.mouseY;
                     objectHighlight(txt, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
@@ -512,7 +503,7 @@ export function initEditor(){
             const objects = SESSION.LEVEL.objects;
             const int = objects.find((obj) => mouseIntersectsObject(obj));
             if (int) {
-                const popup = new MoveModal(int.x, int.y, int.id);
+                const popup = new MoveModal(evt.clientX, evt.clientY, int.id);
                 popup.showOnly();
             };
         };
@@ -521,7 +512,7 @@ export function initEditor(){
             const objects = SESSION.LEVEL.objects;
             const int = objects.find(mouseIntersectsObject);
             if (int) {
-                const popup = new MoveModal(int.x, int.y, int.id);
+                const popup = new MoveModal(evt.clientX, evt.clientY, int.id);
                 popup.showOnly();
             };
         };
