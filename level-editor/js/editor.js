@@ -537,7 +537,6 @@ export function initEditor(){
 
         // Re-render the canvas
         resizeLevel();
-        resizeCanvas();
         render({do_tiles: true, do_objects: true, do_text: true}, 'resize')
     });
 

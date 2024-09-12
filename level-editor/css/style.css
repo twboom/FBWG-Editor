@@ -24,7 +24,8 @@ div#canvas-container {
 canvas {
     grid-column: 1;
     grid-row: 1;
-    /* width: 100%; */
+    width: 80vw;
+    height: 90vh;
 }
 
 canvas#highlight {

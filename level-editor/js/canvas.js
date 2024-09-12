@@ -6,8 +6,10 @@ export const highlightCtx = highlightCanvas.getContext('2d');
 
 export function resizeCanvas(blockSize = 32) {
     // Get the correct width and height
-    let width = SESSION.LEVEL.width * blockSize;
-    let height = SESSION.LEVEL.height * blockSize;
+    // let width = SESSION.LEVEL.width * blockSize;
+    // let height = SESSION.LEVEL.height * blockSize;
+    let width = highlightCanvas.getBoundingClientRect().width;
+    let height = highlightCanvas.getBoundingClientRect().height;
     
     // Set the correct width and heigth
     SESSION.TILE_CANVAS.width = width;
@@ -23,8 +25,8 @@ export function resizeCanvas(blockSize = 32) {
     highlightCanvas.height = height;
 
     // Move the toolbox
-    let newWidth = SESSION.LEVEL.width;
-    document.getElementById('input-container').style.left = String((newWidth * 32 + 52)) + 'px';
+    // let newWidth = SESSION.LEVEL.width;
+    // document.getElementById('input-container').style.left = String((newWidth * 32 + 52)) + 'px';
 };
 
 const CACHE = {};
