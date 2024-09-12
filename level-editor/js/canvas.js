@@ -4,7 +4,7 @@ import { SESSION } from "./session.js";
 export const highlightCanvas = document.getElementById('highlight');
 export const highlightCtx = highlightCanvas.getContext('2d');
 
-export function resizeCanvas(blockSize = 32) {
+export function resizeCanvas() {
     // Get the correct width and height
     // let width = SESSION.LEVEL.width * blockSize;
     // let height = SESSION.LEVEL.height * blockSize;

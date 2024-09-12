@@ -3,7 +3,8 @@ import { TileRenderer } from './Renderer.js';
 import { initEditor } from './editor.js';
 import { initImport, importURL } from './import.js';
 import { SESSION } from './session.js';
-import { resizeCanvas } from './canvas.js';
+import { initInterface } from './interface.js';
+
 
 window.onbeforeunload = evt => {
     // evt.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
@@ -20,8 +21,8 @@ function init() {
     SESSION.LEVEL = new Level();
     initImport();
     initEditor();
+    initInterface();
     importURL('example_level.json');
-    resizeCanvas();
 };
 
 init();
