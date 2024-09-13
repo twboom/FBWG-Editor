@@ -48,6 +48,11 @@ export function render(options, tracer) {
         console.log('RENDER:', options, 'tracer:', tracer);
     };
 
+    if (SESSION.CAMERA_MOVE_LEFT) { SESSION.CAMERA_POSITION[0] -= 4; };
+    if (SESSION.CAMERA_MOVE_RIGHT) { SESSION.CAMERA_POSITION[0] += 4; };
+    if (SESSION.CAMERA_MOVE_UP) { SESSION.CAMERA_POSITION[1] -= 4; };
+    if (SESSION.CAMERA_MOVE_DOWN) { SESSION.CAMERA_POSITION[1] += 4; };
+
     let txt = false;
     switch (SESSION.EDITOR_FUNCTION) {
         case 'tile-editor':

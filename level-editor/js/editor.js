@@ -531,6 +531,7 @@ export function initEditor(){
         SESSION.DO_RENDER = false;
     });
 
+    // Canvas zoom
     window.addEventListener('wheel', evt => {
         if (evt.deltaY > 0) {
             SESSION.CAMERA_ZOOM -= 0.01
@@ -539,5 +540,62 @@ export function initEditor(){
         };
 
         render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas scale');
-    })
+    });
+
+    // Canvas translate
+    window.addEventListener('keydown', evt => {
+        if (['KeyA', 'KeyW', 'KeyS', 'KeyD'].includes(evt.code)) {
+            SESSION.DO_RENDER = true;
+            switch (evt.code) {
+                case 'KeyA':
+                    SESSION.CAMERA_MOVE_LEFT = true;
+                    break;
+                    
+                case 'KeyW':
+                    SESSION.CAMERA_MOVE_UP = true;
+                    break;
+
+                case 'KeyS':
+                    SESSION.CAMERA_MOVE_DOWN = true;
+                    break;
+
+                case 'KeyD':
+                    SESSION.CAMERA_MOVE_RIGHT = true;
+                    break;
+            };
+
+            render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas translate');
+        };
+    });
+
+    window.addEventListener('keyup', evt => {
+        if (['KeyA', 'KeyW', 'KeyS', 'KeyD'].includes(evt.code)) {
+            switch (evt.code) {
+                case 'KeyA':
+                    SESSION.CAMERA_MOVE_LEFT = false;
+                    break;
+                    
+                case 'KeyW':
+                    SESSION.CAMERA_MOVE_UP = false;
+                    break;
+
+                case 'KeyS':
+                    SESSION.CAMERA_MOVE_DOWN = false;
+                    break;
+
+                case 'KeyD':
+                    SESSION.CAMERA_MOVE_RIGHT = false;
+                    break;
+            };
+
+            if (!(
+                SESSION.CAMERA_MOVE_LEFT ||
+                SESSION.CAMERA_MOVE_RIGHT ||
+                SESSION.CAMERA_MOVE_UP ||
+                SESSION.CAMERA_MOVE_DOWN
+            )) {
+                SESSION.DO_RENDER = false;
+            }
+        };
+    });
 };

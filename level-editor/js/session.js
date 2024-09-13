@@ -36,6 +36,10 @@ export const SESSION = {
     EDITOR_FUNCTION: 'all',
     CAMERA_POSITION: [0,0],
     CAMERA_ZOOM: 1,
+    CAMERA_MOVE_LEFT: false,
+    CAMERA_MOVE_RIGHT: false,
+    CAMERA_MOVE_UP: false,
+    CAMERA_MOVE_DOWN: false,
 
     SHOW_CONSOLE_DEBUG: false,
 };
