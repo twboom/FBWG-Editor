@@ -533,11 +533,23 @@ export function initEditor(){
 
     // Canvas zoom
     window.addEventListener('wheel', evt => {
+        const currentWidth = SESSION.LEVEL.width * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
+        const currentHeight = SESSION.LEVEL.height * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
+
         if (evt.deltaY > 0) {
             SESSION.CAMERA_ZOOM -= 0.01
         } else if (evt.deltaY < 0) {
             SESSION.CAMERA_ZOOM += 0.01
         };
+
+        const newWidth = SESSION.LEVEL.width * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
+        const newHeight = SESSION.LEVEL.height * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
+
+        const deltaWidth = currentWidth - newWidth;
+        const deltaHeight = currentHeight - newHeight;
+
+        SESSION.CAMERA_POSITION[0] += deltaWidth / 2;
+        SESSION.CAMERA_POSITION[1] += deltaHeight / 2;
 
         render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas scale');
     });
