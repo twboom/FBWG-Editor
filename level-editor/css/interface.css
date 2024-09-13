@@ -47,6 +47,14 @@ button.img-button, button.menu-item {
     border-radius: 4px;
     background-color: var(--background-color);
     cursor: pointer;
+    transition: all 0.1s;
+}
+
+button.img-button:active, button.menu-item:active {
+    background-color: white;
+    border-color: lightgray;
+    color: black;
+    transition: none;
 }
 
 button.menu-item {
