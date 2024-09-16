@@ -496,11 +496,11 @@ export function initEditor(){
             };
         };
 
-        if (document.getElementsByClassName('modal-container')) {
+        if (document.getElementsByClassName('modal-container').length > 0) {
             [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
             if (!SESSION.SETTING_PLATFORM_PREVIEWS) {
                 SESSION.RENDER_PLATFROM_PREVIEWS = false;
-                render({do_tiles: false, do_objects: true, do_text: false});
+                render({do_tiles: false, do_objects: true, do_text: false}, 'remove temporary previews');
             };
         };
     });
