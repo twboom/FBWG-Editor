@@ -50,6 +50,14 @@ div#popup {
     border: solid 4px gray;
 }
 
+div.popout {
+    display: none;
+}
+
+div.popout.active {
+    display: block;
+}
+
 @keyframes highlight_blink {
     0% {
         opacity: 1;

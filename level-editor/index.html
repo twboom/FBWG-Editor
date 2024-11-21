@@ -37,13 +37,10 @@
             <button class="img-button">M</button>
             <button class="img-button">E</button>
             <button class="img-button">T</button>
-            <button class="img-button">
+            <button class="img-button" data-popout="level-points">
                 <img src="assets/objects/spawn_fb.svg" alt="" class="tool-img">
             </button>
-            <button class="img-button">
-                <img src="assets/objects/door_wg.svg" alt="" class="tool-img">
-            </button>
-            <button class="img-button">
+            <button class="img-button" data-popout="diamonds">
                 <img src="assets/objects/diamond_silver.svg" alt="" class="tool-img">
             </button>          
             <button class="img-button">
@@ -75,5 +72,35 @@
             </div>
         </div>
     </section>
+    <div id="popout-container">
+        <div class="popout" data-anchor="level-points">
+            <button class="img-button">
+                <img src="assets/objects/spawn_fb.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/spawn_wg.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/door_fb.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/door_wg.svg" alt="" class="tool-img">
+            </button>
+        </div>
+        <div class="popout" data-anchor="diamonds">
+            <button class="img-button">
+                <img src="assets/objects/diamond_fb.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/diamond_wg.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/diamond_silver.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">
+                <img src="assets/objects/diamond_fbwg.svg" alt="" class="tool-img">
+            </button>
+        </div>
+    </div>
 </body>
 </html>

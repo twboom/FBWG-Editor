@@ -74,3 +74,12 @@ img.tool-img {
     height: 100%;
     margin: 0;
 }
+
+div.popout {
+    position: absolute;
+}
+
+div.popout > button {
+    display: block;
+    margin: 4px 0;
+}
