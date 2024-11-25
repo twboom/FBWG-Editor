@@ -43,7 +43,8 @@ export class TileRenderer {
 };
 
 export function render(options, tracer) {
-    const {do_tiles = true, do_objects = true, do_text = true} = options;
+    // const {do_tiles = true, do_objects = true, do_text = true} = options;
+    const {do_tiles = true, do_objects = true, do_text = true} = {};
     if (SESSION.SHOW_CONSOLE_DEBUG) {
         console.log('RENDER:', options, 'tracer:', tracer);
     };

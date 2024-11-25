@@ -328,10 +328,10 @@ class CloseField extends ModalField {
     constructor() {
         const CloseValueAttribute = new ValueAttribute('Close');
         const callback = evt => {
-            if (!(document.getElementById('previews').classList.contains('active'))) {
-                SESSION.RENDER_PLATFROM_PREVIEWS = false;
-                render(false, true);
-            };
+            // if (!(document.getElementById('previews').classList.contains('active'))) {
+            //     SESSION.RENDER_PLATFROM_PREVIEWS = false;
+            //     render(false, true);
+            // };
 
             evt.target.closest('.modal-container').remove();
         };

@@ -83,3 +83,14 @@ div.popout > button {
     display: block;
     margin: 4px 0;
 }
+
+input {
+    background-color: var(--background-color);
+}
+
+input[type="button"] {
+    outline: none;
+    border: 4px solid var(--border-color);
+    border-radius: 4px;
+    padding: 4px;
+}

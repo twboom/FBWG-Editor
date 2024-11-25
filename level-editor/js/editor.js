@@ -55,6 +55,7 @@ function getModal(object) {
 };
 
 function handleEdit(evt, text = 0) {
+    console.log(evt)
     const objects = text != 0 ? SESSION.LEVEL.text : SESSION.LEVEL.objects;
     const int = objects.find((obj) => mouseIntersectsObject(obj, text));
     if (int) {
@@ -162,7 +163,7 @@ export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
         const mouse = getCorrectedMousePosition(evt)
         switch(SESSION.SELECTED_TOOL_TYPE) {
-            case 'tiles':
+            case 'tile':
                 let tile;
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
@@ -199,7 +200,7 @@ export function initEditor(){
                 SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
                 render({do_tiles: true, do_objects: false, do_text: false}, 'click')
                 break;
-            case 'objects':
+            case 'object':
                 // set objects
                 let mouseX = mouse.mouseX - 32;
                 let mouseY = mouse.mouseY + 32;            
@@ -288,7 +289,7 @@ export function initEditor(){
                         break;
                 };
                 if (!['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
-                    handleEdit();
+                    handleEdit(evt);
                     render({do_tiles: false, do_objects: true, do_text: false}, 'click');
                 };
                 break;

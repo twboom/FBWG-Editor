@@ -23,7 +23,6 @@ function openPopout(popout) {
     container.style.top = anchorBoundingBox.top + (anchorBoundingBox.height / 2) - (containerBoundingBox.height / 2) + 'px';
 };
 
-
 export function initInterface() {
     resizeCanvas();
     window.addEventListener('resize', _ => { resizeCanvas(); });
@@ -39,6 +38,27 @@ export function initInterface() {
                 btn.children[0].src = popoutBtn.children[0].src;
                 container.classList.remove('active');
             });
+        });
+    });
+
+    document.querySelectorAll('button[data-tool]').forEach(btn => {
+        btn.addEventListener('click', _ => {
+            SESSION.SELECTED_TOOL_TYPE = btn.dataset.tool.split(':')[0];
+            const tool = btn.dataset.tool.split(':')[1];
+            switch(SESSION.SELECTED_TOOL_TYPE) {
+                case 'tile':
+                    SESSION.SELECTED_TYLE_TYPE = tool;
+                    break;
+                    
+                case 'object':
+                    SESSION.SELECTED_OBJECT_TYPE = tool;
+                    break;
+
+                case 'text':
+                    SESSION.SELECTED_TEXT_TYPE = tool;
+                    break;
+            };
+            console.log(SESSION)
         });
     });
 };

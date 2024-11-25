@@ -1,6 +1,7 @@
 div.modal-container {
     position: absolute;
-    background-color: white;
+    background-color: var(--background-color-dark);
     padding: 8px;
-    border: solid 4px gray;
+    border: solid 4px var(--border-color);
+    border-radius: 4px;
 }
