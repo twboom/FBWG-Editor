@@ -356,29 +356,29 @@ export function initEditor(){
         const mouse = getCorrectedMousePosition(evt);
         SESSION.MOUSE_POS_X = mouse.mouseX;
         SESSION.MOUSE_POS_Y = mouse.mouseY;
-
-        if ((SESSION.MOUSE_DOWN || SESSION.RIGHT_MOUSE_DOWN) && SESSION.SELECTED_TOOL_TYPE == 'tiles') {
+        
+        if ((SESSION.MOUSE_DOWN || SESSION.RIGHT_MOUSE_DOWN) && SESSION.SELECTED_TOOL_TYPE == 'tile') {
             if (SESSION.RIGHT_MOUSE_DOWN) {
                 SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = 0;
             } else {
-                let tile
+                let tile;
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
                         tile = 0;
                         break;
-                    case 'block':
+                    case 'ground':
                         tile = 1;
                         break;
-                    case 'slopeTR':
+                    case 'slope_tr':
                         tile = 2;
                         break;
-                    case 'slopeTL':
+                    case 'slope_tl':
                         tile = 3;
                         break;
-                    case 'slopeBR':
+                    case 'slope_br':
                         tile = 4;
                         break;
-                    case 'slopeBL':
+                    case 'slope_bl':
                         tile = 5;
                         break;
                     case 'water':
@@ -395,6 +395,7 @@ export function initEditor(){
                         tile = 15;
                 };
                 SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
+                render({}, 'mousemove')
             };
         };
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
