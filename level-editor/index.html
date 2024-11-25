@@ -34,9 +34,14 @@
     </div>
     <section id="horizontal">
         <div id="tool-bar">
-            <button class="img-button">M</button>
-            <button class="img-button">E</button>
-            <button class="img-button">T</button>
+            <button class="img-button" data-tool="common:move">M</button>
+            <button class="img-button" data-tool="common:edit">E</button>
+            <button class="img-button" data-popout="tiles" data-tool="tile:ground">
+                <img src="assets/tiles/tile_ground.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-popout="fluids" data-tool="tile:water">
+                <img src="assets/tiles/fluid_water.svg" alt="" class="tool-img">
+            </button>
             <button class="img-button" data-popout="level-points" data-tool="object:spawn_fb">
                 <img src="assets/objects/spawn_fb.svg" alt="" class="tool-img">
             </button>
@@ -73,6 +78,40 @@
         </div>
     </section>
     <div id="popout-container">
+        <div class="popout" data-anchor="tiles">
+            <button class="img-button" data-tool="tile:air">
+                <img src="assets/tiles/tile_air.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:ground">
+                <img src="assets/tiles/tile_ground.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:slope_tr">
+                <img src="assets/tiles/tile_slope_tr.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:slope_tl">
+                <img src="assets/tiles/tile_slope_tl.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:slope_br">
+                <img src="assets/tiles/tile_slope_br.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:slope_bl">
+                <img src="assets/tiles/tile_slope_bl.svg" alt="" class="tool-img">
+            </button>
+        </div>
+        <div class="popout" data-anchor="fluids">
+            <button class="img-button" data-tool="tile:water">
+                <img src="assets/tiles/fluid_water.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:lava">
+                <img src="assets/tiles/fluid_lava.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:acid">
+                <img src="assets/tiles/fluid_acid.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="tile:ice">
+                <img src="assets/tiles/fluid_ice.svg" alt="" class="tool-img">
+            </button>
+        </div>
         <div class="popout" data-anchor="level-points">
             <button class="img-button" data-tool="object:spawn_fb">
                 <img src="assets/objects/spawn_fb.svg" alt="" class="tool-img">

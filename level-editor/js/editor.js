@@ -169,19 +169,19 @@ export function initEditor(){
                     case 'air':
                         tile = 0
                         break;
-                    case 'block':
+                    case 'ground':
                         tile = 1
                         break;
-                    case 'slopeTR':
+                    case 'slope_tr':
                         tile = 2
                         break;
-                    case 'slopeTL':
+                    case 'slope_tl':
                         tile = 3
                         break;
-                    case 'slopeBR':
+                    case 'slope_br':
                         tile = 4
                         break;
-                    case 'slopeBL':
+                    case 'slope_bl':
                         tile = 5
                         break;
                     case 'water':
