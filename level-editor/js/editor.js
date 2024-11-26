@@ -161,6 +161,7 @@ function getCorrectedMousePosition(evt) {
 
 export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
+        if (evt.button === 1) { return; };
         const mouse = getCorrectedMousePosition(evt)
         switch(SESSION.SELECTED_TOOL_TYPE) {
             case 'tile':
