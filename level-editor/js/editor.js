@@ -5,6 +5,7 @@ import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
 import { BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
+import { selectTool } from './interface.js';
 
 function mouseIntersectsObject(object, text =  0) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -306,6 +307,7 @@ export function initEditor(){
                 };
                 if (!['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
                     handleEdit(evt);
+                    selectTool('object:edit')
                     render({do_tiles: false, do_objects: true, do_text: false}, 'click');
                 };
                 break;

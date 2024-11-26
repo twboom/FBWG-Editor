@@ -6,6 +6,13 @@ import { Modal } from "./modal.js";
 import { clearHighlight } from "./highlight_renderer.js";
 
 
+export function selectTool(tool) {
+    console.log(tool)
+    const btn = document.querySelector(`button[data-tool="${tool}"]`);
+    if (btn) { btn.click() };
+};
+
+
 function openPopout(popout) {
     let alreadyOpenState = false;
     document.querySelectorAll('div.popout.active').forEach(popoutToRemove => {
