@@ -417,7 +417,7 @@ export function initEditor(){
                 render({}, 'mousemove')
             };
         };
-        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
+        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'object' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
             handleMove(evt);
         };
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'text' && SESSION.SELECTED_TEXT_TYPE === 'move-text') {
@@ -478,7 +478,6 @@ export function initEditor(){
                 const objects = SESSION.LEVEL.objects;
                 const int = objects.find((obj) => mouseIntersectsObject(obj));
                 if (int) {
-                    console.log(int);
                     SESSION.SELECTED_OBJECT_ID = int.id;
                     SESSION.MOVE_HANDLE_OFFSET_X = int.x - mouse.mouseX;
                     SESSION.MOVE_HANDLE_OFFSET_Y = int.y - mouse.mouseY;
