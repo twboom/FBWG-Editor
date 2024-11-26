@@ -284,7 +284,7 @@ export function initEditor(){
                         new Objects.Slider();
                         break;
                     case 'light_emitter': // Idk
-                        new Objects.LightEmitter();
+                        new Objects.LightEmitter(mouseX, mouseY, 0, 'white', 0, 1);
                         break;
                     case 'light_receiver': // Idk
                         new Objects.LightReceiver();
