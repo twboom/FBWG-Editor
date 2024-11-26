@@ -51,6 +51,7 @@ function getModal(object) {
         case 'TextField': return TextFieldModal;
         case 'TextTrigger': return TextTriggerModal;
         case 'Cover': return CoverModal;
+        case 'Window': return CoverModal;
         default: return BasicModal;
     };
 };
