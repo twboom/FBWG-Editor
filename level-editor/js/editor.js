@@ -205,16 +205,6 @@ export function initEditor(){
                 let mouseX = mouse.mouseX - 32;
                 let mouseY = mouse.mouseY + 32;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
-                    // case 'diamond':
-                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
-                    //         for (let i = SESSION.LEVEL.objects.length -  1; i >= 0; i-- ) {
-                    //             if (SESSION.LEVEL.objects[i].type == 2) {
-                    //                 SESSION.LEVEL.objects.splice(i, 1);
-                    //             };
-                    //         };
-                    //     };  
-                    //     new Objects.Diamond(mouseX, mouseY, 0, SESSION.LAST_PLACED_DIAMOND);
-                    //     break;
                     case 'diamond_fb':
                         new Objects.Diamond(mouseX, mouseY, 0, 0);
                         break;
@@ -363,7 +353,7 @@ export function initEditor(){
 
     // Add the eventlistener for right click
     highlightCanvas.addEventListener('contextmenu', evt => {
-        if (SESSION.SELECTED_TOOL_TYPE == 'tiles') {
+        if (SESSION.SELECTED_TOOL_TYPE == 'tile') {
             const mouse = getCorrectedMousePosition(evt);
             SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = 0
             render({do_tiles: true, do_objects: false, do_text: false}, 'contextmenu')
@@ -414,8 +404,8 @@ export function initEditor(){
                         tile = 15;
                 };
                 SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
-                render({}, 'mousemove')
             };
+            render({}, 'mousemove')
         };
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'object' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
             handleMove(evt);
