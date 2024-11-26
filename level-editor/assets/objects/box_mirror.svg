@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style>
+        rect {
+            fill: white;
+            stroke: gray;
+            stroke-width: 4px;
+        }
+
+        polygon {
+            fill: silver;
+            stroke: gray;
+            stroke-width: 2px;;
+        }
+
+        line {
+            /* fill: silver; */
+            stroke: silver;
+            stroke-width: 4px;
+        }
+    </style>
+    <rect width="64" height="64" />
+    <polygon points="0,0 20,0 0,20" />
+    <polygon points="44,0 64,0 64,20" />
+    <polygon points="64,44 64,64 44,64" />
+    <polygon points="0,44 0,64 20,64" />
+    <line x1="8" x2="56" y1="8" y2="56" />
+</svg>
