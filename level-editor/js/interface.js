@@ -76,16 +76,19 @@ export function initInterface() {
     });
 
     document.addEventListener('click', _ => {
-        [...document.getElementById('tool-bar').getElementsByClassName('selected')].forEach(selBtn => {
-            if (selBtn.dataset.tool) {
+        function runCheck(btn) {
+            console.log(btn)
+            if (btn.dataset.tool) {
                 if (
-                    !(selBtn.dataset.tool.includes(SESSION.SELECTED_TYLE_TYPE) ||
-                    selBtn.dataset.tool.includes(SESSION.SELECTED_OBJECT_TYPE) ||
-                    selBtn.dataset.tool.includes(SESSION.SELECTED_TEXT_TYPE))
+                    !(btn.dataset.tool.includes(SESSION.SELECTED_TYLE_TYPE) ||
+                    btn.dataset.tool.includes(SESSION.SELECTED_OBJECT_TYPE) ||
+                    btn.dataset.tool.includes(SESSION.SELECTED_TEXT_TYPE))
                 ) {
-                    selBtn.classList.remove('selected');
+                    btn.classList.remove('selected');
                 };
             };
-        });
+        }
+        [...document.getElementById('tool-bar').getElementsByClassName('selected')].forEach(selBtn => { runCheck(selBtn); });
+        [...document.getElementById('popout-container').getElementsByClassName('selected')].forEach(selBtn => { runCheck(selBtn); });
     });
 };
