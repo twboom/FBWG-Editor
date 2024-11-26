@@ -67,8 +67,10 @@
             <button class="img-button">
                 <img src="assets/objects/light_emitter.svg" alt="" class="tool-img">
             </button>
-            <button class="img-button">t</button> <!-- Text item -->
-            <button class="img-button">b</button> <!-- Text box -->
+            <button class="img-button" data-popout="other" data-tool="object:window">
+                <img src="assets/objects/window.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button">t</button> <!-- Text items and boxes -->
         </div>
         <div id="outer-canvas-container">
             <div id="canvas-container">
@@ -159,6 +161,14 @@
             </button>
             <button class="img-button" data-tool="object:timer_button">
                 <img src="assets/objects/button.svg" alt="" class="tool-img">
+            </button>
+        </div>
+        <div class="popout" data-anchor="other">
+            <button class="img-button" data-tool="object:window">
+                <img src="assets/objects/window.svg" alt="" class="tool-img">
+            </button>
+            <button class="img-button" data-tool="object:cover">
+                <img src="assets/objects/cover.svg" alt="" class="tool-img">
             </button>
         </div>
     </div>
