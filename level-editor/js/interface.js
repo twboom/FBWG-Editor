@@ -7,9 +7,13 @@ import { clearHighlight } from "./highlight_renderer.js";
 
 
 function openPopout(popout) {
+    let alreadyOpenState = false;
     document.querySelectorAll('div.popout.active').forEach(popoutToRemove => {
-        popoutToRemove.classList.remove('active')
+        popoutToRemove.classList.remove('active');
+        if (popoutToRemove.dataset.anchor === popout) { alreadyOpenState = true; };
     });
+
+    if (alreadyOpenState) { return; };
 
     const anchor = document.querySelector(`button[data-popout=${popout}]`);
     const container = document.querySelector(`div.popout[data-anchor=${popout}]`);
