@@ -47,18 +47,33 @@ export function initInterface() {
         btn.addEventListener('click', _ => {
             SESSION.SELECTED_TOOL_TYPE = btn.dataset.tool.split(':')[0];
             const tool = btn.dataset.tool.split(':')[1];
+            SESSION.SELECTED_TYLE_TYPE = tool;
+            SESSION.SELECTED_OBJECT_TYPE = tool;
+            SESSION.SELECTED_TEXT_TYPE = tool;
             switch(SESSION.SELECTED_TOOL_TYPE) {
                 case 'tile':
-                    SESSION.SELECTED_TYLE_TYPE = tool;
                     break;
                     
                 case 'object':
-                    SESSION.SELECTED_OBJECT_TYPE = tool;
                     break;
 
                 case 'text':
-                    SESSION.SELECTED_TEXT_TYPE = tool;
                     break;
+            };
+            btn.classList.add('selected')
+        });
+    });
+
+    document.addEventListener('click', _ => {
+        [...document.getElementById('tool-bar').getElementsByClassName('selected')].forEach(selBtn => {
+            if (selBtn.dataset.tool) {
+                if (
+                    !(selBtn.dataset.tool.includes(SESSION.SELECTED_TYLE_TYPE) ||
+                    selBtn.dataset.tool.includes(SESSION.SELECTED_OBJECT_TYPE) ||
+                    selBtn.dataset.tool.includes(SESSION.SELECTED_TEXT_TYPE))
+                ) {
+                    selBtn.classList.remove('selected');
+                };
             };
         });
     });

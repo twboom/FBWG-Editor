@@ -57,6 +57,10 @@ button.img-button:active, button.menu-item:active {
     transition: none;
 }
 
+button.img-button.selected, button.menu-item.selected {
+    border-color: lightgray;
+}
+
 button.menu-item {
     min-width: var(--bar-button-size);
     height: var(--bar-button-size);
