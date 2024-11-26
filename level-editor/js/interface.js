@@ -77,7 +77,6 @@ export function initInterface() {
 
     document.addEventListener('click', _ => {
         function runCheck(btn) {
-            console.log(btn)
             if (btn.dataset.tool) {
                 if (
                     !(btn.dataset.tool.includes(SESSION.SELECTED_TYLE_TYPE) ||
