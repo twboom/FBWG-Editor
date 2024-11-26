@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style>
+        rect {
+            fill: magenta;
+            stroke: gray;
+            stroke-width: 24px;
+        }
+    </style>
+    <rect width="64" height="64" />
+</svg>
