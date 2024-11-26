@@ -84,11 +84,11 @@ div.popout > button {
     margin: 4px 0;
 }
 
-input {
+input, select {
     background-color: var(--background-color);
 }
 
-input[type="button"] {
+input[type="button"], select {
     outline: none;
     border: 4px solid var(--border-color);
     border-radius: 4px;

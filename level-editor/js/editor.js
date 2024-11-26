@@ -39,11 +39,11 @@ function mouseIntersectsObject(object, text =  0) {
 function getModal(object) {
     switch(object.constructor.name) {
         case 'Diamond': return DiamondModal;
-        case 'RotationMirror':
+        case 'RotationMirror': return;
         case 'RotationBoxMirror': return RotationMirrorModal;
         case 'Lever': return LeverModal;
         case 'Platform': return PlatformModal;
-        case 'TimerButton':
+        case 'TimerButton': return;
         case 'Button': return GroupedObjectModal;
         case 'Box': return BoxModal;
         case 'LevelPoints': return LevelPointModal;
@@ -205,15 +205,34 @@ export function initEditor(){
                 let mouseX = mouse.mouseX - 32;
                 let mouseY = mouse.mouseY + 32;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
-                    case 'diamond':
-                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
+                    // case 'diamond':
+                    //     if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
+                    //         for (let i = SESSION.LEVEL.objects.length -  1; i >= 0; i-- ) {
+                    //             if (SESSION.LEVEL.objects[i].type == 2) {
+                    //                 SESSION.LEVEL.objects.splice(i, 1);
+                    //             };
+                    //         };
+                    //     };  
+                    //     new Objects.Diamond(mouseX, mouseY, 0, SESSION.LAST_PLACED_DIAMOND);
+                    //     break;
+                    case 'diamond_fb':
+                        new Objects.Diamond(mouseX, mouseY, 0, 0);
+                        break;
+                    case 'diamond_wg':
+                        new Objects.Diamond(mouseX, mouseY, 0, 1);
+                        break;
+                    case 'diamond_silver':
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
                             for (let i = SESSION.LEVEL.objects.length -  1; i >= 0; i-- ) {
                                 if (SESSION.LEVEL.objects[i].type == 2) {
                                     SESSION.LEVEL.objects.splice(i, 1);
                                 };
                             };
-                        };  
-                        new Objects.Diamond(mouseX, mouseY, 0, SESSION.LAST_PLACED_DIAMOND);
+                        };
+                        new Objects.Diamond(mouseX, mouseY, 0, 2);
+                        break;
+                    case 'diamond_fbwg':
+                        new Objects.Diamond(mouseX, mouseY, 0, 3);
                         break;
                     case 'spawns' :
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
@@ -408,7 +427,7 @@ export function initEditor(){
             handleMove(evt, 2);
         };
 
-        if (SESSION.SELECTED_TOOL_TYPE === 'objects' && ['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
+        if (SESSION.SELECTED_TOOL_TYPE === 'object' && ['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
             const objects = SESSION.LEVEL.objects;
             const int = objects.find((objet) => mouseIntersectsObject(objet));
             if (int) {
@@ -454,7 +473,7 @@ export function initEditor(){
             SESSION.DO_RENDER = true;
             render({do_tiles: true, do_objects: false, do_text: false}, 'mousedown tiles')
         };
-        if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
+        if (SESSION.SELECTED_TOOL_TYPE === 'object') {
             if (SESSION.SELECTED_OBJECT_TYPE === 'move') {
                 const objects = SESSION.LEVEL.objects;
                 const int = objects.find((obj) => mouseIntersectsObject(obj));
@@ -463,7 +482,7 @@ export function initEditor(){
                     SESSION.SELECTED_OBJECT_ID = int.id;
                     SESSION.MOVE_HANDLE_OFFSET_X = int.x - mouse.mouseX;
                     SESSION.MOVE_HANDLE_OFFSET_Y = int.y - mouse.mouseY;
-                    objectHighlight(int, 'mousedown objects move');
+                    objectHighlight(int, 'mousedown object move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: true, do_text: false}, 'mousedown objects move');
                 } else {
