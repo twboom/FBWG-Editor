@@ -9,6 +9,11 @@ import { clearHighlight } from "./highlight_renderer.js";
 export function selectTool(tool) {
     console.log(tool)
     const btn = document.querySelector(`button[data-tool="${tool}"]`);
+    if (!btn.dataset.popout) {
+        document.querySelectorAll('div.popout.active').forEach(popout => {
+            popout.classList.remove('active');
+        });
+    };
     if (btn) { btn.click() };
 };
 
@@ -39,7 +44,7 @@ export function initInterface() {
     window.addEventListener('resize', _ => { resizeCanvas(); });
 
     document.querySelectorAll('button[data-popout]').forEach(btn => {
-        const popout = btn.dataset.popout
+        const popout = btn.dataset.popout;
         if (document.getElementById('popout-container').querySelector(`div[data-anchor=${popout}]`))
         btn.addEventListener('click', _ => { openPopout(popout); });
         
@@ -61,16 +66,6 @@ export function initInterface() {
             SESSION.SELECTED_TYLE_TYPE = tool;
             SESSION.SELECTED_OBJECT_TYPE = tool;
             SESSION.SELECTED_TEXT_TYPE = tool;
-            switch(SESSION.SELECTED_TOOL_TYPE) {
-                case 'tile':
-                    break;
-                    
-                case 'object':
-                    break;
-
-                case 'text':
-                    break;
-            };
             btn.classList.add('selected')
         });
     });
@@ -86,7 +81,7 @@ export function initInterface() {
                     btn.classList.remove('selected');
                 };
             };
-        }
+        };
         [...document.getElementById('tool-bar').getElementsByClassName('selected')].forEach(selBtn => { runCheck(selBtn); });
         [...document.getElementById('popout-container').getElementsByClassName('selected')].forEach(selBtn => { runCheck(selBtn); });
     });
