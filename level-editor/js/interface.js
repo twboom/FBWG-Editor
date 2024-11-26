@@ -33,9 +33,11 @@ export function initInterface() {
         btn.addEventListener('click', _ => { openPopout(popout); });
         
         const container = document.querySelector(`div.popout[data-anchor=${popout}]`);
+        if (!container) { return; };
         container.querySelectorAll('button').forEach(popoutBtn => {
             popoutBtn.addEventListener('click', _ => {
                 btn.children[0].src = popoutBtn.children[0].src;
+                btn.dataset.tool = popoutBtn.dataset.tool;
                 container.classList.remove('active');
             });
         });
@@ -58,7 +60,6 @@ export function initInterface() {
                     SESSION.SELECTED_TEXT_TYPE = tool;
                     break;
             };
-            console.log(SESSION)
         });
     });
 };
