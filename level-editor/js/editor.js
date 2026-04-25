@@ -552,7 +552,7 @@ export function initEditor(){
     });
 
     // Canvas zoom
-    window.addEventListener('wheel', evt => {
+    highlightCanvas.addEventListener('wheel', evt => {
         const currentWidth = SESSION.LEVEL.width * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
         const currentHeight = SESSION.LEVEL.height * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
 
