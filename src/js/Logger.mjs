@@ -1,12 +1,10 @@
-export default class Logger {
+export class Logger {
     /**
      * 
      * @param {string} name 
-     * @param {string} sessionId 
      */
-    constructor(name, sessionId) {
+    constructor(name) {
         this.name = name;
-        this.sessionId = sessionId;
         this.messages = [];
     }
 
@@ -14,9 +12,12 @@ export default class Logger {
      * Add a message to the logger.
      * @param {Message} message_obj The message object to add.
      */
-    addMessage(message_obj) {
+    addMessage(message_obj, output=true) {
         if (message_obj instanceof Message) {
-
+            this.messages.push(message_obj);
+            if (output) {
+                message_obj.output();
+            };
         } else {
             throw new TypeError("'message_obj' was not an instanceof 'Message'.")
         };
@@ -60,7 +61,7 @@ export default class Logger {
     };
 };
 
-class Message {
+export class Message {
     /** * Allowed message types. */
     TYPES = [
         'action',
@@ -104,11 +105,11 @@ class Message {
      * Outputs the message to the console.
      */
     output() {
-        [this.#consoleAction[this.type]](this.formatted)
+        this.#consoleAction[this.type](this.formatted)
     };
 };
 
-class ActionMessage extends Message {
+export class ActionMessage extends Message {
     /**
      * Create a new message with the 'action' type.
      * @param {string} message 
@@ -119,7 +120,7 @@ class ActionMessage extends Message {
     };
 };
 
-class InformationMessage extends Message {
+export class InformationMessage extends Message {
     /**
      * Create a new message with the 'information' type.
      * @param {string} message 
@@ -130,7 +131,7 @@ class InformationMessage extends Message {
     };
 };
 
-class WarningMessage extends Message {
+export class WarningMessage extends Message {
     /**
      * Create a new message with the 'warning' type.
      * @param {string} message 
@@ -141,7 +142,7 @@ class WarningMessage extends Message {
     };
 };
 
-class ErrorMessage extends Message {
+export class ErrorMessage extends Message {
     /**
      * Create a new message with the 'error' type.
      * @param {string} message 
