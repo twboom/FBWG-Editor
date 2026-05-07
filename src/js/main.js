@@ -1,7 +1,8 @@
 import SessionManager from "./Session.mjs";
-import Interface from "./Interface.mjs";
+import Interface from "./interface/Interface.mjs";
 
 import { createMenuBar, createToolBar } from "./interface/snippets/editor-displaybars.mjs";
+import { createCanvases } from "./interface/snippets/editor-canvas.mjs";
 
 export let SESSION = window.session;
 export let INTERFACE = window.interface
@@ -25,6 +26,7 @@ function init() {
 function generateInterface() {
     INTERFACE.addComponent(createMenuBar());
     INTERFACE.addComponent(createToolBar());
+    INTERFACE.addComponent(createCanvases())
 };
 
 

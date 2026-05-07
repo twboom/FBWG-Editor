@@ -1,5 +1,5 @@
 import { INTERFACE } from "../../main.js";
-import { DisplayBar } from "../../Interface.mjs";
+import { DisplayBar } from "../Interface.mjs";
 import { BarButton } from "../BarButton.mjs";
 
 export function createMenuBar() {

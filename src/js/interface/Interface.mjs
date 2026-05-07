@@ -1,5 +1,5 @@
-import { SESSION } from "./main.js";
-import { BarButton, BarButtonPopout } from "./interface/BarButton.mjs";
+import { SESSION } from "../main.js";
+import { BarButton, BarButtonPopout } from "./BarButton.mjs";
 
 export default class Interface {
     #componentsInternal = []
@@ -21,10 +21,10 @@ export default class Interface {
 
     /**
      * 
-     * @param {InterfaceComponent} component Component to add to the interface.
+     * @param {GenericInterfaceComponent} component Component to add to the interface.
      */
     addComponent(component) {
-        if (component instanceof InterfaceComponent) {
+        if (component instanceof GenericInterfaceComponent) {
             this.#componentsInternal.push(component);
         } else {
             SESSION.logger.error('"component" is not an "InterfaceComponent"');
@@ -42,7 +42,7 @@ export default class Interface {
     };
 };
 
-export class InterfaceComponent {
+export class GenericInterfaceComponent {
     /**
      * 
      * @param {Element} renderTarget Parent for this element to render into.
@@ -66,7 +66,68 @@ export class InterfaceComponent {
     };
 };
 
-export class DisplayBar extends InterfaceComponent {
+export class InterfaceComponent extends GenericInterfaceComponent {
+    #internalElement = '';
+    #internalElementType = '';
+
+    constructor(renderTarget, elementType, options) {
+        super(renderTarget, options);
+        this.#internalElementType = elementType;
+        this.#internalElement = document.createElement(elementType);
+        this.subComponents = [];
+
+        if (renderTarget instanceof InterfaceComponent) {
+            this.renderTarget.addSubComponent(this);
+        };
+    };
+
+    /**
+     * HTML DOM element for this component.
+     */
+    get element() {
+        return this.#internalElement;
+    };
+
+    /**
+     * Element type of this component.
+     */
+    get elementType() {
+        return this.#internalElementType
+    };
+
+    addSubComponent(component) {
+        if (component instanceof GenericInterfaceComponent) {
+            this.subComponents.push(component);
+        } else {
+            // ERROR
+        };
+    };
+
+    /**
+     * Render this component.
+     */
+    render() {
+        const el = this.#internalElement;
+        if (this.id) { el.id = this.id; };
+        if (this.class) { el.classList.add(this.class); };
+
+        if (this.renderTarget instanceof InterfaceComponent) {
+            this.renderTarget.element.appendChild(el);
+        } else {
+            this.renderTarget.appendChild(el);
+        };
+
+        if (this.subComponents.length > 0) {
+            this.subComponents.forEach(cpnt => {
+                cpnt.render();
+            });
+        };
+    };
+};
+
+export class DisplayBar extends GenericInterfaceComponent {
+    #internalElement;
+
     /**
      * A bar, horizontal or vertical, to house different elemnents.
      * @param {Element} renderTarget Parent for this element to render into.
@@ -77,7 +138,7 @@ export class DisplayBar extends InterfaceComponent {
         super(renderTarget, options)
         this.buttons = [];
         this.orientation = orientation;
-        this.container = document.createElement('div');
+        this.#internalElement = document.createElement('div');
     };
 
     /**
@@ -97,23 +158,23 @@ export class DisplayBar extends InterfaceComponent {
      */
     render() {
         if (this.renderTarget instanceof Element) {
-            this.container.classList.add(this.orientation);
-            this.container.classList.add(this.class);
-            this.renderTarget.appendChild(this.container);
-            this.container.innerHTML = '';
+            this.#internalElement.classList.add(this.orientation);
+            this.#internalElement.classList.add(this.class);
+            this.renderTarget.appendChild(this.#internalElement);
+            this.#internalElement.innerHTML = '';
             if (this.buttons instanceof Array) {
                 this.buttons.forEach(btn => {
                     if (btn instanceof BarButton) {
-                        this.container.appendChild(btn.html);
+                        this.#internalElement.appendChild(btn.html);
                     } else {
-
+                        // ERROR
                     };
                 });
             } else {
-
+                // ERROR
             };
         } else {
-
+            // ERROR
         };
     };
 };
