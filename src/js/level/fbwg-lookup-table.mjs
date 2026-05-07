@@ -9,7 +9,7 @@ export const TILE_LOOKUP = {
     7: 'lava',
     8: 'acid',
     15: 'ice',
-}
+};
 
 export const GROUP_LOOKUP = {
     1: 'red',
