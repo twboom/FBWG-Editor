@@ -46,13 +46,15 @@ export class InterfaceComponent {
     /**
      * 
      * @param {Element} renderTarget Parent for this element to render into.
-     * @param {Object} options 
+     * @param {Object} options Generic options for the element that could be used in rendering.
      */
     constructor(renderTarget, options) {
         this.renderTarget = renderTarget;
 
-        if (options.id) { this.id = options.id; };
-        if (options.class) { this.id = options.class; };
+        if (options) {
+            if (options.id) { this.id = options.id; };
+            if (options.class) { this.class = options.class; };
+        };
     };
 
     /**
@@ -68,10 +70,13 @@ export class DisplayBar extends InterfaceComponent {
     /**
      * A bar, horizontal or vertical, to house different elemnents.
      * @param {Element} renderTarget Parent for this element to render into.
+     * @param {string} orientation Orientation of the bar, either 'horizontal' or 'vertical'.
+     * @param {Object} options Generic options for the element that could be used in rendering.
      */
-    constructor(renderTarget, options) {
+    constructor(renderTarget, orientation, options) {
         super(renderTarget, options)
         this.buttons = [];
+        this.orientation = orientation;
         this.container = document.createElement('div');
     };
 
@@ -92,7 +97,8 @@ export class DisplayBar extends InterfaceComponent {
      */
     render() {
         if (this.renderTarget instanceof Element) {
-            this.container.id = this.id;
+            this.container.classList.add(this.orientation);
+            this.container.classList.add(this.class);
             this.renderTarget.appendChild(this.container);
             this.container.innerHTML = '';
             if (this.buttons instanceof Array) {

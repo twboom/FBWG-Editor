@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+    --background-color-dark: #3f4055;
+    --background-color-dark-tint: #262739;
+    --background-color-light: white;
+    --background-color-light-tint: #efefef;
+    --text-color-light: white;
+    --text-color-dark: black;
+    --border-color-dark: #16171d;
+    --border-color-light: lightgray;
+}

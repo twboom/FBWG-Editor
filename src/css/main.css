@@ -1,0 +1,7 @@
+@import url('theme.css');
+@import url('displaybar.css');
+
+body {
+    margin: 0;
+    background-color: var(--background-color-dark-tint);
+}

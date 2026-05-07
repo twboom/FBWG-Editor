@@ -4,7 +4,6 @@ export default class SessionManager {
     constructor() {
         this.startdate = new Date(Date.now());
         this.logger = new Logger('Generic Logger');
-        this.interface = undefined;
         
         this.logger.info('New session started.', 'Session Manager');
     };
