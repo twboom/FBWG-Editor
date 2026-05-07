@@ -10,7 +10,7 @@ function getKey(obj, value) {
  * @returns 
  */
 export function tileLookup(tileInternal) {
-    return TILE_LOOKUP[tileInternal];
+    return getKey(TILE_LOOKUP, tileInternal);
 };
 
 /**
@@ -19,5 +19,5 @@ export function tileLookup(tileInternal) {
  * @returns {string}
  */
 export function reverseTileLookup(tileExternal) {
-    return getKey(TILE_LOOKUP, tileExternal);
+    return TILE_LOOKUP[tileExternal];
 };
