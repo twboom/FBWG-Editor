@@ -3,7 +3,7 @@ import { DisplayBar } from "../Interface.mjs";
 import { BarButton } from "../BarButton.mjs";
 
 export function createMenuBar() {
-    const bar = new DisplayBar(INTERFACE.root, 'horizontal', {class:'display-bar'});
+    const bar = new DisplayBar('menubar', INTERFACE.root, 'horizontal', {class:'display-bar'});
     bar.addButton(new BarButton('menu-home', undefined, 'H', undefined));
     bar.addButton(new BarButton('menu-file', undefined, 'File', undefined));
     bar.addButton(new BarButton('menu-level', undefined, 'Level', undefined));
@@ -11,7 +11,7 @@ export function createMenuBar() {
 };
 
 export function createToolBar() {
-    const bar = new DisplayBar(INTERFACE.root, 'vertical', {class:'display-bar'});
+    const bar = new DisplayBar('toolbar', INTERFACE.root, 'vertical', {class:'display-bar'});
     bar.addButton(new BarButton('tool-move', undefined, 'M', undefined));
     bar.addButton(new BarButton('tool-edit', undefined, 'E', undefined));
     bar.addButton(new BarButton('tool-tile', undefined, 't', undefined));

@@ -26,9 +26,10 @@ export default class Interface {
     addComponent(component) {
         if (component instanceof GenericInterfaceComponent) {
             this.#componentsInternal.push(component);
+            SESSION.logger.info(`Added component "${component.name}" to the interface.`, 'Interface Manager');
         } else {
-            SESSION.logger.error('"component" is not an "InterfaceComponent"');
-            throw new TypeError('"component" is not an "InterfaceComponent"');
+            SESSION.logger.error('"component" is not an "InterfaceComponent".');
+            throw new TypeError('"component" is not an "InterfaceComponent".');
         };
     };
 
@@ -48,7 +49,8 @@ export class GenericInterfaceComponent {
      * @param {Element} renderTarget Parent for this element to render into.
      * @param {Object} options Generic options for the element that could be used in rendering.
      */
-    constructor(renderTarget, options) {
+    constructor(name, renderTarget, options) {
+        this.name = name;
         this.renderTarget = renderTarget;
 
         if (options) {
@@ -61,8 +63,8 @@ export class GenericInterfaceComponent {
      * Placeholder for rendering the component.
      */
     render() {
-        SESSION.logger.error('Tried to render component without render function', 'Interface Manager');
-        throw new Error('Placeholder render function was not overwritten.')
+        SESSION.logger.error('Tried to render component without render function.', 'Interface Manager');
+        throw new Error('Placeholder render function was not overwritten.');
     };
 };
 
@@ -70,8 +72,8 @@ export class InterfaceComponent extends GenericInterfaceComponent {
     #internalElement = '';
     #internalElementType = '';
 
-    constructor(renderTarget, elementType, options) {
-        super(renderTarget, options);
+    constructor(name, renderTarget, elementType, options) {
+        super(name, renderTarget, options);
         this.#internalElementType = elementType;
         this.#internalElement = document.createElement(elementType);
         this.subComponents = [];
@@ -122,6 +124,7 @@ export class InterfaceComponent extends GenericInterfaceComponent {
                 cpnt.render();
             });
         };
+        SESSION.logger.info(`Rendered component ${this.name}.`, 'Interface Manager');
     };
 };
 
@@ -134,8 +137,8 @@ export class DisplayBar extends GenericInterfaceComponent {
      * @param {string} orientation Orientation of the bar, either 'horizontal' or 'vertical'.
      * @param {Object} options Generic options for the element that could be used in rendering.
      */
-    constructor(renderTarget, orientation, options) {
-        super(renderTarget, options)
+    constructor(name, renderTarget, orientation, options) {
+        super(name, renderTarget, options)
         this.buttons = [];
         this.orientation = orientation;
         this.#internalElement = document.createElement('div');
@@ -148,6 +151,7 @@ export class DisplayBar extends GenericInterfaceComponent {
     addButton(button) {
         if (button instanceof BarButton) {
             this.buttons.push(button);
+            SESSION.logger.info(`Added BarButton ${button.name} to DisplayBar ${this.name}.`, 'Interface Manager');
         } else {
 
         };
@@ -166,6 +170,7 @@ export class DisplayBar extends GenericInterfaceComponent {
                 this.buttons.forEach(btn => {
                     if (btn instanceof BarButton) {
                         this.#internalElement.appendChild(btn.html);
+                        SESSION.logger.info(`Rendered BarButton ${btn.name}.`, 'Interface Manager');
                     } else {
                         // ERROR
                     };
@@ -176,5 +181,6 @@ export class DisplayBar extends GenericInterfaceComponent {
         } else {
             // ERROR
         };
+        SESSION.logger.info(`Rendered component ${this.name}.`, 'Interface Manager');
     };
 };
