@@ -1,4 +1,4 @@
-import { GROUP_LOOKUP, TILE_LOOKUP } from "./fbwg-lookup-table.mjs";
+import { GROUP_LOOKUP, OBJECT_LOOKUP, TILE_LOOKUP } from "./fbwg-lookup-table.mjs";
 
 /**
  * Get a key based on the value in an object.
@@ -44,4 +44,22 @@ export function groupLookup(groupInternal) {
  */
 export function reverseGroupLookup(groupExternal) {
     return GROUP_LOOKUP[groupExternal];
+};
+
+/**
+ * Look up the external reference based on the internal reference.
+ * @param {string} objectInternal Internal reference for the object.
+ * @returns {number}
+ */
+export function objectLookup(objectInternal) {
+    return getKey(OBJECT_LOOKUP, objectInternal);
+};
+
+/**
+ * Look up the internal reference based on the external reference.
+ * @param {number} objectExternal External reference for the object.
+ * @returns {string}
+ */
+export function reverseObjectLookup(objectExternal) {
+    return OBJECT_LOOKUP[objectExternal];
 };
