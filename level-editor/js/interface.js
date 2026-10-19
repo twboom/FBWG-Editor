@@ -1,0 +1,88 @@
+import { resizeCanvas } from "./canvas.js";
+import { resizeLevel } from "./editor.js";
+import { SESSION } from "./session.js";
+import { exportTEXT, exportJSON } from "./export.js";
+import { Modal } from "./modal.js";
+import { clearHighlight } from "./highlight_renderer.js";
+
+
+export function selectTool(tool) {
+    console.log(tool)
+    const btn = document.querySelector(`button[data-tool="${tool}"]`);
+    if (!btn.dataset.popout) {
+        document.querySelectorAll('div.popout.active').forEach(popout => {
+            popout.classList.remove('active');
+        });
+    };
+    if (btn) { btn.click() };
+};
+
+
+function openPopout(popout) {
+    let alreadyOpenState = false;
+    document.querySelectorAll('div.popout.active').forEach(popoutToRemove => {
+        popoutToRemove.classList.remove('active');
+        if (popoutToRemove.dataset.anchor === popout) { alreadyOpenState = true; };
+    });
+
+    if (alreadyOpenState) { return; };
+
+    const anchor = document.querySelector(`button[data-popout=${popout}]`);
+    const container = document.querySelector(`div.popout[data-anchor=${popout}]`);
+    
+    container.classList.add('active');
+
+    const anchorBoundingBox = anchor.getBoundingClientRect();
+    const containerBoundingBox = container.getBoundingClientRect();
+
+    container.style.left = anchorBoundingBox.right + 16 + 'px';
+    container.style.top = anchorBoundingBox.top + (anchorBoundingBox.height / 2) - (containerBoundingBox.height / 2) + 'px';
+};
+
+export function initInterface() {
+    resizeCanvas();
+    window.addEventListener('resize', _ => { resizeCanvas(); });
+
+    document.querySelectorAll('button[data-popout]').forEach(btn => {
+        const popout = btn.dataset.popout;
+        if (document.getElementById('popout-container').querySelector(`div[data-anchor=${popout}]`))
+        btn.addEventListener('click', _ => { openPopout(popout); });
+        
+        const container = document.querySelector(`div.popout[data-anchor=${popout}]`);
+        if (!container) { return; };
+        container.querySelectorAll('button').forEach(popoutBtn => {
+            popoutBtn.addEventListener('click', _ => {
+                btn.children[0].src = popoutBtn.children[0].src;
+                btn.dataset.tool = popoutBtn.dataset.tool;
+                container.classList.remove('active');
+            });
+        });
+    });
+
+    document.querySelectorAll('button[data-tool]').forEach(btn => {
+        btn.addEventListener('click', _ => {
+            SESSION.SELECTED_TOOL_TYPE = btn.dataset.tool.split(':')[0];
+            const tool = btn.dataset.tool.split(':')[1];
+            SESSION.SELECTED_TYLE_TYPE = tool;
+            SESSION.SELECTED_OBJECT_TYPE = tool;
+            SESSION.SELECTED_TEXT_TYPE = tool;
+            btn.classList.add('selected')
+        });
+    });
+
+    document.addEventListener('click', _ => {
+        function runCheck(btn) {
+            if (btn.dataset.tool) {
+                if (
+                    !(btn.dataset.tool.includes(SESSION.SELECTED_TYLE_TYPE) ||
+                    btn.dataset.tool.includes(SESSION.SELECTED_OBJECT_TYPE) ||
+                    btn.dataset.tool.includes(SESSION.SELECTED_TEXT_TYPE))
+                ) {
+                    btn.classList.remove('selected');
+                };
+            };
+        };
+        [...document.getElementById('tool-bar').getElementsByClassName('selected')].forEach(selBtn => { runCheck(selBtn); });
+        [...document.getElementById('popout-container').getElementsByClassName('selected')].forEach(selBtn => { runCheck(selBtn); });
+    });
+};

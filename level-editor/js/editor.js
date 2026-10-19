@@ -1,11 +1,11 @@
 import { render } from "./Renderer.js";
-import { highlightCanvas, highlightCtx, resizeCanvas } from "./canvas.js";
-import { BLOCK_COLOR, BLOCK_SIZE } from "./lookup.js";
+import { highlightCanvas } from "./canvas.js";
+import { BLOCK_SIZE } from "./lookup.js";
 import { SESSION } from "./session.js";
 import * as Objects from './Object.js';
 import { clearHighlight, objectHighlight } from "./highlight_renderer.js";
-import { Modal, BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
-import { exportTEXT, exportJSON } from "./export.js";
+import { BasicModal, BoxModal, CoverModal, DiamondModal, GroupedObjectModal, LevelPointModal, LeverModal, MoveModal, PlatformModal, RotationMirrorModal , TextFieldModal, TextTriggerModal} from "./modal.js";
+import { selectTool } from './interface.js';
 
 function mouseIntersectsObject(object, text =  0) {
     const mouseX = SESSION.MOUSE_POS_X;
@@ -40,29 +40,31 @@ function mouseIntersectsObject(object, text =  0) {
 function getModal(object) {
     switch(object.constructor.name) {
         case 'Diamond': return DiamondModal;
-        case 'RotationMirror':
+        case 'RotationMirror': return;
         case 'RotationBoxMirror': return RotationMirrorModal;
         case 'Lever': return LeverModal;
         case 'Platform': return PlatformModal;
-        case 'TimerButton':
+        case 'TimerButton': return;
         case 'Button': return GroupedObjectModal;
         case 'Box': return BoxModal;
         case 'LevelPoints': return LevelPointModal;
         case 'TextField': return TextFieldModal;
         case 'TextTrigger': return TextTriggerModal;
         case 'Cover': return CoverModal;
+        case 'Window': return CoverModal;
         default: return BasicModal;
     };
 };
 
 function handleEdit(evt, text = 0) {
+    console.log(evt)
     const objects = text != 0 ? SESSION.LEVEL.text : SESSION.LEVEL.objects;
     const int = objects.find((obj) => mouseIntersectsObject(obj, text));
     if (int) {
         console.log(int);
         objectHighlight(int, 'handleEdit');
         const CorrectModal = getModal(int);
-        const popup = new CorrectModal(int.x, int.y, int.id);
+        const popup = new CorrectModal(evt.clientX, evt.clientY, int.id);
         popup.showOnly();
     } else {
         SESSION.SELECTED_OBJECT_ID = undefined;
@@ -86,33 +88,103 @@ function handleMove(evt, text = 0) {
     objectHighlight(obj, 'handleMove');
 };
 
+export function resizeLevel() {
+    // Correct the tiles and objects
+
+    // Get the new and old with and heigth
+    let oldWidth = SESSION.LEVEL.tiles[0] ? SESSION.LEVEL.tiles[0].length : 0;
+    let oldHeight = SESSION.LEVEL.tiles.length;
+
+    let newWidth = SESSION.LEVEL.width;
+    let newHeight = SESSION.LEVEL.height;
+
+    // Decreasing width
+    if (oldWidth > newWidth) {
+        for (let i = 0; i < oldHeight; i++) {
+            for (let j = newWidth; j <= oldWidth; j++) {
+                SESSION.LEVEL.tiles[i] = SESSION.LEVEL.tiles[i].splice(0, newWidth);
+            };
+        };
+
+        // Remove objects outside the level
+        let newObjects = [];
+        for (let i = 0; i < SESSION.LEVEL.objects.length; i++) {
+            if (SESSION.LEVEL.objects[i].x < newWidth * BLOCK_SIZE) {
+                newObjects.push(SESSION.LEVEL.objects[i]);
+            };
+        };
+        SESSION.LEVEL.objects = newObjects;
+
+    // Increasing width
+    } else if (oldWidth < newWidth) {
+        for (let i = 0; i < oldHeight; i++) {
+            for (let j = oldWidth; j <= newWidth; j++) {
+                SESSION.LEVEL.tiles[i][j] = 0;
+            };
+        };
+    };
+
+    // Decreasing heigth
+    if (oldHeight > newHeight) {
+        SESSION.LEVEL.tiles = SESSION.LEVEL.tiles.splice(0, newHeight);
+        
+        // Remove objects outside the level
+        let newObjects = [];
+        for (let i = 0; i < SESSION.LEVEL.objects.length; i++) {
+            if (SESSION.LEVEL.objects[i].y < newHeight * BLOCK_SIZE) {
+                newObjects.push(SESSION.LEVEL.objects[i]);
+            };
+        };
+        SESSION.LEVEL.objects = newObjects;
+        
+    // Increasing heigth 
+    } else if (oldHeight < newHeight) {
+        for (let i = oldHeight; i < newHeight; i++) {
+            SESSION.LEVEL.tiles[i] = new Array(newWidth).fill(0);
+        };
+    };
+};
+
+function getCorrectedMousePosition(evt) {
+    let mouseX = evt.offsetX;
+    let mouseY = evt.offsetY;
+
+    mouseX -= SESSION.CAMERA_POSITION[0]
+    mouseY -= SESSION.CAMERA_POSITION[1]
+
+    mouseX /= SESSION.CAMERA_ZOOM;
+    mouseY /= SESSION.CAMERA_ZOOM;
+
+    const tileX = Math.floor(mouseX / BLOCK_SIZE);
+    const tileY = Math.floor(mouseY / BLOCK_SIZE);
+
+    return { mouseX, mouseY, tileX, tileY };
+};
+
 export function initEditor(){
     highlightCanvas.addEventListener('click', evt => {
+        if (evt.button === 1) { return; };
+        const mouse = getCorrectedMousePosition(evt)
         switch(SESSION.SELECTED_TOOL_TYPE) {
-            case 'tiles':
-                // set tiles
-                let mousex = evt.offsetX;
-                let mousey = evt.offsetY;
-                let tileX = Math.floor(mousex / BLOCK_SIZE);
-                let tileY = Math.floor(mousey / BLOCK_SIZE);
+            case 'tile':
                 let tile;
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
                         tile = 0
                         break;
-                    case 'block':
+                    case 'ground':
                         tile = 1
                         break;
-                    case 'slopeTR':
+                    case 'slope_tr':
                         tile = 2
                         break;
-                    case 'slopeTL':
+                    case 'slope_tl':
                         tile = 3
                         break;
-                    case 'slopeBR':
+                    case 'slope_br':
                         tile = 4
                         break;
-                    case 'slopeBL':
+                    case 'slope_bl':
                         tile = 5
                         break;
                     case 'water':
@@ -128,23 +200,32 @@ export function initEditor(){
                         tile = 15
                         break;
                 };
-                SESSION.LEVEL.tiles[tileY][tileX] = tile;
+                SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
                 render({do_tiles: true, do_objects: false, do_text: false}, 'click')
                 break;
-            case 'objects':
+            case 'object':
                 // set objects
-                let mouseX = evt.offsetX - 32;
-                let mouseY = evt.offsetY + 32;            
+                let mouseX = mouse.mouseX - 32;
+                let mouseY = mouse.mouseY + 32;            
                 switch(SESSION.SELECTED_OBJECT_TYPE) {
-                    case 'diamond':
-                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS && SESSION.LAST_PLACED_DIAMOND == 2) {
+                    case 'diamond_fb':
+                        new Objects.Diamond(mouseX, mouseY, 0, 0);
+                        break;
+                    case 'diamond_wg':
+                        new Objects.Diamond(mouseX, mouseY, 0, 1);
+                        break;
+                    case 'diamond_silver':
+                        if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
                             for (let i = SESSION.LEVEL.objects.length -  1; i >= 0; i-- ) {
                                 if (SESSION.LEVEL.objects[i].type == 2) {
                                     SESSION.LEVEL.objects.splice(i, 1);
                                 };
                             };
-                        };  
-                        new Objects.Diamond(mouseX, mouseY, 0, SESSION.LAST_PLACED_DIAMOND);
+                        };
+                        new Objects.Diamond(mouseX, mouseY, 0, 2);
+                        break;
+                    case 'diamond_fbwg':
+                        new Objects.Diamond(mouseX, mouseY, 0, 3);
                         break;
                     case 'spawns' :
                         if (!SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
@@ -181,6 +262,12 @@ export function initEditor(){
                     case 'box_normal':
                         new Objects.Box(mouseX, mouseY, 0, 'normal');
                         break;
+                    case 'box_heavy':
+                        new Objects.Box(mouseX, mouseY, 0, 'heavy');
+                        break;
+                    case 'box_mirror':
+                        new Objects.Box(mouseX, mouseY, 0, 'mirror');
+                        break;
                     case 'ball':
                         new Objects.Ball(mouseX + 16, mouseY - 16, 0);
                         break;
@@ -197,7 +284,7 @@ export function initEditor(){
                         new Objects.Slider();
                         break;
                     case 'light_emitter': // Idk
-                        new Objects.LightEmitter();
+                        new Objects.LightEmitter(mouseX, mouseY, 0, 'white', 0, 1);
                         break;
                     case 'light_receiver': // Idk
                         new Objects.LightReceiver();
@@ -220,13 +307,14 @@ export function initEditor(){
                         break;
                 };
                 if (!['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
-                    handleEdit();
+                    handleEdit(evt);
+                    selectTool('object:edit')
                     render({do_tiles: false, do_objects: true, do_text: false}, 'click');
                 };
                 break;
             case 'text':
-                let mouse_x = evt.offsetX;
-                let mouse_y = evt.offsetY;
+                let mouse_x = mouse.mouseX;
+                let mouse_y = mouse.mouseY;
                 let texts = SESSION.LEVEL.text;
                 switch (SESSION.SELECTED_TEXT_TYPE){
                     case 'text':
@@ -275,41 +363,41 @@ export function initEditor(){
 
     // Add the eventlistener for right click
     highlightCanvas.addEventListener('contextmenu', evt => {
-        if (SESSION.SELECTED_TOOL_TYPE == 'tiles') {
-            SESSION.LEVEL.tiles[Math.floor(evt.offsetY / BLOCK_SIZE)][Math.floor(evt.offsetX / BLOCK_SIZE)] = 0
+        if (SESSION.SELECTED_TOOL_TYPE == 'tile') {
+            const mouse = getCorrectedMousePosition(evt);
+            SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = 0
             render({do_tiles: true, do_objects: false, do_text: false}, 'contextmenu')
         };
     });
 
     // Add the eventlistener for dragging
     highlightCanvas.addEventListener('mousemove', evt => {
-        SESSION.MOUSE_POS_X = evt.offsetX;
-        SESSION.MOUSE_POS_Y = evt.offsetY;
-        let tileX = Math.floor(evt.offsetX / BLOCK_SIZE);
-        let tileY = Math.floor(evt.offsetY / BLOCK_SIZE);
-
-        if ((SESSION.MOUSE_DOWN || SESSION.RIGHT_MOUSE_DOWN) && SESSION.SELECTED_TOOL_TYPE == 'tiles') {
+        const mouse = getCorrectedMousePosition(evt);
+        SESSION.MOUSE_POS_X = mouse.mouseX;
+        SESSION.MOUSE_POS_Y = mouse.mouseY;
+        
+        if ((SESSION.MOUSE_DOWN || SESSION.RIGHT_MOUSE_DOWN) && SESSION.SELECTED_TOOL_TYPE == 'tile') {
             if (SESSION.RIGHT_MOUSE_DOWN) {
-                SESSION.LEVEL.tiles[tileY][tileX] = 0;
+                SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = 0;
             } else {
-                let tile
+                let tile;
                 switch(SESSION.SELECTED_TYLE_TYPE) {
                     case 'air':
                         tile = 0;
                         break;
-                    case 'block':
+                    case 'ground':
                         tile = 1;
                         break;
-                    case 'slopeTR':
+                    case 'slope_tr':
                         tile = 2;
                         break;
-                    case 'slopeTL':
+                    case 'slope_tl':
                         tile = 3;
                         break;
-                    case 'slopeBR':
+                    case 'slope_br':
                         tile = 4;
                         break;
-                    case 'slopeBL':
+                    case 'slope_bl':
                         tile = 5;
                         break;
                     case 'water':
@@ -325,10 +413,11 @@ export function initEditor(){
                         console.log('ice');
                         tile = 15;
                 };
-                SESSION.LEVEL.tiles[tileY][tileX] = tile;
+                SESSION.LEVEL.tiles[mouse.tileY][mouse.tileX] = tile;
             };
+            render({}, 'mousemove')
         };
-        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'objects' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
+        if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'object' && SESSION.SELECTED_OBJECT_TYPE === 'move') {
             handleMove(evt);
         };
         if (SESSION.MOUSE_DOWN && SESSION.SELECTED_TOOL_TYPE === 'text' && SESSION.SELECTED_TEXT_TYPE === 'move-text') {
@@ -338,7 +427,7 @@ export function initEditor(){
             handleMove(evt, 2);
         };
 
-        if (SESSION.SELECTED_TOOL_TYPE === 'objects' && ['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
+        if (SESSION.SELECTED_TOOL_TYPE === 'object' && ['edit', 'move'].includes(SESSION.SELECTED_OBJECT_TYPE)) {
             const objects = SESSION.LEVEL.objects;
             const int = objects.find((objet) => mouseIntersectsObject(objet));
             if (int) {
@@ -360,13 +449,23 @@ export function initEditor(){
                 clearHighlight();
             };
         };
+
+        if (SESSION.MIDDLE_MOUSE_DOWN) {
+            SESSION.CAMERA_POSITION[0] += evt.movementX;
+            SESSION.CAMERA_POSITION[1] += evt.movementY;
+            render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas translate');
+        };
     });
 
     // Add the eventlistener for pressing your mouse
     highlightCanvas.addEventListener('mousedown', evt => {
+        const mouse = getCorrectedMousePosition(evt);
         SESSION.SELECTED_OBJECT_ID = undefined;
         clearHighlight();
-        if (evt.button == 0) { SESSION.MOUSE_DOWN = true; } 
+        if (evt.button == 0) { SESSION.MOUSE_DOWN = true; }
+        else if (evt.button == 1) {
+            SESSION.MIDDLE_MOUSE_DOWN = true;
+        }
         else if (evt.button == 2) { 
             SESSION.RIGHT_MOUSE_DOWN = true;
         };
@@ -374,16 +473,15 @@ export function initEditor(){
             SESSION.DO_RENDER = true;
             render({do_tiles: true, do_objects: false, do_text: false}, 'mousedown tiles')
         };
-        if (SESSION.SELECTED_TOOL_TYPE === 'objects') {
+        if (SESSION.SELECTED_TOOL_TYPE === 'object') {
             if (SESSION.SELECTED_OBJECT_TYPE === 'move') {
                 const objects = SESSION.LEVEL.objects;
                 const int = objects.find((obj) => mouseIntersectsObject(obj));
                 if (int) {
-                    console.log(int);
                     SESSION.SELECTED_OBJECT_ID = int.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - evt.offsetY;
-                    objectHighlight(int, 'mousedown objects move');
+                    SESSION.MOVE_HANDLE_OFFSET_X = int.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = int.y - mouse.mouseY;
+                    objectHighlight(int, 'mousedown object move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: true, do_text: false}, 'mousedown objects move');
                 } else {
@@ -398,8 +496,8 @@ export function initEditor(){
                 const txt = texts.find((text) => mouseIntersectsObject(text, 1));
                 if (txt) {
                     SESSION.SELECTED_OBJECT_ID = txt.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - mouse.mouseY;
                     objectHighlight(txt, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
@@ -409,8 +507,8 @@ export function initEditor(){
                 const txt = texts.find((text) => mouseIntersectsObject(text, 2));
                 if (txt) {
                     SESSION.SELECTED_OBJECT_ID = txt.id;
-                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - evt.offsetX;
-                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - evt.offsetY;
+                    SESSION.MOVE_HANDLE_OFFSET_X = txt.x - mouse.mouseX;
+                    SESSION.MOVE_HANDLE_OFFSET_Y = txt.y - mouse.mouseY;
                     objectHighlight(txt, 'mousedown objects move');
                     SESSION.DO_RENDER = true;
                     render({do_tiles: false, do_objects: false, do_text: true}, 'mousedown text move');
@@ -418,11 +516,11 @@ export function initEditor(){
             };
         };
 
-        if (document.getElementsByClassName('modal-container')) {
+        if (document.getElementsByClassName('modal-container').length > 0) {
             [...document.getElementsByClassName('modal-container')].forEach(el => { el.remove(); });
-            if (!(document.getElementById('previews').classList.contains('active'))) {
-                SESSION.PLATFROM_PREVIEWS = false;
-                render({do_tiles: false, do_objects: true, do_text: false});
+            if (!SESSION.SETTING_PLATFORM_PREVIEWS) {
+                SESSION.RENDER_PLATFROM_PREVIEWS = false;
+                render({do_tiles: false, do_objects: true, do_text: false}, 'remove temporary previews');
             };
         };
     });
@@ -433,7 +531,7 @@ export function initEditor(){
             const objects = SESSION.LEVEL.objects;
             const int = objects.find((obj) => mouseIntersectsObject(obj));
             if (int) {
-                const popup = new MoveModal(int.x, int.y, int.id);
+                const popup = new MoveModal(evt.clientX, evt.clientY, int.id);
                 popup.showOnly();
             };
         };
@@ -442,239 +540,94 @@ export function initEditor(){
             const objects = SESSION.LEVEL.objects;
             const int = objects.find(mouseIntersectsObject);
             if (int) {
-                const popup = new MoveModal(int.x, int.y, int.id);
+                const popup = new MoveModal(evt.clientX, evt.clientY, int.id);
                 popup.showOnly();
             };
         };
 
         SESSION.MOUSE_DOWN = false;
         SESSION.RIGHT_MOUSE_DOWN = false;
+        SESSION.MIDDLE_MOUSE_DOWN = false;
         SESSION.DO_RENDER = false;
     });
 
+    // Canvas zoom
+    highlightCanvas.addEventListener('wheel', evt => {
+        const currentWidth = SESSION.LEVEL.width * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
+        const currentHeight = SESSION.LEVEL.height * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
 
-    // Add the resize function
-    document.getElementById('resize').addEventListener('click', _ => {
-        // Confirm the action
-        if (!confirm('This action may result in a loss of content.\nAnything outside the new level border will be removed. This action is irreversible.')) {
-            alert('Resizing is cancelled!')
-            return
+        if (evt.deltaY > 0) {
+            SESSION.CAMERA_ZOOM -= 0.01
+        } else if (evt.deltaY < 0) {
+            SESSION.CAMERA_ZOOM += 0.01
         };
 
-        // Get the width and heigth
-        SESSION.LEVEL.width = parseInt(document.getElementById('level-width').value);
-        SESSION.LEVEL.height = parseInt(document.getElementById('level-height').value);
+        const newWidth = SESSION.LEVEL.width * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
+        const newHeight = SESSION.LEVEL.height * BLOCK_SIZE * SESSION.CAMERA_ZOOM;
 
-        // Re-render the canvas
-        resizeCanvas();
-        render({do_tiles: true, do_objects: true, do_text: true}, 'resize')
+        const deltaWidth = currentWidth - newWidth;
+        const deltaHeight = currentHeight - newHeight;
+
+        SESSION.CAMERA_POSITION[0] += deltaWidth / 2;
+        SESSION.CAMERA_POSITION[1] += deltaHeight / 2;
+
+        render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas scale');
     });
 
-    // Add the eventlistener for the editor settings
-    Array.from(document.getElementsByClassName('editor-option')).forEach(el => {
-        el.addEventListener('click', _ => {
-            if (el.dataset.action == 'multispawn') {
-                if (SESSION.ALLOW_MULTIPLE_LEVELPOINTS) {
-                    SESSION.ALLOW_MULTIPLE_LEVELPOINTS = false;
-                    el.classList.remove('active');
-                } else {
-                    SESSION.ALLOW_MULTIPLE_LEVELPOINTS = true;
-                    el.classList.add('active');
-                };
+    // Canvas translate
+    window.addEventListener('keydown', evt => {
+        if (['KeyA', 'KeyW', 'KeyS', 'KeyD'].includes(evt.code)) {
+            SESSION.DO_RENDER = true;
+            switch (evt.code) {
+                case 'KeyA':
+                    SESSION.CAMERA_MOVE_LEFT = true;
+                    break;
+                    
+                case 'KeyW':
+                    SESSION.CAMERA_MOVE_UP = true;
+                    break;
+
+                case 'KeyS':
+                    SESSION.CAMERA_MOVE_DOWN = true;
+                    break;
+
+                case 'KeyD':
+                    SESSION.CAMERA_MOVE_RIGHT = true;
+                    break;
             };
-            if (el.dataset.action == 'previews') {
-                if (el.classList.contains('active')) {
-                    SESSION.PLATFROM_PREVIEWS = false;
-                    el.classList.remove('active');
-                } else {
-                    SESSION.PLATFROM_PREVIEWS = true;
-                    el.classList.add('active');
-                };
-                render({do_tiles: false, do_objects: true, do_text: false});
-            };
-            if (el.dataset.action == 'wind-previews') {
-                if (SESSION.WIND_PREVEIWS) {
-                    SESSION.WIND_PREVEIWS = false;
-                    el.classList.remove('active');
-                } else {
-                    SESSION.WIND_PREVEIWS = true;
-                    el.classList.add('active');
-                };
-                render({do_tiles: false, do_objects: true, do_text: false});
-            };
-            if (el.dataset.action == 'cover-previews') {
-                if(SESSION.COVER_PREVIEWS) {
-                    SESSION.COVER_PREVIEWS = false;
-                    el.classList.remove('active');
-                } else {
-                    SESSION.COVER_PREVIEWS = true;
-                    el.classList.add('active');
-                };
-                render({do_tiles: false, do_objects: true, do_text: false});
-            };
-        });
+
+            render({do_tiles: true, do_objects: true, do_text: true}, 'Canvas translate');
+        };
     });
 
-    // Hide all tools
-    Array.from(document.getElementsByClassName('tool-layer')).forEach(el => {
-        el.style.display = 'none';
-    });
+    window.addEventListener('keyup', evt => {
+        if (['KeyA', 'KeyW', 'KeyS', 'KeyD'].includes(evt.code)) {
+            switch (evt.code) {
+                case 'KeyA':
+                    SESSION.CAMERA_MOVE_LEFT = false;
+                    break;
+                    
+                case 'KeyW':
+                    SESSION.CAMERA_MOVE_UP = false;
+                    break;
 
-    // Add the eventlistener for the editor functions
-    Array.from(document.getElementsByClassName('editor-function')).forEach(el => {
-        el.addEventListener('click', _ => {
-            // Remove selected object
-            SESSION.SELECTED_OBJECT_ID = undefined;
-            clearHighlight();
-            Modal.removeAll();
+                case 'KeyS':
+                    SESSION.CAMERA_MOVE_DOWN = false;
+                    break;
 
-            // Remove enabled from all editor functions
-            Array.from(document.getElementsByClassName('editor-function')).forEach(button => {
-                button.classList.remove('enabled');
-            });
-            // Hide all tile buttons
-            Array.from(document.getElementsByClassName('tiles')).forEach(div => {
-                div.style.display = 'none';
-            });
-            SESSION.SELECTED_TYLE_TYPE = null;
-            // Hide all object buttons
-            Array.from(document.getElementsByClassName('objects')).forEach(div => {
-                div.style.display = 'none';
-            });
-            // Hide all text buttons
-            Array.from(document.getElementsByClassName('texts')).forEach(div => {
-                div.style.display = 'none';
-            });
-            // Disable all buttons
-            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
-                btn.classList.remove('selected');
-            });
-            SESSION.SELECTED_TYLE_TYPE = undefined;
-            SESSION.SELECTED_OBJECT_TYPE = undefined;
-            SESSION.SELECTED_TOOL_TYPE = undefined;
-            // If we press the button twice
-            if (el.dataset.action == SESSION.EDITOR_FUNCTION) {
-                // Set the current function to null
-                SESSION.EDITOR_FUNCTION = 'all';
-                Array.from(document.getElementsByClassName('editor-function')).forEach(btn => {
-                    if (btn.dataset.action == 'view-all') {
-                        btn.classList.add('enabled');
-                    };
-                });
-            // If we press another button
-            } else {
-                // Set the editor function
-                SESSION.EDITOR_FUNCTION = el.dataset.action;
-                el.classList.add('enabled');
-                let type;
-                switch (el.dataset.action){
-                    case 'tile-editor':
-                        type = 'tiles';
-                        break;
-                    case 'object-editor':
-                        type = 'objects';
-                        break;
-                    case 'text-editor':
-                        type = 'texts';
-                        break;
-                    case 'view-all':
-                        SESSION.EDITOR_FUNCTION = 'all';
-                        render({do_tiles: true, do_objects: true, do_text: true}, 'Editor view all');
-                        return;
-                    };
-                // Show the correct buttons
-                Array.from(document.getElementsByClassName(type)).forEach(div => {
-                    div.style.display = 'block';
-                });
+                case 'KeyD':
+                    SESSION.CAMERA_MOVE_RIGHT = false;
+                    break;
             };
-            // Re-render the level
-            render({do_tiles: true, do_objects: true, do_text: true}, 'Editor function change');
-        });
-    });
 
-    // Add the eventlistener for the tile buttons
-    Array.from(document.getElementsByClassName('tile-option')).forEach(el => {
-        el.addEventListener('click', _ => {
-            // Deselect other selected buttons
-            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
-                btn.classList.remove('selected');
-            });
-
-            // Check if the button is pressed twice
-            if (SESSION.SELECTED_TYLE_TYPE == el.dataset.action) {
-                SESSION.SELECTED_TOOL_TYPE = undefined;
-                SESSION.SELECTED_TYLE_TYPE = undefined;
-            } else {
-                el.classList.add('selected');
-                SESSION.SELECTED_TOOL_TYPE = 'tiles';
-                SESSION.SELECTED_TYLE_TYPE = el.dataset.action;
-            };
-        });
-    });
-
-    // Add the evenlistener for the object buttons
-    Array.from(document.getElementsByClassName('obje-option')).forEach(el => {
-        el.addEventListener('click', _ => {
-            // Deselect other selected buttons
-            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
-                btn.classList.remove('selected');
-            });
-
-            // Check if the button is pressed twice
-            if (SESSION.SELECTED_OBJECT_TYPE ==  el.dataset.action) {
-                SESSION.SELECTED_TOOL_TYPE = undefined; 
-                SESSION.SELECTED_OBJECT_TYPE = undefined;
-            } else {
-                el.classList.add('selected');
-                SESSION.SELECTED_TOOL_TYPE = 'objects';
-                SESSION.SELECTED_OBJECT_TYPE = el.dataset.action;
-            };
-        });
-    });
-
-    // Add the eventlistener for the export buttons
-    Array.from(document.getElementsByClassName('export')).forEach(el => {
-        el.addEventListener('click', _ => {
-            if (el.id == "save") {
-                alert("This function does not exist yet");
-            } else if (el.id == "share") {
-                alert("This function does not exist yet");
-            } else if (el.id == "export") {
-                exportJSON();
-            } else if (el.id == "export-text") {
-                exportTEXT();
-            };
-        });
-    });
-
-    // Add the eventlistener for the text buttons
-    Array.from(document.getElementsByClassName('text-option')).forEach(el => {
-        el.addEventListener('click', _ => {
-            // Deselect other selected buttons
-            Array.from(document.getElementsByClassName('tool')).forEach(btn => {
-                btn.classList.remove('selected');
-            });
-
-            // Check if the button is pressed twice
-            if (SESSION.SELECTED_TEXT_TYPE ==  el.dataset.action) {
-                SESSION.SELECTED_TEXT_TYPE = undefined; 
-                SESSION.SELECTED_OBJECT_TYPE = undefined;
-            } else {
-                el.classList.add('selected');
-                SESSION.SELECTED_TOOL_TYPE = 'text';
-                SESSION.SELECTED_TEXT_TYPE = el.dataset.action;
-            };
-        });
-    });
-
-
-    // Snap
-    document.getElementById('snap-x').value = SESSION.SNAP_X;
-    document.getElementById('snap-x').addEventListener('change', evt => {
-        SESSION.SNAP_X = parseInt(evt.target.value);
-    });
-    document.getElementById('snap-y').value = SESSION.SNAP_Y;
-    document.getElementById('snap-y').addEventListener('change', evt => {
-        SESSION.SNAP_Y = parseInt(evt.target.value);
+            if (!(
+                SESSION.CAMERA_MOVE_LEFT ||
+                SESSION.CAMERA_MOVE_RIGHT ||
+                SESSION.CAMERA_MOVE_UP ||
+                SESSION.CAMERA_MOVE_DOWN
+            )) {
+                SESSION.DO_RENDER = false;
+            }
+        };
     });
 };

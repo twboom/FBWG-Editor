@@ -1,4 +1,6 @@
 export function drawObject(object, variant, posX, posY, ctx, rotation) {
+    const ORIGINAL_TRANSFORM = ctx.getTransform()
+    
     ctx.translate(posX, posY);
 
 	
@@ -17,5 +19,5 @@ export function drawObject(object, variant, posX, posY, ctx, rotation) {
         case 'switch_content': break;
     };
 
-    ctx.resetTransform();
+    ctx.setTransform(ORIGINAL_TRANSFORM);
 };
