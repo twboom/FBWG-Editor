@@ -1,0 +1,6 @@
+div.modal-container {
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    border: solid 4px gray;
+}

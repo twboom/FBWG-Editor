@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+    <style>
+        polygon#base {
+            fill: orange;
+            stroke: #a25900;
+            stroke-width: 4px;
+        }
+    </style>
+    <polygon id="base" points="
+        0,32
+        16,16
+        44,16
+        48,16
+        64,32
+    " />
+</svg>

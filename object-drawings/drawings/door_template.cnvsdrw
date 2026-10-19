@@ -1,0 +1,8 @@
+PATH;
+R 8,8,48,56;
+SET:FILL {{color_stroke}};
+FILL;
+PATH;
+R 16,16,32,48;
+SET:FILL {{color_fill}};
+FILL;
