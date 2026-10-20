@@ -1,0 +1,39 @@
+div.display-bar {
+    --bar-button-size: 48px;
+    padding: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+div.display-bar.horizontal {
+    width: calc(100% - 16px);
+    height: var(--bar-button-size);
+}
+
+div.display-bar.vertical {
+    width: var(--bar-button-size);
+    height: 100%;
+    overflow-y: auto;
+    flex-direction: column;
+    padding-top: 0;
+}
+
+div.display-bar > button {
+    display: block;
+    width: var(--bar-button-size);
+    height: var(--bar-button-size);
+    outline: none;
+    border: 4px solid var(--border-color-dark);
+    border-radius: 4px;
+    background-color: var(--background-color-dark);
+    cursor: pointer;
+    transition: all 0.1s;
+    color: var(--text-color-light);
+}
+
+div.display-bar > button:active {
+    background-color: var(--background-color-light);
+    border-color: var(--border-color-light);
+    color: var(--text-color-dark);
+    transition: none;
+}
