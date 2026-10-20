@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+:root {
+    /* Dark Charcoal Theme Palette */
+    --bg-workspace: #181818;
+    --bg-panel: #262626;
+    --bg-panel-dark: #1f1f1f;
+    --bg-input: #141414;
+    --bg-hover: #333333;
+    --bg-active: #3e3e3e;
+    --bg-accent: #2680eb;
+    --border-subtle: #383838;
+    --border-dark: #111111;
+    --text-main: #e0e0e0;
+    --text-muted: #888888;
+    --text-heading: #f5f5f5;
+    --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+    /* Backward compatibility mappings */
+    --background-color-dark: var(--bg-panel);
+    --background-color-dark-tint: var(--bg-workspace);
+    --background-color-light: #ffffff;
+    --background-color-light-tint: var(--bg-active);
+    --text-color-light: var(--text-heading);
+    --text-color-dark: #000000;
+    --border-color-dark: var(--border-dark);
+    --border-color-light: var(--border-subtle);
+}

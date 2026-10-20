@@ -1,42 +1,29 @@
-import SessionManager from "./Session.mjs";
-import Interface from "./interface/Interface.mjs";
+import { EditorApp } from './EditorApp.js';
 
-import { createMenuBar, createToolBar } from "./interface/snippets/editor-displaybars.mjs";
-import { createCanvases } from "./interface/snippets/editor-canvas.mjs";
-
-import { convertFromOriginalLevelFileObject } from "./level/fbwg-level.mjs";
-
-export let SESSION = window.session;
-export let INTERFACE = window.interface
+let app = null;
 
 /**
- * Initialize the entire application
+ * Initialize and mount the FBWG Editor application.
  */
-function init() {
-    window.session = new SessionManager();
-    SESSION = window.session;
-
-    window.interface = new Interface(document.getElementById('application'));
-    INTERFACE = window.interface;
-    generateInterface();
-    INTERFACE.render();
-
-    fetch('data/example_level.json')
-        .then(r => r.json())
-        .then(json => {
-            const lvl = convertFromOriginalLevelFileObject(json);
-            console.log(lvl)
+function bootstrap() {
+    const container = document.getElementById('application');
+    if (container) {
+        app = new EditorApp(container);
+        app.init().catch(err => {
+            console.error('Failed to initialize EditorApp:', err);
         });
-};
+        if (typeof window !== 'undefined') {
+            window.app = app;
+        }
+    }
+}
 
-/**
- * Generate all of the interface
- */
-function generateInterface() {
-    INTERFACE.addComponent(createMenuBar());
-    INTERFACE.addComponent(createToolBar());
-    INTERFACE.addComponent(createCanvases())
-};
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bootstrap);
+    } else {
+        bootstrap();
+    }
+}
 
-
-init();
+export { app, EditorApp };
