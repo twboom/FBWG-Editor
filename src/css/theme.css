@@ -1,0 +1,590 @@
+@import url('vars.css');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-family);
+    background: var(--bg-workspace);
+    color: var(--text-main);
+    font-size: 12px;
+}
+
+#application {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   Top Application MenuBar
+   ========================================================================== */
+.menu-bar {
+    background: var(--bg-panel-dark);
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--border-dark);
+    font-size: 11px;
+    gap: 16px;
+    position: relative;
+    z-index: 1000;
+    flex-shrink: 0;
+}
+
+.menu-logo {
+    font-weight: 700;
+    color: #3b99fc;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.menu-items {
+    display: flex;
+    gap: 4px;
+}
+
+.menu-item {
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 3px;
+    position: relative;
+}
+
+.menu-item:hover,
+.menu-item.open {
+    background: var(--bg-hover);
+}
+
+.menu-item-title {
+    display: block;
+}
+
+.menu-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 190px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-subtle);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    padding: 4px 0;
+    z-index: 1001;
+}
+
+.menu-dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 14px;
+    font-size: 11px;
+    color: var(--text-main);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.menu-dropdown-item:hover {
+    background: var(--bg-accent);
+    color: #ffffff;
+}
+
+.menu-dropdown-label {
+    flex: 1;
+}
+
+.menu-dropdown-shortcut {
+    color: var(--text-muted);
+    font-size: 10px;
+    margin-left: 18px;
+}
+
+.menu-dropdown-item:hover .menu-dropdown-shortcut {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.menu-divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 4px 0;
+}
+
+/* ==========================================================================
+   Tool Options Bar (Secondary Header)
+   ========================================================================== */
+.options-bar,
+.tool-options-bar {
+    background: var(--bg-panel);
+    height: 36px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--border-dark);
+    gap: 18px;
+    font-size: 11px;
+    flex-shrink: 0;
+}
+
+.tool-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-right: 14px;
+    border-right: 1px solid var(--border-subtle);
+    font-weight: 600;
+    color: var(--text-heading);
+}
+
+.tool-options-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.option-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.option-label {
+    color: var(--text-muted);
+}
+
+.option-input,
+.option-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    outline: none;
+}
+
+.option-select:focus,
+.option-input:focus {
+    border-color: var(--bg-accent);
+}
+
+/* ==========================================================================
+   Main 3-Column Workspace Layout
+   ========================================================================== */
+.workspace {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   Left Tool Rail (Icon Strip)
+   ========================================================================== */
+.toolbar,
+.tool-rail {
+    width: 44px;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 0;
+    gap: 4px;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.tool-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-main);
+    position: relative;
+    background: transparent;
+    border: none;
+    outline: none;
+    transition: background 0.1s ease;
+}
+
+.tool-btn:hover {
+    background: var(--bg-hover);
+    color: #ffffff;
+}
+
+.tool-btn.active {
+    background: var(--bg-active);
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px var(--border-subtle);
+}
+
+.tool-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.toolbar-divider {
+    width: 24px;
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 4px 0;
+}
+
+/* ==========================================================================
+   Center Viewport & Canvas
+   ========================================================================== */
+.center-area {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.canvas-header {
+    width: 100%;
+    height: 26px;
+    background: #1c1c1c;
+    border-bottom: 1px solid var(--border-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-size: 11px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    z-index: 5;
+    box-sizing: border-box;
+}
+
+.viewport {
+    flex: 1;
+    min-height: 0;
+    min-width: 0;
+    background: var(--bg-workspace);
+    position: relative;
+    overflow: auto;
+    background-image: radial-gradient(circle at 1px 1px, #262626 1px, transparent 0);
+    background-size: 24px 24px;
+}
+
+.viewport::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+.viewport::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+.viewport::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 6px;
+    border: 3px solid #1a1a1a;
+}
+
+.viewport::-webkit-scrollbar-thumb:hover {
+    background: #4a4a4a;
+}
+
+.canvas-container {
+    background: #101010;
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.canvas-content {
+    position: relative;
+    background: #0d0d0d;
+    background-image: linear-gradient(to right, #151515 1px, transparent 1px),
+                      linear-gradient(to bottom, #151515 1px, transparent 1px);
+    background-size: 32px 32px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Right Panel Dock
+   ========================================================================== */
+.dock {
+    width: 280px;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border-dark);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.dock-panel {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid var(--border-dark);
+}
+
+.dock-header {
+    height: 28px;
+    background: var(--bg-panel-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 10px;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--text-heading);
+    border-bottom: 1px solid var(--border-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dock-body {
+    padding: 10px;
+    overflow-y: auto;
+}
+
+/* Layers Panel */
+.layer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.layer-row {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    background: var(--bg-panel-dark);
+    border-radius: 3px;
+    gap: 8px;
+    font-size: 11px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    user-select: none;
+}
+
+.layer-row:hover {
+    background: var(--bg-hover);
+}
+
+.layer-row.active {
+    background: var(--bg-active);
+    border-color: var(--bg-accent);
+}
+
+.layer-icon {
+    color: var(--text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    user-select: none;
+}
+
+.layer-icon.visible {
+    color: var(--text-main);
+}
+
+.layer-icon.locked {
+    color: var(--text-main);
+}
+
+.layer-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.layer-badge {
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: #333;
+    color: var(--text-muted);
+}
+
+/* Properties Panel Form */
+.prop-grid {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    row-gap: 8px;
+    column-gap: 6px;
+    align-items: center;
+    font-size: 11px;
+}
+
+.prop-label {
+    color: var(--text-muted);
+}
+
+.prop-input {
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-main);
+    padding: 4px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.prop-input:focus {
+    border-color: var(--bg-accent);
+}
+
+/* ==========================================================================
+   Bottom Status Bar
+   ========================================================================== */
+.status-bar {
+    height: 22px;
+    background: var(--bg-panel-dark);
+    border-top: 1px solid var(--border-dark);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    font-size: 10px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: auto;
+}
+
+.status-group {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.status-item {
+    display: inline-flex;
+    align-items: center;
+}
+
+
+/* ==========================================================================
+   Modal Dialogs
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-dark);
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    width: 320px;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    color: var(--text-main);
+}
+
+.modal-header {
+    background: var(--bg-panel-dark);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-dark);
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.modal-body {
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.modal-row input {
+    width: 90px;
+}
+
+.resize-warning {
+    background: rgba(220, 80, 50, 0.15);
+    border: 1px solid rgba(220, 80, 50, 0.4);
+    color: #ff9b85;
+    padding: 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.modal-actions button {
+    padding: 5px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 1px solid var(--border-dark);
+}
+
+.btn-cancel {
+    background: var(--bg-panel-dark);
+    color: var(--text-main);
+}
+
+.btn-cancel:hover {
+    background: var(--bg-hover);
+}
+
+.btn-confirm {
+    background: var(--bg-accent);
+    color: #fff;
+    border-color: var(--bg-accent) !important;
+}
+
+.btn-confirm:hover {
+    filter: brightness(1.1);
+}
